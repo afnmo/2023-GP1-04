@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -61,8 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     .infinity, // Make the button take the full available width
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Implement log out logic
-                    // AuthRepository().logout();
+                    AuthRepository().logout();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

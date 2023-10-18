@@ -1,16 +1,18 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/Home/screens/home_screen.dart';
-import 'package:gp91/firebase_auth/firebase_auth_services.dart';
+import 'package:gp91/home/screens/home_screen.dart';
+import 'package:gp91/a_i_want_to_delete_them/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/login/components/already_have_an_account_acheck.dart';
 import 'package:gp91/login/components/background.dart';
-import 'package:gp91/constants.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
-import 'package:gp91/logout.dart';
+import 'package:gp91/a_i_want_to_delete_them/logout.dart';
 import 'package:gp91/signup/signup.dart';
 
 // from StatelessWidget to stateful
@@ -209,53 +211,98 @@ class _FormScreenState extends State<Body> {
       },
     );
 
-    try {
-      User? user = await _auth.signInWithEmailAndPassword(email, password);
-      print("user: " + user.toString());
-      Get.back();
+    // try {
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
+    print("user: " + user.toString());
+    Get.back();
 
-      if (user != null) {
-        print("User is successfully logged in");
-        Get.to(() => const Logout());
+    if (user != null) {
+      print("User is successfully logged in");
+      Get.to(() => HomeScreen());
 
-        // Clear the input fields
-        _emailController.clear();
-        _passwordController.clear();
-      } else {
-        print("User login failed");
-
-        Get.snackbar(
-          "Oops!",
-          "Incorrect Password. Please try again",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.1),
-          colorText: Colors.red,
-        );
-      }
-    } catch (e) {
-      print("Error during login: $e");
-      Get.back();
-
-      if (e is FirebaseAuthException) {
-        if (e.code == 'user-not-found') {
-          // User not found - Display the snack bar
-          Get.snackbar(
-            "Oops!",
-            "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.redAccent.withOpacity(0.1),
-            colorText: Colors.red,
-          );
-        } else {
-          Get.snackbar(
-            "Oops!",
-            "Incorrect Password. Please try again",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.redAccent.withOpacity(0.1),
-            colorText: Colors.red,
-          );
-        }
-      }
+      // Clear the input fields
+      _emailController.clear();
+      _passwordController.clear();
+    } else {
+      Get.snackbar(
+        "Oops!",
+        "Incorrect email or password",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
     }
+    //   } else {
+    //     print("User login failed");
+    //     Get.snackbar(
+    //       "Oops!",
+    //       "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
+    //       snackPosition: SnackPosition.BOTTOM,
+    //       backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //       colorText: Colors.red,
+    //     );
+    //   }
+    // } catch (e) {
+    //   print("Error during login: $e");
+    //   Get.back();
+
+    //   if (e is FirebaseAuthException) {
+    //     if (e.code == 'user-not-found') {
+    //       // User not found - Display the appropriate error message
+    //       Get.snackbar(
+    //         "Oops!",
+    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
+    //         snackPosition: SnackPosition.BOTTOM,
+    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //         colorText: Colors.red,
+    //       );
+    //     } else if (e.code == 'wrong-password') {
+    //       // Incorrect password - Display the incorrect password message
+    //       Get.snackbar(
+    //         "Oops!",
+    //         "Incorrect Password. Please try again",
+    //         snackPosition: SnackPosition.BOTTOM,
+    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //         colorText: Colors.red,
+    //       );
+    //     } else {
+    //       // Handle other error codes as needed
+    //       // You can add more specific error handling for other cases if necessary
+    //       Get.snackbar(
+    //         "Oops!",
+    //         "An error occurred during sign-in. Please try again later",
+    //         snackPosition: SnackPosition.BOTTOM,
+    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //         colorText: Colors.red,
+    //       );
+    //     }
+    //   }
+    // }
+
+    // } catch (e) {
+    //   print("Error during login: $e");
+    //   Get.back();
+
+    //   if (e is FirebaseAuthException) {
+    //     if (e.code == 'user-not-found') {
+    //       // User not found - Display the snack bar
+    //       Get.snackbar(
+    //         "Oops!",
+    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
+    //         snackPosition: SnackPosition.BOTTOM,
+    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //         colorText: Colors.red,
+    //       );
+    //     } else {
+    //       Get.snackbar(
+    //         "Oops!",
+    //         "Incorrect Password. Please try again",
+    //         snackPosition: SnackPosition.BOTTOM,
+    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
+    //         colorText: Colors.red,
+    //       );
+    //     }
+    //   }
+    // }
   }
 }

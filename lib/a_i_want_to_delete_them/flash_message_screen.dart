@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gp91/custom_snack_bar_content.dart';
+import 'package:gp91/a_i_want_to_delete_them/custom_snack_bar_content.dart';
 
 class FlashMessageScreen extends StatelessWidget {
   const FlashMessageScreen({super.key});

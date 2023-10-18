@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:gp91/Home_Screen.dart';
-import 'package:gp91/constants.dart';
-import 'package:gp91/firebase_auth/firebase_auth_services.dart';
+import 'package:gp91/home/screens/home_screen.dart';
+
+import 'package:gp91/components/constants.dart';
+import 'package:gp91/a_i_want_to_delete_them/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/signup_controller.dart';
 import 'package:gp91/firebase_auth/user_model.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
@@ -13,7 +14,7 @@ import 'package:gp91/login/components/already_have_an_account_acheck.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/login.dart';
-import 'package:gp91/logout.dart';
+import 'package:gp91/a_i_want_to_delete_them/logout.dart';
 import 'package:gp91/signup/components/background.dart';
 
 class Body extends StatefulWidget {
@@ -51,28 +52,13 @@ class _FormScreenState extends State<Body> {
   String? validatePassword(String pass) {
     String password = pass.trim();
 
-    if (password.isEmpty) {
-      return 'Please enter your password';
-    }
-
-    if (password.length < 8) {
-      return 'Requires 8 characters';
-    }
-
-    if (!digitPattern.hasMatch(password)) {
-      return 'Requires a digit';
-    }
-
-    if (!lowercasePattern.hasMatch(password)) {
-      return 'Requires a lowercase letter';
-    }
-
-    if (!uppercasePattern.hasMatch(password)) {
-      return 'Requires an uppercase letter';
-    }
-
-    if (!specialCharPattern.hasMatch(password)) {
-      return 'Requires a special character';
+    if (password.isEmpty ||
+        password.length < 8 ||
+        !digitPattern.hasMatch(password) ||
+        !lowercasePattern.hasMatch(password) ||
+        !uppercasePattern.hasMatch(password) ||
+        !specialCharPattern.hasMatch(password)) {
+      return 'Password should include at least one digit, one lowercase and one uppercase letter, and one special character, with a minimum of 8 characters.';
     }
 
     return null; // Password is valid
@@ -93,212 +79,210 @@ class _FormScreenState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                "SIGN UP",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'NanumGothic',
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
-                ),
-              ),
-              Image.asset(
-                "assets/images/logo_no_bkg.png",
-                width: size.width,
-                height: size.height * 0.3,
-              ),
-
-// name               nameInput,
-              TextFieldContainer(
-                child: TextFormField(
-                  controller: _nameController,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    if (value!.length < 3) {
-                      return "Name Should be at least 3 characters";
-                    } else if (value!.isEmpty) {
-                      return "Please enter your name";
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: Icon(
-                      Icons.person,
-                      color: primaryColor,
-                    ),
-                    hintText: "Name",
-                    border: InputBorder.none,
+        child: Padding(
+          padding: EdgeInsets.all(40),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  "SIGN UP",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'NanumGothic',
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
-              ),
-// email               emailInput,
-              TextFieldContainer(
-                child: TextFormField(
-                  controller: _emailController,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    RegExp emailRegex =
-                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                    final isEmailValid = emailRegex.hasMatch(value ?? '');
-                    if (!isEmailValid) {
-                      return "Please enter a valid email";
-                    } else if (value!.isEmpty) {
-                      return "Please enter your email";
-                    } else {
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: Icon(
-                      Icons.email,
-                      color: primaryColor,
-                    ),
-                    hintText: "Email",
-                    border: InputBorder.none,
-                  ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                Image.asset(
+                  "assets/images/logo_no_bkg.png",
+                  width: size.width,
+                  height: size.height * 0.3,
                 ),
-              ),
 
-// password              passwordInput,
-              TextFieldContainer(
-                child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscureText1,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    return validatePassword(value!);
-                    // if (value!.isEmpty) {
-                    //   return "Please enter your password";
-                    // } else {
-                    //   bool result = validatePassword(value);
-                    //   if (result) {
-                    //     return null;
-                    //   } else {
-                    //     return "Password should include at least one digit, one lowercase and one uppercase letter, a minimum of 8 characters.";
-                    //   }
-                    // }
-                  },
-                  decoration: InputDecoration(
-                    hintStyle: const TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: const Icon(
-                      Icons.lock,
-                      color: primaryColor,
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _obscureText1 = !_obscureText1;
-                        });
-                      },
-                      child: Icon(
-                        _obscureText1 ? Icons.visibility : Icons.visibility_off,
+                // name               nameInput,
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: _nameController,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value!.length < 3) {
+                        return "Name Should be at least 3 characters";
+                      } else if (value!.isEmpty) {
+                        return "Please enter your name";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      hintStyle: TextStyle(
+                        fontFamily: 'NanumGothic',
+                      ),
+                      icon: Icon(
+                        Icons.person,
                         color: primaryColor,
                       ),
+                      hintText: "Name",
+                      border: InputBorder.none,
                     ),
-                    hintText: "Password",
-                    border: InputBorder.none,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
-              ),
-// confirm              confirmPasswordInput,
-              TextFieldContainer(
-                child: TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureText2,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please re-enter your password";
-                    } else if (_passwordController.text !=
-                        _confirmPasswordController.text) {
-                      return "Passwords don't match";
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintStyle: const TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: const Icon(
-                      Icons.lock,
-                      color: primaryColor,
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _obscureText2 = !_obscureText2;
-                        });
-                      },
-                      child: Icon(
-                        _obscureText2 ? Icons.visibility : Icons.visibility_off,
+                // email               emailInput,
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: _emailController,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      RegExp emailRegex =
+                          RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      final isEmailValid = emailRegex.hasMatch(value ?? '');
+                      if (!isEmailValid) {
+                        return "Please enter a valid email";
+                      } else if (value!.isEmpty) {
+                        return "Please enter your email";
+                      } else {
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      hintStyle: TextStyle(
+                        fontFamily: 'NanumGothic',
+                      ),
+                      icon: Icon(
+                        Icons.email,
                         color: primaryColor,
                       ),
+                      hintText: "Email",
+                      border: InputBorder.none,
                     ),
-                    hintText: "Confirm password",
-                    border: InputBorder.none,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
-              ),
 
-              // SIGN UP BUTTON
-              RoundedButton(
-                text: "SIGN UP",
-                // Go to the home page
-                press: () {
-                  if (_formKey.currentState?.validate() == true) {
-                    print("WOOOOORKED validation!!");
+                // password              passwordInput,
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscureText1,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      return validatePassword(value!);
+                    },
+                    decoration: InputDecoration(
+                      errorMaxLines: 4,
+                      hintStyle: const TextStyle(
+                        fontFamily: 'NanumGothic',
+                      ),
+                      icon: const Icon(
+                        Icons.lock,
+                        color: primaryColor,
+                      ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText1 = !_obscureText1;
+                          });
+                        },
+                        child: Icon(
+                          _obscureText1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: primaryColor,
+                        ),
+                      ),
+                      hintText: "Password",
+                      border: InputBorder.none,
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
+                // confirm              confirmPasswordInput,
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: _obscureText2,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please re-enter your password";
+                      } else if (_passwordController.text !=
+                          _confirmPasswordController.text) {
+                        return "Passwords don't match";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintStyle: const TextStyle(
+                        fontFamily: 'NanumGothic',
+                      ),
+                      icon: const Icon(
+                        Icons.lock,
+                        color: primaryColor,
+                      ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText2 = !_obscureText2;
+                          });
+                        },
+                        child: Icon(
+                          _obscureText2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: primaryColor,
+                        ),
+                      ),
+                      hintText: "Confirm password",
+                      border: InputBorder.none,
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
 
-                    final user = UserModel(
-                      name: _nameController.text.trim(),
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text.trim(),
-                    );
-                    _authRepository.createUserWithEmailAndPassword(user);
+                // SIGN UP BUTTON
+                RoundedButton(
+                  text: "SIGN UP",
+                  // Go to the home page
+                  press: () {
+                    if (_formKey.currentState?.validate() == true) {
+                      print("WOOOOORKED validation!!");
 
-                    _nameController.clear();
-                    _emailController.clear();
-                    _passwordController.clear();
-                    _confirmPasswordController.clear();
-                  } else {
-                    print("validation did not work");
-                  }
-                },
-              ),
-              AlreadyHaveAnAcoountCheck(
-                login: false,
-                press: () {
-                  Get.to(() => LoginScreen());
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return LoginScreen();
-                  //     },
-                  //   ),
-                  // );
-                },
-              ),
-            ],
+                      final user = UserModel(
+                        name: _nameController.text.trim(),
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text.trim(),
+                      );
+                      _authRepository.createUserWithEmailAndPassword(user);
+
+                      _nameController.clear();
+                      _emailController.clear();
+                      _passwordController.clear();
+                      _confirmPasswordController.clear();
+                    } else {
+                      print("validation did not work");
+                    }
+                  },
+                ),
+                AlreadyHaveAnAcoountCheck(
+                  login: false,
+                  press: () {
+                    Get.to(() => LoginScreen());
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       return LoginScreen();
+                    //     },
+                    //   ),
+                    // );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

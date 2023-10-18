@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:gp91/components/background.dart';
-import 'package:gp91/constants.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/login.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/signup/signup.dart';

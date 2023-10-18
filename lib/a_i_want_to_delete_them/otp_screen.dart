@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:gp91/constants.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 
 class OTPScreen extends StatelessWidget {

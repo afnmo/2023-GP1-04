@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/constants.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
-import 'package:gp91/login/forgot_password/otp_screen.dart';
+import 'package:gp91/a_i_want_to_delete_them/otp_screen.dart';
 
 class ForgotPasswordMailScreen extends StatefulWidget {
   ForgotPasswordMailScreen({super.key});

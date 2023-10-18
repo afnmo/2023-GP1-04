@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:gp91/constants.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/on_boarding/on_boarding_screen.dart';
-import 'package:gp91/screens/welcome_screen.dart';
+import 'package:gp91/welcome/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -14,7 +14,7 @@ void main() async {
 
   // Check if the user has seen the onboarding screen before
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
+  bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? true;
 
   // Determine the initial route based on whether the user has seen the onboarding
   final initialRoute = hasSeenOnboarding ? '/welcome' : '/onboarding';

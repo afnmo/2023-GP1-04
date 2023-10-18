@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/on_boarding/on_boarding_model.dart';
 import 'package:gp91/on_boarding/on_boarding_page_widget.dart';
-import 'package:gp91/screens/welcome_screen.dart';
+import 'package:gp91/welcome/welcome_screen.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

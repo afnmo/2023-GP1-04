@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/settings_page.dart';
-import 'package:gp91/Home/screens/home_screen.dart';
+import '../settings/settings_page.dart';
+import 'package:gp91/home/screens/home_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final int currentIndex;
