@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/Home_Screen.dart';
 import 'package:gp91/firebase_auth/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/login/components/already_have_an_account_acheck.dart';
@@ -36,6 +37,8 @@ class _FormScreenState extends State<Body> {
 
     super.dispose();
   }
+
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +105,7 @@ class _FormScreenState extends State<Body> {
               TextFieldContainer(
                 child: TextFormField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: _obscureText,
                   onChanged: (value) {},
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -111,17 +114,24 @@ class _FormScreenState extends State<Body> {
                       return null;
                     }
                   },
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(
+                  decoration: InputDecoration(
+                    hintStyle: const TextStyle(
                       fontFamily: 'NanumGothic',
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.lock,
                       color: primaryColor,
                     ),
-                    suffixIcon: Icon(
-                      Icons.visibility,
-                      color: primaryColor,
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      child: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: primaryColor,
+                      ),
                     ),
                     hintText: "Password",
                     border: InputBorder.none,
@@ -199,31 +209,53 @@ class _FormScreenState extends State<Body> {
       },
     );
 
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
-
-    // Navigator.of(context).pop();
-    Get.back();
-
-    if (user != null) {
-      print("User is successfully logined");
-      Get.to(() => Logout());
-      // Navigator.pushNamed(context, "/home");
-    } else {
-      print("User lodined failed");
-      // Navigator.of(context).pop();
+    try {
+      User? user = await _auth.signInWithEmailAndPassword(email, password);
+      print("user: " + user.toString());
       Get.back();
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return const CustomSnackBarContent(
-      //       errorTitle: "Oops!",
-      //       errorBody:
-      //           "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-      //       snackBarcolor: Color(0xffB00020),
-      //       iconColor: Color(0xff801336),
-      //     );
-      //   },
-      // );
+
+      if (user != null) {
+        print("User is successfully logged in");
+        Get.to(() => const Logout());
+
+        // Clear the input fields
+        _emailController.clear();
+        _passwordController.clear();
+      } else {
+        print("User login failed");
+
+        Get.snackbar(
+          "Oops!",
+          "Incorrect Password. Please try again",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent.withOpacity(0.1),
+          colorText: Colors.red,
+        );
+      }
+    } catch (e) {
+      print("Error during login: $e");
+      Get.back();
+
+      if (e is FirebaseAuthException) {
+        if (e.code == 'user-not-found') {
+          // User not found - Display the snack bar
+          Get.snackbar(
+            "Oops!",
+            "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent.withOpacity(0.1),
+            colorText: Colors.red,
+          );
+        } else {
+          Get.snackbar(
+            "Oops!",
+            "Incorrect Password. Please try again",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent.withOpacity(0.1),
+            colorText: Colors.red,
+          );
+        }
+      }
     }
   }
 }

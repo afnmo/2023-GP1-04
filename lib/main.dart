@@ -6,35 +6,67 @@ import 'package:gp91/constants.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/on_boarding/on_boarding_screen.dart';
 import 'package:gp91/screens/welcome_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
-  runApp(const MyApp());
+
+  // Check if the user has seen the onboarding screen before
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
+
+  // Determine the initial route based on whether the user has seen the onboarding
+  final initialRoute = hasSeenOnboarding ? '/welcome' : '/onboarding';
+
+  runApp(MyApp(initialRoute: initialRoute));
+
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
-  // This widget is the root of your application.
-  @override
   Widget build(BuildContext context) {
-    // Map<String, String> dataToSave = {'name': 'station1'};
-    // FirebaseFirestore.instance.collection("Station").add(dataToSave);
     return GetMaterialApp(
-      
-      // IDK What's the point of this line.
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
-
       theme: ThemeData(
-        // primaryColor: bkgPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      //WelcomeScreen()
-      home: OnBoardingScreen(),
+      initialRoute:
+          initialRoute, // Set the initial route based on user's previous interaction
+      routes: {
+        '/welcome': (context) => WelcomeScreen(),
+        '/onboarding': (context) {
+          // Set the 'hasSeenOnboarding' flag to true and show the onboarding screen
+          SharedPreferences.getInstance().then((prefs) {
+            prefs.setBool('hasSeenOnboarding', true);
+          });
+          return OnBoardingScreen();
+        },
+      },
     );
   }
+  // // This widget is the root of your application.
+  // @override
+  // Widget build(BuildContext context) {
+  //   // Map<String, String> dataToSave = {'name': 'station1'};
+  //   // FirebaseFirestore.instance.collection("Station").add(dataToSave);
+  //   return GetMaterialApp(
+  //     // IDK What's the point of this line.
+  //     debugShowCheckedModeBanner: false,
+  //     title: 'Flutter Auth',
+
+  //     theme: ThemeData(
+  //       // primaryColor: bkgPrimaryColor,
+  //       scaffoldBackgroundColor: Colors.white,
+  //     ),
+  //     //WelcomeScreen()
+  //     home: WelcomeScreen(),
+  //   );
+  // }
 }
 
 // class FirstRoute extends StatelessWidget {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:gp91/Home_Screen.dart';
 import 'package:gp91/constants.dart';
 import 'package:gp91/firebase_auth/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/signup_controller.dart';
@@ -25,18 +26,59 @@ class Body extends StatefulWidget {
 
 class _FormScreenState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
+  // final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
+  // final SignUpController _signUpController = SignUpController();
 
-  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
-
+  // for firebase
   final AuthRepository _authRepository = AuthRepository();
-  final SignUpController _signUpController = SignUpController();
+
+  // controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  // for the password visiability
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+
+  final digitPattern = RegExp(r'(?=.*\d)');
+  final lowercasePattern = RegExp(r'(?=.*[a-z])');
+  final uppercasePattern = RegExp(r'(?=.*[A-Z])');
+  final specialCharPattern = RegExp(r'(?=.*[@#$%^&+=])');
+
+  String? validatePassword(String pass) {
+    String password = pass.trim();
+
+    if (password.isEmpty) {
+      return 'Please enter your password';
+    }
+
+    if (password.length < 8) {
+      return 'Requires 8 characters';
+    }
+
+    if (!digitPattern.hasMatch(password)) {
+      return 'Requires a digit';
+    }
+
+    if (!lowercasePattern.hasMatch(password)) {
+      return 'Requires a lowercase letter';
+    }
+
+    if (!uppercasePattern.hasMatch(password)) {
+      return 'Requires an uppercase letter';
+    }
+
+    if (!specialCharPattern.hasMatch(password)) {
+      return 'Requires a special character';
+    }
+
+    return null; // Password is valid
+  }
+
+  // dispose the controllers
   @override
   void dispose() {
     _nameController.dispose();
@@ -136,26 +178,39 @@ class _FormScreenState extends State<Body> {
               TextFieldContainer(
                 child: TextFormField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: _obscureText1,
                   onChanged: (value) {},
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your password";
-                    } else {
-                      return null;
-                    }
+                    return validatePassword(value!);
+                    // if (value!.isEmpty) {
+                    //   return "Please enter your password";
+                    // } else {
+                    //   bool result = validatePassword(value);
+                    //   if (result) {
+                    //     return null;
+                    //   } else {
+                    //     return "Password should include at least one digit, one lowercase and one uppercase letter, a minimum of 8 characters.";
+                    //   }
+                    // }
                   },
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(
+                  decoration: InputDecoration(
+                    hintStyle: const TextStyle(
                       fontFamily: 'NanumGothic',
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.lock,
                       color: primaryColor,
                     ),
-                    suffixIcon: Icon(
-                      Icons.visibility,
-                      color: primaryColor,
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureText1 = !_obscureText1;
+                        });
+                      },
+                      child: Icon(
+                        _obscureText1 ? Icons.visibility : Icons.visibility_off,
+                        color: primaryColor,
+                      ),
                     ),
                     hintText: "Password",
                     border: InputBorder.none,
@@ -167,7 +222,7 @@ class _FormScreenState extends State<Body> {
               TextFieldContainer(
                 child: TextFormField(
                   controller: _confirmPasswordController,
-                  obscureText: true,
+                  obscureText: _obscureText2,
                   onChanged: (value) {},
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -179,17 +234,24 @@ class _FormScreenState extends State<Body> {
                       return null;
                     }
                   },
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(
+                  decoration: InputDecoration(
+                    hintStyle: const TextStyle(
                       fontFamily: 'NanumGothic',
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.lock,
                       color: primaryColor,
                     ),
-                    suffixIcon: Icon(
-                      Icons.visibility,
-                      color: primaryColor,
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureText2 = !_obscureText2;
+                        });
+                      },
+                      child: Icon(
+                        _obscureText2 ? Icons.visibility : Icons.visibility_off,
+                        color: primaryColor,
+                      ),
                     ),
                     hintText: "Confirm password",
                     border: InputBorder.none,
@@ -211,13 +273,12 @@ class _FormScreenState extends State<Body> {
                       email: _emailController.text.trim(),
                       password: _passwordController.text.trim(),
                     );
-                    // _signUpController.registerUser(_emailController.text.trim(),
-                    //     _passwordController.text.trim());
-                    // createUser(user);
-                    // _signUp(user);
-                    _signUpController.registerUser(_emailController.text.trim(),
-                        _passwordController.text.trim());
-                    _signUpController.createUser(user);
+                    _authRepository.createUserWithEmailAndPassword(user);
+
+                    _nameController.clear();
+                    _emailController.clear();
+                    _passwordController.clear();
+                    _confirmPasswordController.clear();
                   } else {
                     print("validation did not work");
                   }
@@ -243,37 +304,4 @@ class _FormScreenState extends State<Body> {
       ),
     );
   }
-
-  void _signUp(UserModel userModel) async {
-    String name = _nameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    // User? user =
-    //     await _firebaseAuthService.signUpWithEmailAndPassword(email, password);
-    // _signUpController.createUser(userModel);
-
-    // _signUpController.registerAndCreateUser(email, password, userModel);
-    User? user =
-        await _authRepository.createUserWithEmailAndPassword(email, password);
-    if (user != null) {
-      print("User is successfully created");
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text("successfully signed up"),
-          );
-        },
-      );
-      Get.to(() => Logout());
-      // Navigator.pushNamed(context, "/home");
-    } else {
-      print("User created failed");
-    }
-  }
-
-  // void _signup(String email, String password) {
-  //   _signUpController.registerUser(email, password);
-  // }
 }

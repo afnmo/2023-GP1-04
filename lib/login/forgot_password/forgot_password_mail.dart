@@ -99,7 +99,7 @@ class _ForgotPasswordMailScreenState extends State<ForgotPasswordMailScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 30), // Add left and right padding
                       child: Text(
-                        "Enter the email address associated with your account.",
+                        "Enter the email address associated with your account",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
@@ -116,7 +116,7 @@ class _ForgotPasswordMailScreenState extends State<ForgotPasswordMailScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 30), // Add left and right padding
                       child: Text(
-                        "We will email you a link to reset your password.",
+                        "We will email you a link to reset your password",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
