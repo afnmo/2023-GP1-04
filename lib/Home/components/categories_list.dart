@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'components/bottom_nav.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'dart:ui' as ui;
 //import 'categories_list.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -204,7 +202,7 @@ class BlurredImageWithText extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Want to know your gas costs?\nAdd a car, \nand monitor your costs!',
                     style: TextStyle(
                       color: Color(0xFF6EA67C),
@@ -214,7 +212,7 @@ class BlurredImageWithText extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       // Add car button action

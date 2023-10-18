@@ -72,6 +72,25 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/about.png
+    - assets/account.png
+    - assets/addCar.png
+    - assets/consumption.png
+    - assets/gasStation.png
+    - assets/home22.png
+    - assets/myCars.png
+    - assets/promos.png
+    - assets/settings.png
+    - assets/about2.png
+    - assets/account2.png
+    - assets/addCar2.png
+    - assets/consumption2.png
+    - assets/gasStation2.png
+    - assets/home222.png
+    - assets/myCars2.png
+    - assets/promos2.png
+    - assets/settings2.png
+    - assets/chart.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

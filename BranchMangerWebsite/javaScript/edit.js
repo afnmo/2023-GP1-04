@@ -25,31 +25,87 @@ const collectionName = "Station";
 const collectionRef = collection(db, collectionName);
 
 // Retrieve a specific document by ID ("s1") must tack id from BM fk ************************
-const documentPath = doc(collectionRef, "fZrKBr4GceRfpp6GPcPC");
+const documentPath = doc(collectionRef, "gnrYQk0cGN4G28DTEhJm");
 
-// retrieve station name and location
-getDoc(documentPath)
-    .then((docSnap) => {
+// Retrieve station data and populate form fields
+async function retrieveAndPopulateForm() {
+    try {
+        const docSnap = await getDoc(documentPath);
         if (docSnap.exists()) {
             // Access data for each document
-            const statinData = docSnap.data();
+            const stationData = docSnap.data();
 
-            document.getElementById("StationName").value = statinData.name;
-            document.getElementById("StationLocation").value = statinData.Location;
-
+            document.getElementById("StationName").value = stationData.name;
+            document.getElementById("StationLocation").value = stationData.Location;
             document.getElementById("StationName").style.fontSize = "larger";
             document.getElementById("StationLocation").style.fontSize = "larger";
-
             document.getElementById("StationName").style.color = "#f8a71a98";
             document.getElementById("StationLocation").style.color = "#f8a71a98";
+
+            if(stationData.open_hour != null)
+            document.getElementById("OpenHour").value = stationData.open_hour;
+
+            if(stationData.close_hour != null)
+            document.getElementById("CloseHour").value = stationData.close_hour;
+            
+            if(stationData.image_station != null)
+            document.getElementById('imageUpload').value = stationData.image_station;
+            
+            // Checkboxes and radio buttons can be populated here
+            populateCheckBoxesAndRadioButtons(stationData);
 
         } else {
             console.log("Document does not exist.");
         }
-    })
-    .catch((error) => {
-        console.error("Error reading documents: ", error);
+    } catch (error) {
+        console.error("Error reading document: ", error);
+    }
+}
+
+// Function to populate checkboxes and radio buttons
+function populateCheckBoxesAndRadioButtons(stationData) {
+    const fuelTypes = stationData.fuel_type || [];
+    const fuelStatus = stationData.fuel_status || [];
+
+    // Loop through checkbox elements and set their checked status based on the data
+    fuelTypes.forEach((fuelType) => {
+        const checkbox = document.getElementById(`fuelType${fuelType}`);
+        if (checkbox) {
+            checkbox.checked = true;
+            const radioGroup = document.getElementById(`${fuelType}State`);
+            if (radioGroup) {
+                radioGroup.style.display = 'block';
+            }
+        }
     });
+
+    // Loop through radio button elements and set their checked status based on the data
+    fuelStatus.forEach((status) => {
+        const [type, state] = status.split(" ");
+        const radioButton = document.getElementById(`${type}${state}`);
+        if (radioButton) {
+            radioButton.checked = true;
+        }
+    });
+
+    // Handle the heightBox and BKimage based on the number of checkboxes
+    const numCheckbox = fuelTypes.length;
+    if (numCheckbox === 1) {
+        document.getElementById("heightBox").style.height = 700;
+        document.getElementById("BKimage").height = 830;
+    } else if (numCheckbox === 2) {
+        document.getElementById("heightBox").style.height = 800;
+        document.getElementById("BKimage").height = 910;
+    } else if (numCheckbox === 3) {
+        document.getElementById("heightBox").style.height = 900;
+        document.getElementById("BKimage").height = 970;
+    }
+}
+
+
+// Call the function to populate the form when the page loads
+document.addEventListener("DOMContentLoaded", retrieveAndPopulateForm);
+
 
 // Get references to the checkboxes and radio button groups
 const checkbox1 = document.getElementById('fuelType91');
@@ -57,7 +113,7 @@ const checkbox2 = document.getElementById('fuelType95');
 const checkbox3 = document.getElementById('fuelTypeDiesel');
 const radioGroup1 = document.getElementById('91State');
 const radioGroup2 = document.getElementById('95State');
-const radioGroup3 = document.getElementById('dieselState');
+const radioGroup3 = document.getElementById('DieselState');
 
 // Add event listeners to the checkboxes
 checkbox1.addEventListener('change', toggleRadioGroup);
@@ -78,7 +134,7 @@ function toggleRadioGroup() {
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
         document.getElementById("heightBox").style.height= 800;
-        document.getElementById("BKimage").height= 900;
+        document.getElementById("BKimage").height= 910;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -87,7 +143,7 @@ function toggleRadioGroup() {
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
         document.getElementById("heightBox").style.height= 900;
-        document.getElementById("BKimage").height= 945;
+        document.getElementById("BKimage").height= 960;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -96,14 +152,9 @@ function toggleRadioGroup() {
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("editStation");
 
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", async function (event) {
         // Prevent the form from submitting in the traditional way
         event.preventDefault();
-
-        const OpenHourInput = document.getElementById("OpenHour");
-        const CloseHourInput = document.getElementById("CloseHour");
-        const OpenHour = formatTimeWithAmPm(OpenHourInput.value);
-        const CloseHour = formatTimeWithAmPm(CloseHourInput.value);
 
         const fuelTypes = ["91", "95", "Diesel"];
         let hasChecked = false; // Flag to track if at least one checkbox is checked for each fuel type
@@ -125,57 +176,23 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Check if an image has been selected
-        const imageUpload = document.getElementById("imageUpload");
-        if (imageUpload.files.length === 0) {
-            alert("Please select an image");
-            return; // Prevent form submission if a validation check fails
-        }
-
         // If all validation checks pass, you can proceed to update the Firestore document
         if (hasChecked) {
-            AddStation(OpenHour, CloseHour);
+            await AddStation();
+
+            window.location.href = "homepagePM.html";
         } else {
             alert("Please select at least one checkbox for each fuel type.");
         }
+
     });
 });
 
-
-// Add an event listener to the file input
-document.getElementById('imageUpload').addEventListener('change', function () {
-    const imageUpload = document.getElementById('imageUpload');
-    const imageLabel = document.getElementById('imageLabel');
-
-    if (imageUpload.files.length > 0) {
-        const allowedExtensions = /(\.JPG)$/i;
-        if (!allowedExtensions.exec(imageUpload.files[0].name)) {
-            // If the selected file doesn't have a .jpg extension, clear the input and show an alert.
-            imageUpload.value = '';
-            imageLabel.textContent = 'Choose file in JPG format';
-            alert('Please select an image in JPG format');
-        } else {
-            // Update the label text to the selected file's name
-            imageLabel.textContent = imageUpload.files[0].name;
-        }
-    } else {
-        // Reset the label text when no file is selected
-        imageLabel.textContent = 'Choose file in JPG format';
-    }
-});
-
-
-// Function to format time input value with AM or PM
-function formatTimeWithAmPm(timeValue) {
-    const parsedTime = new Date(`2000-01-01T${timeValue}`);
-    const formattedTime = parsedTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-    return formattedTime;
-}
-
-
 // set to station doc
-function AddStation(OpenHour, CloseHour) {
+async function AddStation() {
     const stationImage = document.getElementById("imageUpload").value;
+    const OpenHour = document.getElementById("OpenHour").value;
+    const CloseHour = document.getElementById("CloseHour").value;
     const fuelType = document.getElementsByName("fuelType");
     let fuelTypeArray = [];
     let fuelStatevalue = [];
@@ -191,7 +208,7 @@ function AddStation(OpenHour, CloseHour) {
 
             for (let j = 0; j < relatedRadioButtons.length; j++) {
                 if (relatedRadioButtons[j].checked) {
-                    fuelStatevalue.push(fuelType[i].value+ " "+ relatedRadioButtons[j].value);
+                    fuelStatevalue.push(relatedRadioButtons[j].value);
                     break; // Stop checking once you find the checked radio button
                 }
             }
@@ -199,14 +216,19 @@ function AddStation(OpenHour, CloseHour) {
     }
 
     // Define a reference to the Firestore collection id change based on PM fk *******************
-    const myCollection = doc(db, "Station", "fZrKBr4GceRfpp6GPcPC");
+    const myCollection = doc(db, "Station", "gnrYQk0cGN4G28DTEhJm");
 
     // Update the station with more information
-    updateDoc(myCollection, {
-        open_hour: OpenHour,
-        close_hour: CloseHour,
-        image_station: stationImage,
-        fuel_type: fuelTypeArray,
-        fuel_status: fuelStatevalue,
-    })
+    try {
+        await updateDoc(myCollection, {
+            open_hour: OpenHour,
+            close_hour: CloseHour,
+            image_station: stationImage,
+            fuel_type: fuelTypeArray,
+            fuel_status: fuelStatevalue,
+        });
+        console.log("Data successfully updated in Firestore.");
+    } catch (error) {
+        console.error("Error updating data in Firestore: ", error);
+    }
 }

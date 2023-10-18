@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import '/settings_page.dart';
+import 'package:gp91/Home/screens/home_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final int currentIndex;
   final Function(int) onIndexChanged;
 
-  const BottomNav(
-      {Key? key, required this.currentIndex, required this.onIndexChanged})
-      : super(key: key);
+  const BottomNav({
+    Key? key,
+    required this.currentIndex,
+    required this.onIndexChanged,
+  }) : super(key: key);
 
   @override
   _BottomNavState createState() => _BottomNavState();
@@ -21,12 +25,11 @@ class _BottomNavState extends State<BottomNav> {
         backgroundColor: Color(0xFF6EA67C),
         currentIndex: widget.currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors
-            .white, // Set the color of the highlighted item's label to white
-        unselectedItemColor: Colors
-            .white70, // Set the color of the unselected items' labels to a lighter shade of white
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         onTap: (int index) {
           widget.onIndexChanged(index);
+          navigateToPage(context, index); // Call the navigateToPage function
         },
         items: [
           BottomNavigationBarItem(
@@ -87,5 +90,43 @@ class _BottomNavState extends State<BottomNav> {
         ],
       ),
     );
+  }
+
+  void navigateToPage(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        /*
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GasStationsPage()),
+        );*/
+        break;
+      case 1:
+        /*
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyCarsPage()),
+        ); */
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SettingsPage()),
+        );
+        break;
+      case 4:
+        /*
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AccountPage()),
+        ); */
+        break;
+    }
   }
 }
