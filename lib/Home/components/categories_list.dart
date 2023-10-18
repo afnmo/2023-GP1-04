@@ -1,4 +1,5 @@
 import '/settings_page.dart';
+import '/aboutUs.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesListMallika1 extends StatefulWidget {
@@ -76,6 +77,10 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             image: "assets/about2.png",
             onTap: () {
               //Add your navigation logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutUsPage()),
+              );
             },
           ),
         ],
