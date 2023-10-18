@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/Home_Screen.dart';
+import 'package:gp91/Home/screens/home_screen.dart';
 import 'package:gp91/exceptions/signup_email_password_failure.dart';
 import 'package:gp91/login/login.dart';
 import 'package:gp91/logout.dart';

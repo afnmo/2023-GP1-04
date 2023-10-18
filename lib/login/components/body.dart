@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/Home_Screen.dart';
+import 'package:gp91/Home/screens/home_screen.dart';
 import 'package:gp91/firebase_auth/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/login/components/already_have_an_account_acheck.dart';
