@@ -21,11 +21,33 @@ const db = getFirestore(app);
 // Specify the name of the collection you want to read from
 const collectionName = "Station";
 
+let stationID;
+
+//retrieve stationID
+const BMID = sessionStorage.getItem('sessionID');
+if (BMID) {
+    const BMdoc = doc(db, "Branch_Manager", BMID); // Update the document reference
+
+    // Use await with getDoc since it returns a Promise
+    const docSnap = await getDoc(BMdoc);
+
+    if (docSnap.exists()) {
+        const BMData = docSnap.data();
+        stationID = BMData.station_id;
+    } 
+
+} else {
+    window.location.href = "registerFormBM.html";
+}
+
 // Create a reference to the collection
 const collectionRef = collection(db, collectionName);
 
 // Retrieve a specific document by ID ("s1") must tack id from BM fk ************************
-const documentPath = doc(collectionRef, "gnrYQk0cGN4G28DTEhJm");
+const documentPath = doc(collectionRef, stationID);
+
+// Call the function to populate the form when the page loads
+document.addEventListener("DOMContentLoaded", retrieveAndPopulateForm);
 
 // Retrieve station data and populate form fields
 async function retrieveAndPopulateForm() {
@@ -92,7 +114,7 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
         document.getElementById("heightBox").style.height = 700;
-        document.getElementById("BKimage").height = 830;
+        document.getElementById("BKimage").height = 850;
     } else if (numCheckbox === 2) {
         document.getElementById("heightBox").style.height = 800;
         document.getElementById("BKimage").height = 910;
@@ -101,10 +123,6 @@ function populateCheckBoxesAndRadioButtons(stationData) {
         document.getElementById("BKimage").height = 970;
     }
 }
-
-
-// Call the function to populate the form when the page loads
-document.addEventListener("DOMContentLoaded", retrieveAndPopulateForm);
 
 
 // Get references to the checkboxes and radio button groups
@@ -149,8 +167,7 @@ function toggleRadioGroup() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("editStation");
+const form = document.getElementById("editStation");
 
     form.addEventListener("submit", async function (event) {
         // Prevent the form from submitting in the traditional way
@@ -186,7 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
-});
+
+    retrieveAndPopulateForm();
 
 // set to station doc
 async function AddStation() {
@@ -216,7 +234,7 @@ async function AddStation() {
     }
 
     // Define a reference to the Firestore collection id change based on PM fk *******************
-    const myCollection = doc(db, "Station", "gnrYQk0cGN4G28DTEhJm");
+    const myCollection = doc(db, "Station", stationID);
 
     // Update the station with more information
     try {

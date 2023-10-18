@@ -21,15 +21,36 @@ const db = getFirestore(app);
 // Specify the name of the collection you want to read from
 const collectionName = "Station";
 
-// Create a reference to the collection
-const collectionRef = collection(db, collectionName);
+//retrieve stationID
+const BMID = sessionStorage.getItem('sessionID');
+let stationID;
 
-// Retrieve a specific document by ID ("s1") must tack id from BM fk ************************
-const documentPath = doc(collectionRef, "gnrYQk0cGN4G28DTEhJm");
+if (BMID) {
+    const BMdoc = doc(db, "Branch_Manager", BMID); // Update the document reference
 
-async function fetchStationData() {
+    // Use await with getDoc since it returns a Promise
+    const docSnap = await getDoc(BMdoc);
+
+    if (docSnap.exists()) {
+        const BMData = docSnap.data();
+        stationID = BMData.station_id;
+
+        if (stationID) {
+            // Pass the Firestore instance (db) to the fetchStationData function
+            fetchStationData(db, collectionName, stationID);
+        }
+    }
+} else {
+    window.location.href = "registerFormBM.html";
+}
+
+async function fetchStationData(db, collectionName, stationID) { // Pass documentPath and collectionRef as arguments
     try {
+        // Create a reference to the specific document
+        const documentPath = doc(db, collectionName, stationID);
+
         const docSnap = await getDoc(documentPath);
+
         if (docSnap.exists()) {
             const stationData = docSnap.data();
 
@@ -39,35 +60,35 @@ async function fetchStationData() {
             if (stationData.close_hour != null)
                 document.getElementById("CloseHour").textContent = stationData.close_hour;
 
-   
-            const fuelTypes = stationData.fuel_type;
             const fuelStatus = stationData.fuel_status;
 
             // Loop through fuel status elements and set their display and width based on the data
-            fuelStatus.forEach((status) => {
-                const [type, state] = status.split(" ");
-            
-                if (type === '91') {
-                    document.getElementById("91state").style.display = 'block';
-            
-                    if (state === 'Available') {
-                        document.getElementById("91statewidth").style.width = '100%';
-                    }
-                } else if (type === '95') {
-                    document.getElementById("95state").style.display = 'block';
-            
-                    if (state === 'Available') {
-                        document.getElementById("95statewidth").style.width = '100%';
-                    }
-                } else if (type === 'Diesel') {
-                    document.getElementById("Dieselstate").style.display = 'block';
-            
-                    if (state === 'Available') {
-                        document.getElementById("Dieselstatewidth").style.width = '100%';
-                    }
-                }
-            });            
+            if (fuelStatus) {
+                fuelStatus.forEach((status) => {
+                    const [type, state] = status.split(" ");
 
+                    if (type === '91') {
+                        document.getElementById("91state").style.display = 'block';
+
+                        if (state === 'Available') {
+                            document.getElementById("91statewidth").style.width = '100%';
+                        }
+                    } else if (type === '95') {
+                        document.getElementById("95state").style.display = 'block';
+
+                        if (state === 'Available') {
+                            document.getElementById("95statewidth").style.width = '100%';
+                        }
+                    } else if (type === 'Diesel') {
+                        document.getElementById("Dieselstate").style.display = 'block';
+
+                        if (state === 'Available') {
+                            document.getElementById("Dieselstatewidth").style.width = '100%';
+                        }
+                    }
+                });
+
+            }
         } else {
             console.log("Document does not exist.");
         }
@@ -75,11 +96,3 @@ async function fetchStationData() {
         console.error("Error accessing Firestore:", error);
     }
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetchStationData();
-});
-
-
-
-
