@@ -37,7 +37,7 @@ if (BMID) {
     } 
 
 } else {
-    window.location.href = "registerFormBM.html";
+    window.location.href = "login.html";
 }
 
 // Create a reference to the collection

@@ -41,7 +41,7 @@ if (BMID) {
         }
     }
 } else {
-    window.location.href = "registerFormBM.html";
+    window.location.href = "login.html";
 }
 
 async function fetchStationData(db, collectionName, stationID) { // Pass documentPath and collectionRef as arguments
