@@ -68,8 +68,6 @@ async function fetchStationData() {
                 }
             });            
 
-            // Create the chart based on the fuel type data
-            createFuelTypeChart(fuelTypes);
         } else {
             console.log("Document does not exist.");
         }
@@ -82,56 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchStationData();
 });
 
-// Function to create chart based on fuel type data
-function createFuelTypeChart(fuelTypes) {
-    const chartArea = document.querySelector('.chart-area');
-    const canvas = document.createElement('canvas');
-    chartArea.appendChild(canvas);
 
-    const fuelColors = {
-        '91': '#1cc88a',  
-        '95': '#e74a3b',  
-        'Diesel': 'rgb(133,135,150)', 
-    };
-
-    const datasets = fuelTypes.map(fuelType => {
-        const data = getChartDataForFuelType(fuelType).split(' ').map(Number);
-        const backgroundColor = fuelColors[fuelType];
-        return {
-            label: fuelType,
-            data: data,
-            backgroundColor: backgroundColor,
-        };
-    });
-
-    new Chart(canvas, {
-        type: 'pie',
-        data: {
-            datasets: datasets,
-        },
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'black',  // Change label text color
-                    },
-                },
-            },
-        },
-    });
-}
-
-// Function to get actual data for a specific fuel type (modify as needed)
-function getChartDataForFuelType(fuelType) {
-    if (fuelType === '91') {
-        return '100 0 0'; 
-    } else if (fuelType === '95') {
-        return '100 0 0'; 
-    } else if (fuelType === 'Diesel') {
-        return '100 0 0';
-    } else {
-        return '0 0 0'; 
-    }
-}
 
 

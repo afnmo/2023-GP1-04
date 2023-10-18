@@ -8,7 +8,6 @@
   <link rel="icon" href="../images/Logo.png">
   <link rel="stylesheet" href="../styles/basic.css">
   <link rel="stylesheet" href="..\styles\homepagePM.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Home Page Branch Manger</title>
 
   <!-- Include the Firebase script -->
@@ -71,43 +70,66 @@
 
           <div class="row">
 
-            <!-- Fuel type -->
+            <!-- Fuel -->
             <div class="col-lg-5 col-xl-4">
               <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h6 class="fs-4 fw-bold text-primary m-0"
-                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel Type</h6>
+                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel</h6>
                 </div>
                 <div class="card-body">
-                  <div class="chart-area">
-                    <table class="area-chart">
-                    </table>
-                  </div>
-                  <div>
-                    <span class="me-2" style="color: rgb(133,135,150);" id="91">
-                      <svg height="100" width="60">
-                        <circle class="fas fa-circle text-success text-primary" cx="50" cy="50" r="10" fill="#1cc88a">
-                      </svg>
-                      91
-                    </span>
-                    <span class="me-2" style="color: rgb(133,135,150);" id="95">
-                      <svg height="100" width="60">
-                        <circle class="fas fa-circle text-danger text-success" cx="50" cy="50" r="10" fill="#e74a3b">
-                      </svg>
-                      95
-                    </span>
-                    <span class="me-2" style="color: rgb(133,135,150);" id="diesel">
-                      <svg height="100" width="60">
-                        <circle class="fas fa-circle text-dark-emphasis text-info" cx="50" cy="50" r="10"
-                          fill="rgb(133,135,150)">
-                      </svg>
-                      Diesel
-                    </span>
+                  <div class="row align-items-left no-gutters">
+                    <div class="col-xl-12 me-2">
+            
+                      <div class="row g-0 align-items-center" id="91state" style="display: none;">
+                        <div class="col-auto">
+                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: #1cc88a;">91</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm"
+                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
+                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
+                              style="width:0%;" id="91statewidth"><span class="visually-hidden">50%</span></div>
+                          </div>
+                        </div>
+                      </div>
+            
+                      <br>
+
+                      <div class="row g-0 align-items-center" id="95state" style="display: none;">
+                        <div class="col-auto">
+                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: #e74a3b;">95</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm"
+                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
+                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
+                              style="width:0%;" id="95statewidth"><span class="visually-hidden">50%</span></div>
+                          </div>
+                        </div>
+                      </div>
+            
+                      <br>
+
+                      <div class="row g-0 align-items-center" id="Dieselstate" style="display: none;">
+                        <div class="col-auto">
+                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: rgb(133,135,150);">Diesel</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm"
+                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
+                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
+                              style="width:0%;" id="Dieselstatewidth"><span class="visually-hidden">50%</span></div>
+                          </div>
+                        </div>
+                      </div>
+            
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Fuel type -->
+            <!-- Fuel -->
 
             <!-- Services -->
             <div class="col-lg-5 col-xl-4">
@@ -135,108 +157,51 @@
               </div>
             </div>
             <!-- Services -->
-
-            <div class="col-md-6 col-xl-3 mb-4">
-              <!-- Fuel Status -->
-              <div class="card shadow border-start-info py-2" style="height:190px;width:270.333px;">
-                <div class="card-body">
-                  <div class="row align-items-left no-gutters">
-                    <div class="col-xl-12 me-2">
-                      <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
-                          style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;"> Fuel Status </span>
-                      </div>
-
-                      <div class="row g-0 align-items-center" id="91state" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span
-                              style="color: rgb(108, 110, 122);">91</span></div>
+             
+              <div class="col-md-6 col-xl-3 mb-4">
+                <!-- open hour -->
+                <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
+                  <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                      <div class="col-xl-12 me-2">
+                        <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
+                            style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
+                          <img src="..\images\openHour.png" style="float: right;">
                         </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="91statewidth"><span class="visually-hidden">50%</span></div>
+                        <div class="row g-0 align-items-center">
+                          <div class="col-auto">
+                            <div class="fw-bold text-dark h5 mb-0 me-3">
+                              <span style="color: rgb(108, 110, 122);" id="OpenHour"></span>
+                            </div>
                           </div>
                         </div>
                       </div>
-
-                      <div class="row g-0 align-items-center" id="95state" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span
-                              style="color: rgb(108, 110, 122);">95</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="95statewidth"><span class="visually-hidden">50%</span></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row g-0 align-items-center" id="Dieselstate" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span
-                              style="color: rgb(108, 110, 122);">Diesel</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="Dieselstatewidth"><span class="visually-hidden">50%</span></div>
-                          </div>
-                        </div>
-                      </div>
-
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- Fuel Status -->
-              <br>
-             
-              <!-- open hour -->
-              <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col-xl-12 me-2">
-                      <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
-                          style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
-                        <img src="..\images\openHour.png" style="float: right;">
-                      </div>
-                      <div class="row g-0 align-items-center">
+                <!-- open hour -->
+                <br>
+              
+                <!-- close hour -->
+                <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
+                  <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                      <div class="col-xl-12 me-2">
+                        <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
+                            style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
+                          <img src="..\images\closeHour.png" style="float: right;">
+                        </div>
                         <div class="col-auto">
                           <div class="fw-bold text-dark h5 mb-0 me-3">
-                            <span style="color: rgb(108, 110, 122);" id="OpenHour"></span>
+                            <span style="color: rgb(108, 110, 122);" id="CloseHour"></span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- close hour -->
               </div>
-              <!-- open hour -->
-              <br>
-              <!-- close hour -->
-              <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col-xl-12 me-2">
-                      <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
-                          style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
-                        <img src="..\images\closeHour.png" style="float: right;">
-                      </div>
-                      <div class="col-auto">
-                        <div class="fw-bold text-dark h5 mb-0 me-3">
-                          <span style="color: rgb(108, 110, 122);" id="CloseHour"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- close hour -->
-            </div>
 
 
           </div>
