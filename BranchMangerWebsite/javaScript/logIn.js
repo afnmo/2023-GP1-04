@@ -71,7 +71,7 @@ async function checkEmailExists(email) {
     }
 }
 
-document.getElementById("registrationForm").addEventListener("submit", async function (event) { //حطي ايدي الفورم
+document.getElementById("loginform").addEventListener("submit", async function (event) { //حطي ايدي الفورم
     event.preventDefault();
 
     const email = document.getElementById("email").value;//حطي ايدي الانبوت حق الايميل
