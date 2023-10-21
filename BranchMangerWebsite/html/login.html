@@ -120,6 +120,18 @@
         /* .password{
             display: none;  
         } */
+        button {
+    float: right;
+    border-radius: 16px;
+    margin: 20px 47px 0px 0px;
+    padding: 10px 20px;
+    border: 1px solid #83c4a197;
+    float: right;
+    background-color: #83c4a197;
+    color: white;
+    cursor: pointer
+    
+}
 
     </style>
 </head>
@@ -141,6 +153,7 @@
 
         <button onclick="sendOTP()" class="btn">Send OTP</button>
         <button  id ="btn"class="login_btn"><a href="homepagePM.html">Log in</a></button>
+        <button id="reset">resetPassword</button>
 
     </div>
                             <!-- <form class="text-center" method="post">
@@ -237,7 +250,7 @@
                                 <!--الحل الثاني-->
 
                                 <!--<script src="..\logIn.js"></script>-->
-                                <script src="../javaScript/logIn.js"></script>
+                                <script type="module" src="..\javaScript\logIn.js"></script>
                                 <script src="../javaScript/sendemail.js"></script>
                             </form>
 
@@ -248,7 +261,7 @@
             </div>
         </div>
     </section>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="assets/bootstrap/js/bootstrap.min.js"></script> -->
     <!-- start footer -->
     <footer class="footer">
         <ul class="social-icon">
@@ -271,6 +284,7 @@
 
         <p>&copy;2023 All Rights Reserved For 91.com</p>
     </footer>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
