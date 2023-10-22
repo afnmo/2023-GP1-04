@@ -37,7 +37,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/gasStation2.png',
+                'assets/images/gasStation2.png',
                 width: 25,
                 height: 25,
               ),
@@ -48,7 +48,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/myCars2.png',
+                'assets/images/myCars2.png',
                 width: 25,
                 height: 25,
               ),
@@ -59,7 +59,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/home222.png',
+                'assets/images/home222.png',
                 width: 25,
                 height: 25,
               ),
@@ -70,7 +70,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/settings2.png',
+                'assets/images/settings2.png',
                 width: 25,
                 height: 25,
               ),
@@ -81,7 +81,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/account2.png',
+                'assets/images/account2.png',
                 width: 25,
                 height: 25,
               ),
