@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:gp91/firebase_auth/user_model.dart';
-import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 
 class SignUpController extends GetxController {

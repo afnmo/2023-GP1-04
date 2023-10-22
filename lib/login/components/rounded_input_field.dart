@@ -6,10 +6,10 @@ class RoundedInputField extends StatefulWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
-  String inputType;
+  final String inputType;
   final bool password;
 
-  RoundedInputField({
+  const RoundedInputField({
     super.key,
     required this.hintText,
     this.icon = Icons.person,
@@ -23,7 +23,7 @@ class RoundedInputField extends StatefulWidget {
 }
 
 class _FormScreenState extends State<RoundedInputField> {
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _FormScreenState extends State<RoundedInputField> {
           if (widget.inputType == "name") {
             if (value!.length < 3) {
               return "Name Should be at least 3 characters";
-            } else if (value!.isEmpty) {
+            } else if (value.isEmpty) {
               return "Please enter your name";
             } else {
               return null;
@@ -64,6 +64,7 @@ class _FormScreenState extends State<RoundedInputField> {
               return null;
             }
           }
+          return null;
         },
         keyboardType:
             widget.inputType == "email" ? TextInputType.emailAddress : null,

@@ -1,10 +1,8 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/home/screens/home_screen.dart';
-import 'package:gp91/a_i_want_to_delete_them/firebase_auth_services.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/login/components/already_have_an_account_acheck.dart';
 import 'package:gp91/login/components/background.dart';
@@ -12,12 +10,11 @@ import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
-import 'package:gp91/a_i_want_to_delete_them/logout.dart';
 import 'package:gp91/signup/signup.dart';
 
 // from StatelessWidget to stateful
 class Body extends StatefulWidget {
-  Body({
+  const Body({
     super.key,
   });
 

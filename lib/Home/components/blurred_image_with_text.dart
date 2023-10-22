@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 class BlurredImageWithText extends StatelessWidget {
+  const BlurredImageWithText({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0), // Adjust the padding as needed
+      padding: const EdgeInsets.all(8.0), // Adjust the padding as needed
       child: Container(
         height: 200,
         child: ClipRect(
@@ -19,7 +21,7 @@ class BlurredImageWithText extends StatelessWidget {
                 child: BackdropFilter(
                   filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                   child: Container(
-                    color: Color(0xFF6EA67C)
+                    color: const Color(0xFF6EA67C)
                         .withOpacity(0.3), // Adjust the opacity as needed
                   ),
                 ),
@@ -38,17 +40,17 @@ class BlurredImageWithText extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         // Add car button action
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF6EA67C),
+                          const Color(0xFF6EA67C),
                         ),
                       ),
-                      child: Text('Add Car'),
+                      child: const Text('Add Car'),
                     ),
                   ],
                 ),

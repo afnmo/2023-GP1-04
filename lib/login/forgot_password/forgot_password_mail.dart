@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
-import 'package:gp91/a_i_want_to_delete_them/otp_screen.dart';
 
 class ForgotPasswordMailScreen extends StatefulWidget {
   ForgotPasswordMailScreen({super.key});
@@ -30,23 +29,21 @@ class _ForgotPasswordMailScreenState extends State<ForgotPasswordMailScreen> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text("Check your email"),
-          );
-        },
+      Get.snackbar(
+        "Success",
+        "Check your email",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green.withOpacity(0.1),
+        colorText: Colors.green,
       );
     } on FirebaseAuthException catch (e) {
       print(e);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.message.toString()),
-          );
-        },
+      Get.snackbar(
+        "Oops!",
+        "Somesthing went wrong!",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
       );
     }
   }

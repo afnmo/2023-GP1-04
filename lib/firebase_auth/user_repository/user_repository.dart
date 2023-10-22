@@ -33,7 +33,7 @@ class UserRepository extends GetxController {
   Future<void> createUser(UserModel userModel) async {
     try {
       await _db.collection("Users").add(userModel.toJson());
-    } catch (error, stackTrace) {
+    } catch (error) {
       print("Something went wrong in create user database");
       Get.snackbar(
         "Error",

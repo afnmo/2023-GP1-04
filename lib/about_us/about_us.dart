@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AboutUsPage extends StatefulWidget {
+  const AboutUsPage({super.key});
+
   @override
-  _AboutUsPageState createState() => _AboutUsPageState();
+
+  // _AboutUsPageState createState() => _AboutUsPageState();
+  State<StatefulWidget> createState() => _AboutUsPageState();
 }
 
 class _AboutUsPageState extends State<AboutUsPage> {
-  Map<String, bool> _sectionsExpandedState = {
+  final Map<String, bool> _sectionsExpandedState = {
     'Who Are We?': false,
     'Contact Us': false,
     'Privacy Policy': false,
@@ -18,22 +22,22 @@ class _AboutUsPageState extends State<AboutUsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white, // Set the app bar color to white
         centerTitle: true, // Center align the app bar text
-        title: Text(
+        title: const Text(
           'About Us',
           style: TextStyle(
             color: Color(0xFF6EA67C), // Set the app bar text color
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Color(0xFF6EA67C),
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(0xFF6EA67C),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: _buildSections(),
       ),
     );
@@ -50,7 +54,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
           ListTile(
             title: Text(
               sectionTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF6EA67C),
               ),
@@ -65,7 +69,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             },
           ),
           if (isExpanded) _buildSectionContent(sectionTitle),
-          Divider(),
+          const Divider(),
         ],
       );
     }).toList();
@@ -88,7 +92,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
     }
 
     return Padding(
-      padding: EdgeInsets.only(left: 16.0),
+      padding: const EdgeInsets.only(left: 16.0),
       child: Text(sectionContent),
     );
   }

@@ -34,7 +34,7 @@ class OTPScreen extends StatelessWidget {
               ),
               const Text(
                 //the email user passed in the prev screen
-                "Enter the verification code sent at " + "afnan@gmail.com",
+                "Enter the verification code sent at  + afnan@gmail.com",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
@@ -64,7 +64,7 @@ class OTPScreen extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("Verification Code"),
+                          title: const Text("Verification Code"),
                           content: Text('Code entered is $verificationCode'),
                         );
                       });

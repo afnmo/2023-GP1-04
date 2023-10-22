@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/home/screens/home_screen.dart';
+import 'package:gp91/on_boarding/on_boarding_screen.dart';
 import 'package:gp91/signup/components/signup_email_password_failure.dart';
 import 'package:gp91/firebase_auth/user_model.dart';
 import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
-import 'package:gp91/login/login.dart';
-import 'package:gp91/a_i_want_to_delete_them/logout.dart';
-import 'package:gp91/on_boarding/on_boarding_screen.dart';
+
 import 'package:gp91/welcome/welcome_screen.dart';
 
 class AuthRepository extends GetxController {
@@ -25,11 +24,30 @@ class AuthRepository extends GetxController {
 
   _setInitialScreen(User? user) {
     user == null
-        ? Get.offAll(() => WelcomeScreen())
-        // home page
-        : Get.offAll(() => HomeScreen());
-    // WelcomeScreen()
+        ? Get.offAll(() => OnBoardingScreen())
+        : Get.offAll(() => const HomeScreen());
   }
+
+  // _setInitialScreen(User? user) async {
+  //   // Check if the onboarding screen has been shown before
+  //   // resetOnboardingFlag();
+
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
+
+  //   if (!hasSeenOnboarding) {
+  //     // The onboarding screen has not been shown, so navigate to it.
+  //     Get.offAll(() => OnBoardingScreen());
+
+  //     // Mark the onboarding screen as shown
+  //     await prefs.setBool('hasSeenOnboarding', true);
+  //   } else {
+  //     // The onboarding screen has been shown before, so navigate to the welcome or home screen.
+  //     user == null
+  //         ? Get.offAll(() => WelcomeScreen())
+  //         : Get.offAll(() => const HomeScreen());
+  //   }
+  // }
 
   // Future<User?> signUpWithEmailAndPassword(
   //     String email, String password) async {
@@ -72,7 +90,7 @@ class AuthRepository extends GetxController {
   Future<void> createUserWithEmailAndPassword(UserModel userModel) async {
     try {
       Get.dialog(
-        Center(child: CircularProgressIndicator()),
+        const Center(child: CircularProgressIndicator()),
       );
       print(
           "Future<void> createUserWithEmailAndPassword(UserModel userModel) async entered");
@@ -209,7 +227,7 @@ class AuthRepository extends GetxController {
           email: email, password: password);
       return credential.user;
     } catch (e) {
-      
+      print(e);
     }
     return null;
   }

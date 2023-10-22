@@ -1,20 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:gp91/home/screens/home_screen.dart';
-
 import 'package:gp91/components/constants.dart';
-import 'package:gp91/a_i_want_to_delete_them/firebase_auth_services.dart';
-import 'package:gp91/firebase_auth/signup_controller.dart';
 import 'package:gp91/firebase_auth/user_model.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
-import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 import 'package:gp91/login/components/already_have_an_account_acheck.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/login.dart';
-import 'package:gp91/a_i_want_to_delete_them/logout.dart';
 import 'package:gp91/signup/components/background.dart';
 
 class Body extends StatefulWidget {
@@ -80,7 +72,7 @@ class _FormScreenState extends State<Body> {
     return Background(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(40),
+          padding: const EdgeInsets.all(40),
           child: Form(
             key: _formKey,
             child: Column(
@@ -109,7 +101,7 @@ class _FormScreenState extends State<Body> {
                     validator: (value) {
                       if (value!.length < 3) {
                         return "Name Should be at least 3 characters";
-                      } else if (value!.isEmpty) {
+                      } else if (value.isEmpty) {
                         return "Please enter your name";
                       } else {
                         return null;
@@ -270,7 +262,7 @@ class _FormScreenState extends State<Body> {
                 AlreadyHaveAnAcoountCheck(
                   login: false,
                   press: () {
-                    Get.to(() => LoginScreen());
+                    Get.to(() => const LoginScreen());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

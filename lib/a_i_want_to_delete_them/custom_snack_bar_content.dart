@@ -30,7 +30,7 @@ class _CustomSnackBarContentState extends State<CustomSnackBarContent> {
   @override
   Widget build(BuildContext context) {
     if (!isWidgetVisible) {
-      return SizedBox(); // Return an empty container if the widget is not visible.
+      return const SizedBox(); // Return an empty container if the widget is not visible.
     }
     return Stack(
       clipBehavior: Clip.none,

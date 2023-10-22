@@ -12,7 +12,7 @@ class BackButton extends StatelessWidget {
       top: 30,
       left: 30,
       child: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           // Handle back button press, e.g., navigate to the previous screen or pop the current screen.
           // Navigator.of(context).pop();

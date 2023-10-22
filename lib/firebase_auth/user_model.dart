@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 
-import 'dart:convert';
 
 class UserModel {
   final String? id;

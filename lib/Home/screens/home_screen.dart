@@ -1,12 +1,13 @@
 import 'package:gp91/home/components/topBar.dart';
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
-import 'package:gp91/home/components/categories_list.dart';
 import 'package:gp91/home/components/blurred_image_with_text.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  // _HomeScreenState createState() => _HomeScreenState();
+  State<StatefulWidget> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -30,13 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 20.0, left: 15.0),
+              padding: const EdgeInsets.only(top: 20.0, left: 15.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Your Journey,',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 40,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Our Priority',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,

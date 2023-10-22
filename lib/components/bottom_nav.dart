@@ -13,16 +13,17 @@ class BottomNav extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BottomNavState createState() => _BottomNavState();
+  // _BottomNavState createState() => _BottomNavState();
+  State<StatefulWidget> createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
       child: BottomNavigationBar(
-        backgroundColor: Color(0xFF6EA67C),
+        backgroundColor: const Color(0xFF6EA67C),
         currentIndex: widget.currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
@@ -34,7 +35,7 @@ class _BottomNavState extends State<BottomNav> {
         items: [
           BottomNavigationBarItem(
             icon: Container(
-              color: Color(0xFF6EA67C),
+              color: const Color(0xFF6EA67C),
               child: Image.asset(
                 'assets/gasStation2.png',
                 width: 25,
@@ -45,7 +46,7 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Container(
-              color: Color(0xFF6EA67C),
+              color: const Color(0xFF6EA67C),
               child: Image.asset(
                 'assets/myCars2.png',
                 width: 25,
@@ -56,7 +57,7 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Container(
-              color: Color(0xFF6EA67C),
+              color: const Color(0xFF6EA67C),
               child: Image.asset(
                 'assets/home222.png',
                 width: 25,
@@ -67,7 +68,7 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Container(
-              color: Color(0xFF6EA67C),
+              color: const Color(0xFF6EA67C),
               child: Image.asset(
                 'assets/settings2.png',
                 width: 25,
@@ -78,7 +79,7 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Container(
-              color: Color(0xFF6EA67C),
+              color: const Color(0xFF6EA67C),
               child: Image.asset(
                 'assets/account2.png',
                 width: 25,
@@ -111,7 +112,7 @@ class _BottomNavState extends State<BottomNav> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
         break;
       case 3:
