@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc} from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
-import {getAuth ,sendPasswordResetEmail } from "/firebase/auth";
+import {getAuth ,sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,55 +18,127 @@ const app = initializeApp(firebaseConfig);
 // Access Firestore
 const db = getFirestore(app);
 
-// Specify the name of the collection you want to read from
-const collectionName = "Station_Requests";
+// // Specify the name of the collection you want to read from
+// const collectionName = "Station_Requests";
+
+// async function checkEmailExists(email) {
+//     const collectionRef = collection(db, collectionName);
+//     let loged = false; 
+//     const querySnapshot = await getDocs(collectionRef);
+
+//     querySnapshot.forEach(async (docs) => {
+//         const data = docs.data();
+//         if (data.email === email && data.accepted === true) {
+//             loged = true;
+//             const firtsName = data.first_name;
+//             const lastName = data.last_name;
+//             const iemail = data.email;
+//             const stationName = data.station_name;
+//             const stationLocation = data.station_location;
+
+//             // Add a new "Branch_Manager" document
+//             const branchManagerRef = await addDoc(collection(db, "Branch_Manager"), {
+//                 first_name: firtsName,
+//                 last_name: lastName,
+//                 email: iemail,
+//             });
+
+//             // Get the ID of the newly created "Branch_Manager" document
+//             const branchManagerId = branchManagerRef.id;
+
+//             // add to station collection
+//             const stationRef = await addDoc(collection(db, "Station"), {
+//                 name: stationName,
+//                 Location: stationLocation,
+//                 branch_manager_id: branchManagerId, // Store the foreign key
+//             });
+
+//             // Get the ID of the newly created "Branch_Manager" document
+//             const stationId = stationRef.id;
+
+//             // Define a reference to a specific document within the "Branch_Manager" collection
+//             const branchManagerDocRef = doc(db, "Branch_Manager", branchManagerId);
+
+//             // Update the document with the new field
+//             updateDoc(branchManagerDocRef, {
+//                 station_id: stationId,
+//             })
+//         }
+//     });
+
+//     // if email doesn't exist or accepted = false
+//     if (loged === false) {
+//         alert("Please register first");
+//     }
+// }
 
 async function checkEmailExists(email) {
-    const collectionRef = collection(db, collectionName);
-    let loged = false; 
+    const branchManagerQuery = query(collection(db, "Branch_Manager"), where("email", "==", email));
+    const branchManagerQuerySnapshot = await getDocs(branchManagerQuery);
+    const collectionRef = collection(db, "Station_Requests");
     const querySnapshot = await getDocs(collectionRef);
+    let loged = false;
 
-    querySnapshot.forEach(async (docs) => {
-        const data = docs.data();
-        if (data.email === email && data.accepted === true) {
-            loged = true;
-            const firtsName = data.first_name;
-            const lastName = data.last_name;
-            const iemail = data.email;
-            const stationName = data.station_name;
-            const stationLocation = data.station_location;
+    if (branchManagerQuerySnapshot.empty) {
+        querySnapshot.forEach(async (Doc) => {
+            const data = Doc.data();
+            if (data.email === email && data.accepted === true) {
+                loged = true;
+                const firstName = data.first_name;
+                const lastName = data.last_name;
+                const stationName = data.station_name;
+                const stationLocation = data.station_location;
 
-            // Add a new "Branch_Manager" document
-            const branchManagerRef = await addDoc(collection(db, "Branch_Manager"), {
-                first_name: firtsName,
-                last_name: lastName,
-                email: iemail,
-            });
+                // Add a new "Branch_Manager" document
+                const branchManagerRef = await addDoc(collection(db, "Branch_Manager"), {
+                    first_name: firstName,
+                    last_name: lastName,
+                    email,
+                });
 
-            // Get the ID of the newly created "Branch_Manager" document
-            const branchManagerId = branchManagerRef.id;
+                // Get the ID of the newly created "Branch_Manager" document
+                const branchManagerId = branchManagerRef.id;
 
-            // add to station collection
-            const stationRef = await addDoc(collection(db, "Station"), {
-                name: stationName,
-                Location: stationLocation,
-                branch_manager_id: branchManagerId, // Store the foreign key
-            });
+                // Set a session item
+                sessionStorage.setItem('sessionID', branchManagerId);
+                //console.log(sessionStorage.getItem('sessionID'));
 
-            // Get the ID of the newly created "Branch_Manager" document
-            const stationId = stationRef.id;
+                // Add to the "Station" collection
+                const stationRef = await addDoc(collection(db, "Station"), {
+                    name: stationName,
+                    Location: stationLocation,
+                    branch_manager_id: branchManagerId, // Store the foreign key
+                });
 
-            // Define a reference to a specific document within the "Branch_Manager" collection
-            const branchManagerDocRef = doc(db, "Branch_Manager", branchManagerId);
+                // Get the ID of the newly created "Branch_Manager" document
+                const stationId = stationRef.id;
 
-            // Update the document with the new field
-            updateDoc(branchManagerDocRef, {
-                station_id: stationId,
-            })
-        }
-    });
+                // Define a reference to a specific document within the "Branch_Manager" collection
+                const branchManagerDocRef = doc(db, "Branch_Manager", branchManagerId);
 
-    // if email doesn't exist or accepted = false
+                // Update the document with the new field
+                updateDoc(branchManagerDocRef, {
+                    station_id: stationId,
+                });
+                document.getElementById("registrationForm").reset();
+                window.location.href = "homepagePM.html";
+            }
+        });
+    } else {
+        branchManagerQuerySnapshot.forEach((Doc) => {
+            const data = Doc.data();
+            if (data.email === email) {
+                loged = true;
+                const branchManagerId = Doc.id; // Retrieve the ID of the specific document
+                // Set a session item
+                sessionStorage.setItem('sessionID', branchManagerId);
+                document.getElementById("registrationForm").reset();
+                //console.log(sessionStorage.getItem('sessionID'));
+                window.location.href = "homepagePM.html";
+            }
+        });
+    }
+
     if (loged === false) {
         alert("Please register first");
     }
