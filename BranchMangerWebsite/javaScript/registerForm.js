@@ -38,7 +38,7 @@ async function checkEmailExists(email) {
     return emailExists;
 }
 
-function Addrequests() {
+async function Addrequests() {
     const firtsName = document.getElementById("FirstName").value;
     const lastName = document.getElementById("LastName").value;
     const email = document.getElementById("Email").value;
@@ -61,6 +61,7 @@ function Addrequests() {
         .then(() => {
             console.log("Document successfully written");
             document.getElementById("registrationForm").reset();
+            window.location.href = "index.html";
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
@@ -76,7 +77,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     if (emailExists) {
         alert("Email already exists.");
     } else {
-        Addrequests();
+        await Addrequests();
     }
 });
 
