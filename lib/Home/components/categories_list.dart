@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/Station/Details_Station/Details_Station.dart';
+import 'package:gp91/Station/Station.dart';
 import 'package:gp91/settings/settings_page.dart';
 import 'package:gp91/about_us/about_us.dart';
 
@@ -30,6 +32,10 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             title: "Fuel Consumption",
             image: "assets/images/consumption2.png",
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Station()),
+              );
               // Add your navigation logic here
             },
           ),

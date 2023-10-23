@@ -14,7 +14,7 @@ class BlurredImageWithText extends StatelessWidget {
           child: Stack(
             children: [
               Image.asset(
-                'assets/chart.png', // Replace with your image path
+                'assets/images/chart.png', // Replace with your image path
                 fit: BoxFit.cover,
               ),
               Positioned.fill(

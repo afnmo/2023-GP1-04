@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/Station/Details_Station/Details_Station.dart';
+import 'package:gp91/Station/Station.dart';
 import '../settings/settings_page.dart';
 import 'package:gp91/home/screens/home_screen.dart';
 
@@ -96,11 +98,11 @@ class _BottomNavState extends State<BottomNav> {
   void navigateToPage(BuildContext context, int index) {
     switch (index) {
       case 0:
-        /*
+        
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GasStationsPage()),
-        );*/
+          MaterialPageRoute(builder: (context) => Station()),
+        );
         break;
       case 1:
         /*

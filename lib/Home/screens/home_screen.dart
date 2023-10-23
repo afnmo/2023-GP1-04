@@ -1,3 +1,4 @@
+import 'package:gp91/Home/components/categories_list.dart';
 import 'package:gp91/home/components/topBar.dart';
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
@@ -84,10 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 35.0),
               child: BlurredImageWithText(),
             ),
-            // Padding(
-            //   padding: EdgeInsets.only(top: 10.0),
-            //   child: CategoriesListMallika1(),
-            // ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: CategoriesListMallika1(),
+            ),
           ],
         ),
       ),
