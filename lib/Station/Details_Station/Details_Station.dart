@@ -13,7 +13,7 @@ class Details_Station extends StatelessWidget {
   firestoreStream() {
     return StreamBuilder<DocumentSnapshot>(
       stream:
-          FirebaseFirestore.instance.collection('station').doc(id).snapshots(),
+          FirebaseFirestore.instance.collection('Station').doc(id).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -54,7 +54,21 @@ class Details_Station extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return firestoreStream();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 160, 141, 141),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: firestoreStream(),
+    );
   }
 
   buttonArrow(BuildContext context) {
@@ -359,6 +373,7 @@ class Details_Station extends StatelessWidget {
 
 List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
   List<Widget> fuelIcons = [];
+  bool isFuelAvailable = false;
   for (var fuelType in fuelTypeData) {
     if (fuelType.substring(0, 2) == '91' &&
         fuelType.substring(3, 12) == 'Available') {
@@ -369,6 +384,7 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
           height: 45,
         ),
       );
+      isFuelAvailable = true;
     } else if (fuelType.substring(0, 2) == '95' &&
         fuelType.substring(3, 12) == 'Available') {
       fuelIcons.add(
@@ -378,6 +394,7 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
           height: 45,
         ),
       );
+      isFuelAvailable = true;
     } else if (fuelType.substring(0, 6) == 'Diesel' &&
         fuelType.substring(7, 16) == 'Available') {
       fuelIcons.add(SvgPicture.asset(
@@ -385,7 +402,15 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
         width: 45,
         height: 45,
       ));
+      isFuelAvailable = true;
     }
+  }
+  if (!isFuelAvailable) {
+    fuelIcons.add(SvgPicture.asset(
+      'assets/icons/not.svg',
+      width: 45,
+      height: 45,
+    ));
   }
   return fuelIcons;
 }
