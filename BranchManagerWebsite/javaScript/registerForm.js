@@ -61,7 +61,13 @@ async function Addrequests() {
         .then(() => {
             console.log("Document successfully written");
             document.getElementById("registrationForm").reset();
-            window.location.href = "index.html";
+            alert("Thank you for completing the registration process with 91.com. \nPlease await our approval for access.")
+          
+            // Delay the redirection by a few seconds (adjust the time as needed)
+            setTimeout(function () {
+                window.location.href = "index.html";
+            }, 600000); // Redirect after 3 seconds
+
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
