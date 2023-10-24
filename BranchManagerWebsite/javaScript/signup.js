@@ -19,7 +19,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-const collectionName = "branchManager"; // Firestore collection for user registration data
+// const collectionName = "branchManager"; // Firestore collection for user registration data
+const collectionName = "Branch_Manager";
+
+
 
 // Function to register a user with Firebase Authentication
 async function registerUser(email, password) {
@@ -34,50 +37,29 @@ async function registerUser(email, password) {
 }
 
 // Function to add user registration data to Firestore
-async function addUserToFirestore(user, name, email, password) {
+async function addUserToFirestore(firstName, lastName, email, password) {
     const collectionRef = collection(db, collectionName);
 
     const userData = {
-        uid: user.uid, // Store the user's UID as a reference
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         password: password, // Include the user's password if needed
     };
 
     try {
-        await addDoc(collectionRef, userData);
+        const doctRef = await addDoc(collectionRef, userData);
+        const branchManagerId = doctRef.id;
+        console.log("Branch Manager ID: " + branchManagerId);
+        sessionStorage.setItem("branchManagerID", branchManagerId);
+
     } catch (error) {
-        console.log("error occured in async function addUserToFirestore(user, name, email, password)");
+        console.log("error occured in async function addUserToFirestore(firstName, lastName, email, password)");
         console.log(error.toString);
         throw error;
     }
 }
 
-// Specify the name of the collection you want to read from
-const collectionName1 = "Station_Requests";
-
-async function checkRequests(email) {
-    const collectionRef = collection(db, collectionName1);
-    const querySnapshot = await getDocs(collectionRef);
-
-    querySnapshot.forEach(async (docs) => {
-        const data = docs.data();
-        if (data.email === email) {
-            if(data.accepted === true){
-                setTimeout(function () {
-                    window.location.href = "homepagePM.html";
-                }, 3000); 
-            }
-            else{
-                setTimeout(function () {
-                    window.location.href = "waitApproval.html";
-                }, 3000);
-            }
-
-        }
-    });
-
-}
 
 document.getElementById("signup-form").addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -85,7 +67,8 @@ document.getElementById("signup-form").addEventListener("submit", async function
     var inputValidated = validateInputs();
     if (inputValidated){
 
-    const name = document.getElementById("name").value;
+    const firstName = document.getElementById("first-name").value;
+    const lastName = document.getElementById("last-name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
@@ -99,17 +82,18 @@ document.getElementById("signup-form").addEventListener("submit", async function
         console.log("User registered:", user);
 
         // Add user registration data to Firestore
-        await addUserToFirestore(user, name, email, hashedPassword);
+        await addUserToFirestore(firstName, lastName , email, hashedPassword);
 
+        
         // Reset the form and provide a success message
         document.getElementById("signup-form").reset();
         alert("Thank you for registering!");
 
         // Redirect after a certain delay
-        // setTimeout(function () {
-        //     window.location.href = "registerFormBM.html";
-        // }, 3000); // Redirect after 3 seconds
-        await checkRequests(email);
+        setTimeout(function () {
+            window.location.href = "registerFormBM.html";
+        }, 3000); // Redirect after 3 seconds
+        // await checkRequests(email);
     } catch (error) {
       //  alert("Email is already in use, please log in")
         setError(document.getElementById("email"), "Email is already in use, please log in");
@@ -136,7 +120,8 @@ async function hashPassword(password) {
 // Form validation
 
 // const form = document.getElementById('signup-form');
-const name = document.getElementById('name');
+const firstName = document.getElementById("first-name");
+const lastName = document.getElementById("last-name");
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const password2 = document.getElementById('confirm_password');
@@ -175,17 +160,28 @@ const validateInputs = () => {
     var success2 = false;
     var success3 = false;
     var success4 = false;
-    const nameValue = name.value.trim();
+    var success5 = false;
+    const firstNameValue = firstName.value.trim();
+    const lastNameValue = lastName.value.trim();
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
 
-    if (nameValue === '') {
-        setError(name, 'name is required');
+    if (firstNameValue === '') {
+        setError(firstName, 'first name is required');
         success1 = false;
     } else {
-        setSuccess(name);
+        setSuccess(firstName);
         success1 = true;
+
+    }
+
+    if (lastNameValue === '') {
+        setError(lastName, 'last name is required');
+        success5 = false;
+    } else {
+        setSuccess(lastName);
+        success5 = true;
 
     }
 
@@ -222,6 +218,6 @@ const validateInputs = () => {
         success4 = true;
     }
 
-    return success1 && success2 && success3 && success4;
+    return success1 && success2 && success3 && success4 && success5;
 
 };
