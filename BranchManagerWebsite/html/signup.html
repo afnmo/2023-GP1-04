@@ -9,10 +9,12 @@
     <link rel="icon" href="../images/Logo.png">
     <link rel="stylesheet" href="../styles/basic.css">
     <link rel="stylesheet" href="../styles/login.css">
+    
+
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <!-- <script type="module" src="../javaScript/firebase-config.js"></script> -->
     <!-- <script type="module" src="../javaScript/sendemail.js"></script> -->
-    <script type="module" src="../javaScript/logIn.js"></script>
+    <script type="module" src="../javaScript/signup.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap" />
     <link rel="stylesheet" href="../styles/signup.css">
 </head>
@@ -74,11 +76,6 @@
     <main class="page lanidng-page"></main>
     <section class="position-relative py-4 py-xl-5" style="margin-top: 150px">
         <div class="container">
-            <!-- <div class="row mb-5">
-                <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2><strong>Log in</strong></h2>
-                </div>``
-            </div> -->
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div class="card mb-5">
@@ -91,11 +88,24 @@
                                     </path>
                                 </svg>
                             </div>
+
+                            
                             </head>
 
                             <body>
-                                <h2>Log in</h2>
-                                <form id="login-form">
+                                <h2>Sign up</h2>
+                                <!-- <form id="loginform" class="form" action="your_server_endpoint_here" method="POST">
+
+                                    <input type="email" id="email" name="email" placeholder="Enter Email..." required>
+
+                                    <button class="btn" id="otp-btn" type="submit">Send OTP</button>
+                                </form> -->
+                                <form id="signup-form">
+                                    <div class="input-control">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name"  placeholder="Enter your name">
+                                        <div class="error"></div>
+                                    </div>
                                     <div class="input-control">
                                         <label for="email">Email:</label>
                                         <input type="email" id="email" name="email"  placeholder="Enter your email">
@@ -103,13 +113,19 @@
                                     </div>
                                     <div class="input-control">
                                         <label for="password">Password:</label>
-                                        <input type="password" id="password" name="password"  placeholder="Enter your password">
+                                        <input type="password" id="password" name="password"  placeholder="Enter a password">
                                         <div class="error"></div>
                                     </div>
-                                    <p><a href="resetPassword.html">Forgot password?</a></p>
-                                    <p>Don't have an account? <a href="signup.html">Signup</a></p>
-                                    <input type="submit" value="Log in">
+                                    <div class="input-control">
+                                        <label for="confirm_password">Confirm Password:</label>
+                                        <input type="password" id="confirm_password" name="confirm_password"  placeholder="Confirm your password">
+                                        <div class="error"></div>
+                                    </div>
+                                    <p>Already have an account? <a href="login.html">Login</a></p>
+                                    <input type="submit" value="Sign up">
                                 </form>
+
+
 
                         </div>
                     </div>
@@ -117,7 +133,7 @@
             </div>
         </div>
     </section>
-    <!-- start footer -->
+</body>
     <footer class="footer">
         <ul class="social-icon">
             <li class="social-icon__item">
@@ -139,10 +155,9 @@
 
         <p>&copy;2023 All Rights Reserved For 91.com</p>
     </footer>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <!-- end footer -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-</body>
+
 
 </html>
