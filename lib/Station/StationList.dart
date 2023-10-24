@@ -27,23 +27,29 @@ class Station_list extends StatelessWidget {
               Map<String, dynamic> stationData =
                   document.data() as Map<String, dynamic>;
 
-              return RecipeCard(
-                name: stationData['name'],
-                state: 'Busy', //it will implement in sprint 3
-                fuel_type_state: stationData['fuel_status'],
-                //fuel_state: stationData['fuel_state'],
-                img_station: stationData['image_station'],
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Details_Station(
-                        id: document.id,
+              if (stationData['image_station'] != null) {
+                return RecipeCard(
+                  name: stationData['name'],
+                  state: 'Busy', // it will implement in sprint 3
+                  fuel_type_state: stationData['fuel_status'],
+                  // fuel_state: stationData['fuel_state'],
+                  img_station: stationData['image_station'],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Details_Station(
+                          id: document.id,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
+                    );
+                  },
+                );
+              } else {
+                // Handle the case when image_station is null
+                // You can return a different widget or handle it as needed.
+                return Container(); // Empty container as a placeholder
+              }
             }).toList(),
           );
         },

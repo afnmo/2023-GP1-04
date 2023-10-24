@@ -56,7 +56,7 @@ class Header extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 32),
                 ),
-                Spacer(),
+                // Spacer(),
                 Image.asset(
                   "assets/images/logo.png",
                 )
