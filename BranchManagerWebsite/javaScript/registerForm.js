@@ -83,7 +83,7 @@
 // });
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getFirestore, getDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+import { getFirestore, getDoc, doc, updateDoc, addDoc, collection } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -105,10 +105,10 @@ const db = getFirestore(app);
 const collectionName = "Station_Requests";
 
 //retrieve stationID
-const SID = sessionStorage.getItem('userID');
+const SID = sessionStorage.getItem('branchManagerID');
 
 if (SID) {
-    const Sdoc = doc(db, collectionName, SID); // Update the document reference
+    const Sdoc = doc(db, "Branch_Manager", SID); // Update the document reference
     // Use await with getDoc since it returns a Promise
     const docSnap = await getDoc(Sdoc);
 
@@ -134,25 +134,34 @@ if (SID) {
 async function Addrequests() {
     const stationName = document.getElementById("StationName").value;
     const stationLocation = document.getElementById("GoogleMapUrl").value;
-
-    // Define a reference to a specific document within the "Branch_Manager" collection
-    const stationDocRef = doc(db, collectionName, SID);
-
-    
+  
     try {
+
+
+        // Add to the "Station_Requests" collection
+        const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
+            name: stationName,
+            Location: stationLocation,
+            branch_manager_id: SID, // Store the foreign key
+            accepted: true,
+        });        
+
+        // Get the ID of the newly created "Branch_Manager" document
+        const stationRequestID = stationRequestRef.id;
+
+        // Define a reference to a specific document within the "Branch_Manager" collection
+        const branchManagerDocRef = doc(db, "Branch_Manager", SID);
+
         // Update the document with the new field
-        await updateDoc(stationDocRef, {
-            station_name: stationName,
-            station_location: stationLocation,
-        });
+        // updateDoc(branchManagerDocRef, {
+        //     station_request_id: stationRequestID,
+        // });
 
         // Document updated successfully
         document.getElementById("registrationForm").reset();
-        alert("Thank you for completing the registration process with 91.com. \nPlease await our approval for access.");
-        window.location.href = "login.html";
+        //window.location.href = "login.html";
     } catch (error) {
         console.error("Error updating document:", error);
-        // Handle the error, e.g., show an error message to the user
     }
       
 }

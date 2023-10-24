@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Specify the name of the collection you want to read from
-const collectionName = "Station_Requests";
+const collectionName = "Branch_Manager";
 
 async function checkEmailExists(email) {
     const collectionRef = collection(db, collectionName);
@@ -56,14 +56,13 @@ async function Addrequests() {
         last_name: lastName,
         email: email,
         password: pass,
-        accepted: true,
     });
 
     // Set a session item
     // Get the ID of the newly created "Branch_Manager" document
     const branchManagerId = userID.id;
-    sessionStorage.setItem('userID', branchManagerId);
-    console.log(sessionStorage.getItem('userID'));
+    sessionStorage.setItem('branchManagerID', branchManagerId);
+    console.log(sessionStorage.getItem('branchManagerID'));
     document.getElementById("registrationForm").reset();
     window.location.href = "registerFormBM.html";
 }
