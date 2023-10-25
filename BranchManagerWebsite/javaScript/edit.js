@@ -143,7 +143,7 @@ function toggleRadioGroup() {
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
         document.getElementById("heightBox").style.height= 700;
-        document.getElementById("BKimage").height= 830;
+        document.getElementById("BKimage").height= 850;
     } else {
         radioGroup1.style.display = 'none';
     }

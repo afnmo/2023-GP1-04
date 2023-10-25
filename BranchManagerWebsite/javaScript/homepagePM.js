@@ -54,11 +54,15 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
         if (docSnap.exists()) {
             const stationData = docSnap.data();
 
-            if (stationData.open_hour != null)
-                document.getElementById("OpenHour").textContent = stationData.open_hour;
+            if(stationData.open_hour != null){
+                const openHour = convertTimeToAMPM(stationData.open_hour);
+                document.getElementById("OpenHour").textContent = openHour;
+            }
 
-            if (stationData.close_hour != null)
-                document.getElementById("CloseHour").textContent = stationData.close_hour;
+            if(stationData.close_hour != null){
+                const closeHour = convertTimeToAMPM(stationData.close_hour);
+                document.getElementById("CloseHour").textContent = closeHour;
+            }
 
             const fuelStatus = stationData.fuel_status;
 
@@ -96,3 +100,19 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
         console.error("Error accessing Firestore:", error);
     }
 }
+
+// set time in AM or PM 
+function convertTimeToAMPM(time24) {
+    let splitTime = time24.split(':');
+    let hours = parseInt(splitTime[0], 10);
+    let minutes = splitTime[1];
+    let period = hours < 12 ? 'AM' : 'PM';
+  
+    if (hours === 0) {
+      hours = 12; // 0 hours is 12 AM
+    } else if (hours > 12) {
+      hours -= 12; // Convert to 12-hour format
+    }
+  
+    return `${hours}:${minutes} ${period}`;
+  }
