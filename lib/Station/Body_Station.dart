@@ -34,14 +34,16 @@ class Header extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: kDefaultPadding,
               right: kDefaultPadding,
-              bottom: 36 + kDefaultPadding,
+              // bottom: 36 + kDefaultPadding,
+              top: 20,
             ),
             height: size.height * 0.2 - 27,
-            decoration: BoxDecoration(
-              color: kPrimaryColor,
+            decoration: const BoxDecoration(
+              // color: kPrimaryColor,
+              color: Color(0xFF6EA67C),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(36),
                 bottomRight: Radius.circular(36),
@@ -49,7 +51,7 @@ class Header extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                Text(
+                const Text(
                   'Find Stations!',
                   style: TextStyle(
                       color: Colors.white,
@@ -69,8 +71,8 @@ class Header extends StatelessWidget {
             right: 0,
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               height: 54,
             ),
           ),

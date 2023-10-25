@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -56,7 +57,8 @@ class Details_Station extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 160, 141, 141),
+        // backgroundColor: Color.fromARGB(255, 160, 141, 141),
+        backgroundColor: const Color(0xFF6EA67C),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -121,7 +123,9 @@ class Details_Station extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 109, 108, 107),
+              // color: Color.fromARGB(255, 85, 81, 74),
+              // color: mainColorDark,
+              color: Color(0xFF6EA67C),
               borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
                   topRight: const Radius.circular(20)),
@@ -166,11 +170,11 @@ class Details_Station extends StatelessWidget {
                               data['open_hour'] +
                               "     Close hour: " +
                               data['close_hour'],
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Color.fromARGB(255, 161, 167, 176)),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    // color: Color.fromARGB(255, 161, 167, 176),
+                                    color: Colors.black,
+                                  ),
                         ),
                       ),
                       const SizedBox(width: 15), // Adjust this for spacing
@@ -209,14 +213,13 @@ class Details_Station extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Fuel Availiable Now:",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    color: Color.fromARGB(255, 161, 167, 176)),
-                          ),
+                          Text("Fuel Availiable Now:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      // color: Color.fromARGB(255, 161, 167, 176)),
+                                      color: Colors.black)),
                           // Add any other text or widgets you want above the loop here
                         ],
                       ),
@@ -312,10 +315,10 @@ class Details_Station extends StatelessWidget {
                 ),
                 Text(
                   service,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Color.fromARGB(255, 161, 167, 176)),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        // color: Color.fromARGB(255, 161, 167, 176)
+                        color: Colors.black,
+                      ),
                 ),
               ],
             ),
@@ -333,16 +336,16 @@ class Details_Station extends StatelessWidget {
           if (promotion.isEmpty)
             Text(
               "No promotion in station",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Color.fromARGB(255, 161, 167, 176)),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    // color: Color.fromARGB(255, 161, 167, 176)
+                    color: Colors.black,
+                  ),
             )
           else
             for (var pro in promotion)
               Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 10,
                     child: Icon(
                       Icons.auto_awesome,

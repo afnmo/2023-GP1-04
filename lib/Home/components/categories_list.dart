@@ -25,6 +25,10 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             image: "assets/images/gasStation2.png",
             onTap: () {
               // Add your navigation logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Station()),
+              );
             },
             selected: false,
           ),
@@ -32,10 +36,6 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             title: "Fuel Consumption",
             image: "assets/images/consumption2.png",
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Station()),
-              );
               // Add your navigation logic here
             },
           ),
