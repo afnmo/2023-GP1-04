@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, collection, getDocs, query, where, addDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
-import {getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 
 // Your web app's Firebase configuration
@@ -31,15 +31,15 @@ async function checkRequests(email, password) {
 
     let docID = null; // Initialize the docID variable
 
-// Iterate through the documents in the snapshot
-branchManagerQuerySnapshot.forEach((doc) => {
-  // Check if the email in the document matches the desired email
-  if (doc.data().email === email) {
-    // If it does, store the document ID and break out of the loop
-    docID = doc.id;
-    return;
-  }
-});
+    // Iterate through the documents in the snapshot
+    branchManagerQuerySnapshot.forEach((doc) => {
+        // Check if the email in the document matches the desired email
+        if (doc.data().email === email) {
+            // If it does, store the document ID and break out of the loop
+            docID = doc.id;
+            return;
+        }
+    });
     console.log("Entered check requests");
     console.log("branchManagerQuerySnapshot.empty: " + branchManagerQuerySnapshot.empty);
 
@@ -53,92 +53,95 @@ branchManagerQuerySnapshot.forEach((doc) => {
 
 
         signInWithEmailAndPassword(auth, email, password)
-  .then(async (userCredential) => {
-    
-    // User is signed in.
-    console.log("signInWithEmailAndPassword");
-    const user = userCredential.user;
-    console.log(user);
-    // Check if the email exists in the "Station_Requests" collection
-    const stationRequestsRef = collection(db, "Station_Requests");
-    // const stationRequestsQuery = query(stationRequestsRef, where("email", "==", email));
-   //console.log("branchManagerId11 inside then: " + docID);
-    const stationRequestsQuery = query(stationRequestsRef, where("branch_manager_id", "==", docID));
-    const stationRequestsQuerySnapshot = await getDocs(stationRequestsQuery);
-    console.log("stationRequestsQuerySnapshot");
-    console.log("stationRequestsQuerySnapshot.empty: " + stationRequestsQuerySnapshot.empty);
+            .then(async (userCredential) => {
 
-    stationRequestsQuerySnapshot.forEach((doc) => {
-        const data = doc.data();
-        console.log(data);
-      });
+                // User is signed in.
+                console.log("signInWithEmailAndPassword");
+                const user = userCredential.user;
+                console.log(user);
+                // Check if the email exists in the "Station_Requests" collection
+                const stationRequestsRef = collection(db, "Station_Requests");
+                // const stationRequestsQuery = query(stationRequestsRef, where("email", "==", email));
+                //console.log("branchManagerId11 inside then: " + docID);
+                const stationRequestsQuery = query(stationRequestsRef, where("branch_manager_id", "==", docID));
+                const stationRequestsQuerySnapshot = await getDocs(stationRequestsQuery);
+                console.log("stationRequestsQuerySnapshot");
+                console.log("stationRequestsQuerySnapshot.empty: " + stationRequestsQuerySnapshot.empty);
 
-    if (!stationRequestsQuerySnapshot.empty) {
-        // The email exists in the "Station_Requests" collection
-        // the branch manager has a request
-        console.log("stationRequestsQuerySnapshot");
+                stationRequestsQuerySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    console.log(data);
+                });
 
-        // Check if the request is accepted
-        const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
-        console.log("data.accepted: " + data.accepted);
-        if (data.accepted === true) {
+                if (!stationRequestsQuerySnapshot.empty) {
+                    // The email exists in the "Station_Requests" collection
+                    // the branch manager has a request
+                    console.log("stationRequestsQuerySnapshot");
 
-            const stationName = data.name;
-            console.log("Station name: " + stationName);
-            const stationLocation = data.Location;
-            console.log("Station Location: " + stationLocation);
+                    // Check if the request is accepted
+                    const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
+                    console.log("data.accepted: " + data.accepted);
 
-            // Get the ID of the logined "Branch_Manager" document
-            // const branchManagerId = branchManagerRef.id;
+                    if (data.accepted === true) {
 
-            sessionStorage.setItem('sessionID', docID);
+                        const stationName = data.name;
+                        console.log("Station name: " + stationName);
+                        const stationLocation = data.Location;
+                        console.log("Station Location: " + stationLocation);
 
-            // Add to the "Station" collection
-            const stationRef = await addDoc(collection(db, "Station"), {
-                name: stationName,
-                Location: stationLocation,
-                branch_manager_id: docID, // Store the foreign key
+                        // Get the ID of the logined "Branch_Manager" document
+                        // const branchManagerId = branchManagerRef.id;
+
+                        sessionStorage.setItem('sessionID', docID);
+
+                        const stationRef1 = collection(db, "Station");
+                        const stationQuery = query(stationRef1, where("branch_manager_id", "==", docID));
+                        const stationQuerySnapshot = await getDocs(stationQuery);
+                        if (!stationQuerySnapshot.empty) {
+                            // Redirect to the homepage
+                            window.location.href = "homepagePM.html";
+                        }
+                        else{
+                            // Add to the "Station" collection
+                        const stationRef = await addDoc(collection(db, "Station"), {
+                            name: stationName,
+                            Location: stationLocation,
+                            branch_manager_id: docID, // Store the foreign key
+                        });
+
+                        const stationId = stationRef.id;
+
+                        // Define a reference to a specific document within the "Branch_Manager" collection
+                        const branchManagerDocRef = doc(db, "Branch_Manager", docID);
+
+                        // Update the document with the new field
+                        updateDoc(branchManagerDocRef, {
+                            station_id: stationId,
+                        });
+                        // Redirect to the homepage
+                        window.location.href = "homepagePM.html";
+                        }
+
+                    } else {
+                        // Redirect to the waiting for approval page
+                        window.location.href = "waitApproval.html";
+                    }
+                    // if pending
+                } else {
+                    console.log("ELSE if (!branchManagerQuerySnapshot.empty)");
+                    // Email doesn't exist in "Station_Requests" collection
+                    // alert("you have not applied yet");
+                    window.location.href = "registerFormPM.html";
+                }
+            })
+            .catch((error) => {
+                // Handle errors, such as incorrect password or non-existent user.
+                //alert(error);
+                console.log(error);
+                console.log("Handle errors, such as incorrect password or non-existent user.");
             });
 
-            const stationId = stationRef.id;
 
-            // Define a reference to a specific document within the "Branch_Manager" collection
-            const branchManagerDocRef = doc(db, "Branch_Manager", docID);
-            
-            // Update the document with the new field
-            updateDoc(branchManagerDocRef, {
-                station_id: stationId,
-            });
-
-            
-            // Redirect to the homepage
-            setTimeout(function () {
-                window.location.href = "homepagePM.html";
-            }, 3000);
-        } else {
-            // Redirect to the waiting for approval page
-            setTimeout(function () {
-                window.location.href = "waitApproval.html";
-            }, 3000);
-        }
-        // if pending
-    } else {
-        console.log("ELSE if (!branchManagerQuerySnapshot.empty)");
-        // Email doesn't exist in "Station_Requests" collection
-        alert("you have not applied yet");
-        setTimeout(function () {
-            window.location.href = "waitApproval.html";
-        }, 3000);
-    }
-  })
-  .catch((error) => {
-    // Handle errors, such as incorrect password or non-existent user.
-    //alert(error);
-    console.log(error);
-    console.log("Handle errors, such as incorrect password or non-existent user.");
-  });
-
-        
     } else {
         // Email doesn't exist in "branchManager" collection
         alert("Please register");

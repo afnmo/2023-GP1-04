@@ -22,16 +22,19 @@ const auth = getAuth();
 // const collectionName = "branchManager"; // Firestore collection for user registration data
 const collectionName = "Branch_Manager";
 
+let emailExists = false;
 
 
 // Function to register a user with Firebase Authentication
 async function registerUser(email, password) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("userCredential: " + userCredential.user);
         return userCredential.user;
     } catch (error) {
         console.log("error occured in async function registerUser(email, password)");
         console.log(error);
+        return null;
         //throw error;
     }
 }
@@ -65,41 +68,49 @@ document.getElementById("signup-form").addEventListener("submit", async function
     event.preventDefault();
 
     var inputValidated = validateInputs();
-    if (inputValidated){
+    if (inputValidated) {
 
-    const firstName = document.getElementById("first-name").value;
-    const lastName = document.getElementById("last-name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+        const firstName = document.getElementById("first-name").value;
+        const lastName = document.getElementById("last-name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-    try {
-        // Check if the email already exists (You may have a separate function for this)
-        // If the email exists, display an error message to the user
+        try {
+            // Check if the email already exists (You may have a separate function for this)
+            // If the email exists, display an error message to the user
 
-        // If the email doesn't exist, register the user with Firebase Authentication
-        const hashedPassword = await hashPassword(password);
-        const user = await registerUser(email, password);
-        console.log("User registered:", user);
+            // If the email doesn't exist, register the user with Firebase Authentication
+            const hashedPassword = await hashPassword(password);
+            const user = await registerUser(email, password);
+            console.log("user after register user: " + user);
+            if (user != null) {
+                console.log("User registered:", user);
 
-        // Add user registration data to Firestore
-        await addUserToFirestore(firstName, lastName , email, hashedPassword);
+                // Add user registration data to Firestore
+                await addUserToFirestore(firstName, lastName, email, hashedPassword);
 
-        
-        // Reset the form and provide a success message
-        document.getElementById("signup-form").reset();
-        alert("Thank you for registering!");
 
-        // Redirect after a certain delay
-        setTimeout(function () {
-            window.location.href = "registerFormBM.html";
-        }, 3000); // Redirect after 3 seconds
-        // await checkRequests(email);
-    } catch (error) {
-      //  alert("Email is already in use, please log in")
-        setError(document.getElementById("email"), "Email is already in use, please log in");
+                // Reset the form and provide a success message
+                document.getElementById("signup-form").reset();
+                alert("Thank you for registering!");
 
-        console.error("Error during registration: ", error);
-    }
+                // Redirect after a certain delay
+                setTimeout(function () {
+                    window.location.href = "registerFormBM.html";
+                }, 3000); // Redirect after 3 seconds
+                // await checkRequests(email);
+            }
+            else {
+                console.log("User is null, else entered");
+                setError(document.getElementById("email"), "Email is already in use, please log in");
+                emailExists = true;
+            }
+        } catch (error) {
+            //  alert("Email is already in use, please log in")
+            setError(document.getElementById("email"), "Email is already in use, please log in");
+
+            console.error("Error during registration: ", error);
+        }
     }
 
 });
@@ -190,6 +201,9 @@ const validateInputs = () => {
         success2 = false;
     } else if (!isValidEmail(emailValue)) {
         setError(email, 'Provide a valid email address');
+        success2 = false;
+    } else if (emailExists) {
+        setError(email, 'Email is already in use, please log in');
         success2 = false;
     } else {
         setSuccess(email);
