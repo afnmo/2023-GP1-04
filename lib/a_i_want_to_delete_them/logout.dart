@@ -19,7 +19,7 @@ class Logout extends StatelessWidget {
             // Add a "Log Out" button
             ElevatedButton(
               onPressed: () {
-                AuthRepository().logout();
+                // AuthRepository().logout();
               },
               child: const Text("Log Out"),
             ),

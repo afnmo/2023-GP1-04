@@ -23,9 +23,12 @@ class AuthRepository extends GetxController {
   }
 
   _setInitialScreen(User? user) {
-    user == null
-        ? Get.offAll(() => OnBoardingScreen())
-        : Get.offAll(() => const HomeScreen());
+    // user == null
+    //     ? Get.offAll(() => OnBoardingScreen())
+    //     : Get.offAll(() => const HomeScreen());
+    if (user != null) {
+      Get.offAll(() => const HomeScreen());
+    }
   }
 
   // _setInitialScreen(User? user) async {
@@ -232,5 +235,12 @@ class AuthRepository extends GetxController {
     return null;
   }
 
-  Future<void> logout() async => await _auth.signOut();
+  // Future<void> logout() async => await _auth.signOut();
+  Future<void> logoutAndNavigateToWelcomePage() async {
+    // Log the user out (replace this with your actual logout code).
+    await _auth.signOut();
+
+    // Navigate to the welcome page using GetX's navigation.
+    Get.to(() => WelcomeScreen());
+  }
 }

@@ -162,21 +162,37 @@ class Details_Station extends StatelessWidget {
 
                   Row(
                     children: [
+                      // Expanded(
+                      //   flex:
+                      //       2, // You can adjust the flex values to control the width of each side
+                      //   child: Text(
+                      //     'Open hour: ' +
+                      //         data['open_hour'] +
+                      //         "     Close hour: " +
+                      //         data['close_hour'],
+                      //     style:
+                      //         Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      //               // color: Color.fromARGB(255, 161, 167, 176),
+                      //               color: Colors.black,
+                      //             ),
+                      //   ),
+                      // ),
                       Expanded(
-                        flex:
-                            2, // You can adjust the flex values to control the width of each side
+                        flex: 2,
                         child: Text(
                           'Open hour: ' +
                               data['open_hour'] +
+                              getAmOrPmIndicator(data['open_hour']) +
                               "     Close hour: " +
-                              data['close_hour'],
+                              data['close_hour'] +
+                              getAmOrPmIndicator(data['close_hour']),
                           style:
                               Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    // color: Color.fromARGB(255, 161, 167, 176),
                                     color: Colors.black,
                                   ),
                         ),
                       ),
+
                       const SizedBox(width: 15), // Adjust this for spacing
                       GestureDetector(
                         onTap: () async {
@@ -372,6 +388,11 @@ class Details_Station extends StatelessWidget {
       ),
     );
   }
+}
+
+String getAmOrPmIndicator(String timeString) {
+  int hour = int.parse(timeString.split(":")[0]);
+  return hour < 12 ? 'AM' : 'PM';
 }
 
 List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {

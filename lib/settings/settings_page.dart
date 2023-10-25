@@ -62,7 +62,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     .infinity, // Make the button take the full available width
                 child: ElevatedButton(
                   onPressed: () {
-                    AuthRepository().logout();
+                    // AuthRepository().logout();
+                    AuthRepository().logoutAndNavigateToWelcomePage();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
