@@ -1,3 +1,5 @@
+/* Google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 /* Apply styles to the background image */
 .background-image {
   background-image: url('../images/back4.PNG'); /* Use forward slashes and a relative path */
@@ -11,8 +13,7 @@
   z-index: -1; /* This ensures the content is displayed above the background */
 }
 
-/* Google fonts */
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
 
   /*---------------------------footer-----------------------------------*/
   .footer {

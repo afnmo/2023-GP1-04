@@ -220,4 +220,6 @@ const validateInputs = () => {
 
     return success1 && success2 && success3 && success4 && success5;
 
+
 };
+
