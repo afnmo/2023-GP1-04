@@ -294,7 +294,7 @@ async function Addrequests() {
 
         // Document updated successfully
         document.getElementById("registrationForm").reset();
-        window.location.href = "waitApproval.html";
+        window.location.href = "login.html";
     } catch (error) {
         console.error("Error updating document:", error);
     }
