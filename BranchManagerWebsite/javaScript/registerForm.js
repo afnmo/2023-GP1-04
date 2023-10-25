@@ -265,6 +265,7 @@ if (SID) {
     window.location.href = "signup.html";
 }
 
+
 async function Addrequests() {
     const stationName = document.getElementById("StationName").value;
     const stationLocation = document.getElementById("GoogleMapUrl").value;
@@ -305,3 +306,80 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
         await Addrequests();
 });
+
+// async function Addrequests() {
+//     const stationName = document.getElementById("StationName").value;
+//     const stationLocation = document.getElementById("GoogleMapUrl").value;
+  
+//     try {
+
+// <<<<<<< test
+// =======
+
+//         // Add to the "Station_Requests" collection
+//         const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
+//             name: stationName,
+//             Location: stationLocation,
+//             branch_manager_id: SID, // Store the foreign key
+//             accepted: true,
+//         });        
+
+//         // Get the ID of the newly created "Branch_Manager" document
+//         const stationRequestID = stationRequestRef.id;
+
+//         // Define a reference to a specific document within the "Branch_Manager" collection
+//         const branchManagerDocRef = doc(db, "Branch_Manager", SID);
+
+//         // Update the document with the new field
+//         // updateDoc(branchManagerDocRef, {
+//         //     station_request_id: stationRequestID,
+//         // });
+
+//         // Document updated successfully
+//         document.getElementById("registrationForm").reset();
+//         window.location.href = "waitApproval.html";
+//     } catch (error) {
+//         console.error("Error updating document:", error);
+//     }
+      
+// }
+// >>>>>>> master
+
+//         // Add to the "Station_Requests" collection
+//         const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
+//             name: stationName,
+//             Location: stationLocation,
+//             branch_manager_id: SID, // Store the foreign key
+//             accepted: true,
+//         });        
+
+// <<<<<<< test
+//         // Get the ID of the newly created "Branch_Manager" document
+//         const stationRequestID = stationRequestRef.id;
+
+//         // Define a reference to a specific document within the "Branch_Manager" collection
+//         const branchManagerDocRef = doc(db, "Branch_Manager", SID);
+
+//         // Update the document with the new field
+//         // updateDoc(branchManagerDocRef, {
+//         //     station_request_id: stationRequestID,
+//         // });
+
+//         // Document updated successfully
+//         document.getElementById("registrationForm").reset();
+//         window.location.href = "waitApproval.html";
+//     } catch (error) {
+//         console.error("Error updating document:", error);
+//     }
+      
+// }
+
+// document.getElementById("registrationForm").addEventListener("submit", async function (event) {
+//     event.preventDefault();
+
+//         await Addrequests();
+// });
+// =======
+//         await Addrequests();
+// });
+// >>>>>>> master
