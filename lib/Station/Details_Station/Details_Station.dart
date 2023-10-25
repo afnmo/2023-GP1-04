@@ -403,7 +403,7 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
         fuelType.substring(3, 12) == 'Available') {
       fuelIcons.add(
         SvgPicture.asset(
-          'assets/icons/91-Availiable.svg',
+          'assets/icons/91A.svg',
           width: 45,
           height: 45,
         ),
@@ -413,7 +413,7 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
         fuelType.substring(3, 12) == 'Available') {
       fuelIcons.add(
         SvgPicture.asset(
-          'assets/icons/95-Availiable.svg',
+          'assets/icons/95A.svg',
           width: 45,
           height: 45,
         ),
@@ -422,7 +422,7 @@ List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
     } else if (fuelType.substring(0, 6) == 'Diesel' &&
         fuelType.substring(7, 16) == 'Available') {
       fuelIcons.add(SvgPicture.asset(
-        'assets/icons/diesels.svg',
+        'assets/icons/DA.svg',
         width: 45,
         height: 45,
       ));

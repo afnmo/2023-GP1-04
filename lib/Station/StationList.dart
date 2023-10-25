@@ -162,7 +162,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(3, 12) ==
                                   'Available')
                             SvgPicture.asset(
-                              'assets/icons/91-Availiable.svg',
+                              'assets/icons/91A.svg',
                               width: 45,
                               height: 45,
                             )
@@ -170,7 +170,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(3, 14) ==
                                   'Unavailable')
                             SvgPicture.asset(
-                              'assets/icons/91-Not.svg',
+                              'assets/icons/91U.svg',
                               width: 25,
                               height: 25,
                             )
@@ -178,7 +178,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(3, 12) ==
                                   'Available')
                             SvgPicture.asset(
-                              'assets/icons/95-Availiable.svg',
+                              'assets/icons/95A.svg',
                               width: 45,
                               height: 45,
                             )
@@ -186,7 +186,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(3, 14) ==
                                   'Unavailable')
                             SvgPicture.asset(
-                              'assets/icons/95-Not.svg',
+                              'assets/icons/95U.svg',
                               width: 25,
                               height: 25,
                             )
@@ -195,7 +195,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(7, 16) ==
                                   'Available')
                             SvgPicture.asset(
-                              'assets/icons/diesels.svg',
+                              'assets/icons/DA.svg',
                               width: 45,
                               height: 45,
                             )
@@ -204,7 +204,7 @@ class RecipeCard extends StatelessWidget {
                               fuel_type_state[i].substring(7, 18) ==
                                   'Unavailable')
                             SvgPicture.asset(
-                              'assets/icons/diesels-not.svg',
+                              'assets/icons/Du.svg',
                               width: 25,
                               height: 25,
                             ),
