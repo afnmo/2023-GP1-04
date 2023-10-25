@@ -74,20 +74,20 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     if (type === '91') {
                         document.getElementById("91state").style.display = 'block';
 
-                        if (state === 'Available') {
-                            document.getElementById("91statewidth").style.width = '100%';
+                        if (state === 'Unavailable') {
+                            document.getElementById("91statewidth").style.textDecoration = "line-through";
                         }
                     } else if (type === '95') {
                         document.getElementById("95state").style.display = 'block';
 
-                        if (state === 'Available') {
-                            document.getElementById("95statewidth").style.width = '100%';
+                        if (state === 'Unavailable') {
+                            document.getElementById("95statewidth").style.textDecoration = "line-through";
                         }
                     } else if (type === 'Diesel') {
                         document.getElementById("Dieselstate").style.display = 'block';
 
-                        if (state === 'Available') {
-                            document.getElementById("Dieselstatewidth").style.width = '100%';
+                        if (state === 'Unavailable') {
+                            document.getElementById("Dieselstatewidth").style.textDecoration = "line-through";
                         }
                     }
                 });

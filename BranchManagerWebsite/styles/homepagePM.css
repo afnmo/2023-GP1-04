@@ -46,7 +46,7 @@
 /*-----------------------------Services------------------------------------*/
 
   ol { padding-left: 50px; }
-  ol li{ 
+  ol.Services li{ 
     color: #4F4F4F; 
     padding-left: 16px;
     margin-top: 24px;
