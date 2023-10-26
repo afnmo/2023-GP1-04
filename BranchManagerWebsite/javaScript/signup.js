@@ -143,6 +143,9 @@ const password2 = document.getElementById('confirm_password');
 //     validateInputs();
 // });
 
+
+
+
 const setError = (element, message) => {
     const inputControl = element.parentElement;
     const errorDisplay = inputControl.querySelector('.error');
@@ -166,6 +169,7 @@ const isValidEmail = email => {
     return regx.test(String(email).toLowerCase());
 }
 
+
 const validateInputs = () => {
     var success1 = false;
     var success2 = false;
@@ -177,6 +181,21 @@ const validateInputs = () => {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
+
+
+    // Regular expressions to match different password criteria
+    const lowerCaseRegex = /[a-z]/;
+    const upperCaseRegex = /[A-Z]/;
+    const digitRegex = /\d/;
+    const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
+
+
+    // Check if all criteria are met
+    const allCriteriaMet =
+        lowerCaseRegex.test(passwordValue) &&
+        upperCaseRegex.test(passwordValue) &&
+        digitRegex.test(passwordValue) &&
+        specialCharRegex.test(passwordValue);
 
     if (firstNameValue === '') {
         setError(firstName, 'first name is required');
@@ -213,10 +232,15 @@ const validateInputs = () => {
     if (passwordValue === '') {
         setError(password, 'Password is required');
         success3 = false;
-    } else if (passwordValue.length < 8) {
-        setError(password, 'Password must be at least 8 character.')
+    // } 
+    // else if (passwordValue.length < 8) {
+    //     setError(password, 'Password must be at least 8 character.')
+    //     success3 = false;
+    } else if(!allCriteriaMet) {
+        setError(password, 'Password should include at least one digit, one lowercase and one uppercase letter, and one special character, with a minimum of 8 characters.')
         success3 = false;
-    } else {
+    }
+    else {
         setSuccess(password);
         success3 = true;
     }
