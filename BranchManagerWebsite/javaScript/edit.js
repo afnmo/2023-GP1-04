@@ -70,14 +70,14 @@ async function retrieveAndPopulateForm() {
             if(stationData.close_hour != null)
             document.getElementById("CloseHour").value = stationData.close_hour;
             
-            // if(stationData.image_station != null)
-            // document.getElementById('imageUpload').value = stationData.image_station;
+            if(stationData.image_station != null)
+            document.getElementById('imageUpload').value = stationData.image_station;
 
             // Update the label text to the selected file's name
-            if(stationData.image_station != null){
-                const imageLabel = document.getElementById('imageLabel');
-                imageLabel.textContent = stationData.image_station;
-            }
+            // if(stationData.image_station != null){
+            //     const imageLabel = document.getElementById('imageLabel');
+            //     imageLabel.textContent = stationData.image_station;
+            // }
             
             // Checkboxes and radio buttons can be populated here
             populateCheckBoxesAndRadioButtons(stationData);
@@ -200,11 +200,11 @@ const form = document.getElementById("editStation");
         }
 
         // Check if an image has been selected
-        const imageUpload = document.getElementById("imageUpload");
-        if (imageUpload.files.length === 0) {
-            alert("Please select an image");
-            return; // Prevent form submission if a validation check fails
-        }
+        // const imageUpload = document.getElementById("imageUpload");
+        // if (imageUpload.files.length === 0) {
+        //     alert("Please select an image");
+        //     return; // Prevent form submission if a validation check fails
+        // }
 
         // If all validation checks pass, you can proceed to update the Firestore document
         if (hasChecked) {
@@ -265,10 +265,10 @@ async function AddStation() {
 }
 
 // Add an event listener to the file input
-document.getElementById('imageUpload').addEventListener('change', function () {
-    const imageLabel = document.getElementById('imageLabel');
+// document.getElementById('imageUpload').addEventListener('change', function () {
+//     const imageLabel = document.getElementById('imageLabel');
 
-    // Update the label text to the selected file's name
-    imageLabel.textContent = imageUpload.files[0].name;
+//     // Update the label text to the selected file's name
+//     imageLabel.textContent = imageUpload.files[0].name;
  
-});
+// });
