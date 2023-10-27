@@ -91,6 +91,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
 
                     if (type === '91') {
                         document.getElementById("91status").style.display = 'block';
+                        document.getElementById("buttonEditFuelStatus").style.display = 'block';
 
                         if (state === 'Unavailable') {
                             var value = "91";
@@ -98,10 +99,10 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                             pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("91Img");
                             imgElement.src = "../images/91unavailable.png";
-                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     } else if (type === '95') {
                         document.getElementById("95status").style.display = 'block';
+                        document.getElementById("buttonEditFuelStatus").style.display = 'block';
 
                         if (state === 'Unavailable') {
                             var value = "95";
@@ -109,10 +110,10 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                             pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("95Img");
                             imgElement.src = "../images/95unavailable.png";
-                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     } else if (type === 'Diesel') {
                         document.getElementById("Dieselstatus").style.display = 'block';
+                        document.getElementById("buttonEditFuelStatus").style.display = 'block';
 
                         if (state === 'Unavailable') {
                             var value = "Diesel";
@@ -120,7 +121,6 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                             pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("dieselImg");
                             imgElement.src = "../images/dieselunavailable.png";
-                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     }
                 });

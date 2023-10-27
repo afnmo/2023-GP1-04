@@ -126,8 +126,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 91 based on its checkbox state
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
-        document.getElementById("heightBox").style.height= 500;
-        document.getElementById("BKimage").height= 500;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -135,8 +135,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 95 based on its checkbox state
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
-        document.getElementById("heightBox").style.height= 600;
-        document.getElementById("BKimage").height= 600;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -144,8 +144,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for Diesel based on its checkbox state
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
-        document.getElementById("heightBox").style.height= 600;
-        document.getElementById("BKimage").height= 600;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup3.style.display = 'none';
     }
