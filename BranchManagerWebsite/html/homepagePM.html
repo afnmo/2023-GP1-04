@@ -72,12 +72,12 @@
 
           <div class="row">
 
-            <!-- Fuel -->
+            <!-- Fuel type -->
             <div class="col-lg-5 col-xl-4">
               <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h6 class="fs-4 fw-bold text-primary m-0"
-                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel</h6>
+                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel type</h6>
                 </div>
                 <div class="card-body">
                   <!-- <div class="row align-items-left no-gutters">
@@ -129,13 +129,13 @@
                     </div>
                   </div> -->
 
-                  <ol class="fuel">
+                  <ol class="fueltype">
                     <li id="91state" style="display: none;">
                       <p style="color: gray; font-weight: bold; font-size: 18px;">
                         <span>
                           <img src="../images/91.png" style="display: inline; float: left; margin-right: 10px;">
                         </span>
-                        <span id="91statewidth">91 available</span>
+                        <span>91</span>
                       </p>
                     </li>
                     <br>
@@ -144,16 +144,16 @@
                         <span>
                           <img src="../images/95.png" style="display: inline; float: left; margin-right: 10px;">
                         </span>
-                        <span id="95statewidth">95 available</span>
+                        <span>95</span>
                       </p>
                     </li>
                     <br>
                     <li id="Dieselstate" style="display: none;">
-                      <p style="color:  gray; font-weight: bold; font-size: 18px;" id="Dieselstatewidth">
+                      <p style="color:  gray; font-weight: bold; font-size: 18px;">
                         <span>
                           <img src="../images/diesel.png" style="display: inline; float: left; margin-right: 10px;">
                         </span>
-                        <span id="Dieselstatewidth">Diesel available</span>
+                        <span>Diesel</span>
                       </p>
                     </li>
                   </ol>
@@ -161,7 +161,51 @@
                 </div>
               </div>
             </div>
-            <!-- Fuel -->
+            <!-- Fuel type -->
+
+            <!-- Fuel status -->
+            <div class="col-lg-5 col-xl-4">
+              <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h6 class="fs-4 fw-bold text-primary m-0"
+                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel status</h6>
+                </div>
+                <div class="card-body">
+                  <ol class="fuelstatus">
+                    <li id="91status" style="display: none;">
+                      <p style="color: gray; font-weight: bold; font-size: 18px;">
+                        <span>
+                          <img src="..\images\91available.png" style="display: inline; float: left; margin-right: 10px;" id="91Img" height="30px" width="30px">
+                        </span>
+                        <span id="91statewidth">91 available</span>
+                      </p>
+                    </li>
+                    <br>
+                    <li id="95status" style="display: none;">
+                      <p style="color: gray; font-weight: bold; font-size: 18px;">
+                        <span>
+                          <img src="..\images\95available.png" style="display: inline; float: left; margin-right: 10px;" id="95Img" height="30px" width="30px">
+                        </span>
+                        <span id="95statewidth">95 available</span>
+                      </p>
+                    </li>
+                    <br>
+                    <li id="Dieselstatus" style="display: none;">
+                      <p style="color:  gray; font-weight: bold; font-size: 18px;">
+                        <span>
+                          <img src="..\images\dieselavailable.png" style="display: inline; float: left; margin-right: 10px;" id="dieselImg" height="30px" width="30px">
+                        </span>
+                        <span id="Dieselstatewidth">Diesel available</span>
+                      </p>
+                    </li>
+                  </ol>
+                  <div id="buttonEditFuelStatus" style="display: none;">
+                  <button class="editFuelStatus"><a href="editfuel.html">edit fuel status</a></button>
+                </div>
+                </div>
+              </div>
+            </div>
+          <!-- Fuel status -->
 
             <!-- Services -->
             <div class="col-lg-5 col-xl-4">
@@ -189,51 +233,56 @@
               </div>
             </div>
             <!-- Services -->
-             
-              <div class="col-md-6 col-xl-3 mb-4">
-                <!-- open hour -->
-                <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
-                  <div class="card-body">
-                    <div class="row align-items-center no-gutters">
-                      <div class="col-xl-12 me-2">
-                        <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
-                            style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
-                          <img src="..\images\openHour.png" style="float: right;">
-                        </div>
-                        <div class="row g-0 align-items-center">
-                          <div class="col-auto">
-                            <div class="fw-bold text-dark h5 mb-0 me-3">
-                              <span style="color: rgb(108, 110, 122);" id="OpenHour"></span>
-                            </div>
-                          </div>
-                        </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6 col-xl-3 mb-4">
+              <!-- open hour -->
+              <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
+                <div class="card-body">
+                  <div class="row align-items-center no-gutters">
+                    <div class="col-xl-12 me-2">
+                      <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
+                          style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
+                        <img src="..\images\openHour.png" style="float: right;">
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- open hour -->
-                <br>
-              
-                <!-- close hour -->
-                <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
-                  <div class="card-body">
-                    <div class="row align-items-center no-gutters">
-                      <div class="col-xl-12 me-2">
-                        <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
-                            style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
-                          <img src="..\images\closeHour.png" style="float: right;">
-                        </div>
+                      <div class="row g-0 align-items-center">
                         <div class="col-auto">
                           <div class="fw-bold text-dark h5 mb-0 me-3">
-                            <span style="color: rgb(108, 110, 122);" id="CloseHour"></span>
+                            <span style="color: rgb(108, 110, 122);" id="OpenHour"></span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- close hour -->
               </div>
+              <!-- open hour -->
+            </div>
+
+              <div class="col-md-6 col-xl-3 mb-4">
+              <!-- close hour -->
+              <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
+                <div class="card-body">
+                  <div class="row align-items-center no-gutters">
+                    <div class="col-xl-12 me-2">
+                      <div class="text-uppercase fw-bold text-info text-xs mb-1"><span class="fs-4"
+                          style="--bs-primary:#30b476;--bs-primary-rgb:48,180,118;color:#30b476;">hour</span>
+                        <img src="..\images\closeHour.png" style="float: right;">
+                      </div>
+                      <div class="col-auto">
+                        <div class="fw-bold text-dark h5 mb-0 me-3">
+                          <span style="color: rgb(108, 110, 122);" id="CloseHour"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- close hour -->
+            </div>
+
 
 
           </div>

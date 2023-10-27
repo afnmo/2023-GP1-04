@@ -74,26 +74,53 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     if (type === '91') {
                         document.getElementById("91state").style.display = 'block';
 
+                    } else if (type === '95') {
+                        document.getElementById("95state").style.display = 'block';
+
+                    } else if (type === 'Diesel') {
+                        document.getElementById("Dieselstate").style.display = 'block';
+                    }
+                });
+
+            }
+
+             // Loop through fuel status elements and set their display and width based on the data
+             if (fuelStatus) {
+                fuelStatus.forEach((status) => {
+                    const [type, state] = status.split(" ");
+
+                    if (type === '91') {
+                        document.getElementById("91status").style.display = 'block';
+
                         if (state === 'Unavailable') {
                             var value = "91";
                             var pElement = document.getElementById("91statewidth");
                             pElement.innerHTML = value + " unavailable";
+                            var imgElement = document.getElementById("91Img");
+                            imgElement.src = "../images/91unavailable.png";
+                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     } else if (type === '95') {
-                        document.getElementById("95state").style.display = 'block';
+                        document.getElementById("95status").style.display = 'block';
 
                         if (state === 'Unavailable') {
                             var value = "95";
                             var pElement = document.getElementById("95statewidth");
                             pElement.innerHTML = value + " unavailable";
+                            var imgElement = document.getElementById("95Img");
+                            imgElement.src = "../images/95unavailable.png";
+                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     } else if (type === 'Diesel') {
-                        document.getElementById("Dieselstate").style.display = 'block';
+                        document.getElementById("Dieselstatus").style.display = 'block';
 
                         if (state === 'Unavailable') {
                             var value = "Diesel";
                             var pElement = document.getElementById("Dieselstatewidth");
                             pElement.innerHTML = value + " unavailable";
+                            var imgElement = document.getElementById("dieselImg");
+                            imgElement.src = "../images/dieselunavailable.png";
+                            document.getElementById("buttonEditFuelStatus").style.display = 'block';
                         }
                     }
                 });
