@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gp91/car/addCarPage/addCar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 //     print("Add Car Button Clicked"); // For example, print a message
 //   }
 
-class CarBody extends StatelessWidget {
+class CarBody extends StatefulWidget {
+  @override
+  State<CarBody> createState() => _CarBodyState();
+}
+
+class _CarBodyState extends State<CarBody> {
+  late Future<void> _firebaseInitialization;
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseInitialization = initializeFirebase();
+  }
+
+  Future<void> initializeFirebase() async {
+    await Firebase.initializeApp();
+  }
+
   Widget addCarButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
@@ -27,111 +45,129 @@ class CarBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C), // Set the background color
-        elevation: 0, // Remove the shadow
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button press
-            Navigator.pop(context);
-          },
-        ),
-        title: Center(
-          child: Text(
-            'Cars',
-            style: TextStyle(
-              color: Colors.white, // Set the text color
-              fontSize: 20, // Set the text size
-              fontWeight: FontWeight.bold, // Set the font weight
+    return FutureBuilder<void>(
+      future: _firebaseInitialization,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final currentUser = FirebaseAuth.instance.currentUser;
+          final carCollection = FirebaseFirestore.instance.collection('Cars');
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color(0xFF6EA67C), // Set the background color
+              elevation: 0,
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  // Handle back button press
+                  Navigator.pop(context);
+                },
+              ),
+              centerTitle: true,
+              title: Text(
+                'Cars',
+                style: TextStyle(
+                  color: Colors.white, // Set the text color
+                  fontSize: 20, // Set the text size
+                  fontWeight: FontWeight.bold, // Set the font weight
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-      body: ListView(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Remove the commented out AppBarWidget and text
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 9),
-                    child: Container(
-                      width: 380,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFFBEA),
-                        borderRadius: BorderRadius.circular(22),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: Offset(0, 3),
+            body: StreamBuilder<QuerySnapshot>(
+              stream: carCollection
+                  .where('userId', isEqualTo: currentUser?.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot car = snapshot.data!.docs[index];
+                    // Access car data using 'car' DocumentSnapshot
+                    // Modify the UI here to display the car details from Firestore
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 9),
+                      child: SizedBox(
+                        width: 380,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 13),
+                          height: 130,
+                          // Your container and UI for displaying car details
+                          // Example: Displaying car model
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFFFBEA),
+                            borderRadius: BorderRadius.circular(22),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 3,
+                                blurRadius: 10,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              "assets/images/55.png",
-                              height: 80,
-                              width: 150,
-                            ),
-                          ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment(0.7, -0.7),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFFECAE),
-                                  borderRadius: BorderRadius.circular(15),
+                          child: Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  "assets/images/myCars.png",
+                                  height: 80,
+                                  width: 150,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Text(
-                                    "Chevrolet",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment(0.7, -0.7),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFFFECAE),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Text(
+                                        car['model'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                    );
+                  },
+                );
+              },
             ),
-          ),
-        ],
-      ),
-      // floatingActionButton: GestureDetector(
-      //   onTap: addCar(),
-      //   child: Container(
-      //     decoration: BoxDecoration(
-      //       color: Color(0xFFFFCEAF),
-      //       shape: BoxShape.circle,
-      //     ),
-      //     child: Image.asset(
-      //       "assets/icons/addCar.png",
-      //       height: 50,
-      //     ),
-      //   ),
-      // ),
-      floatingActionButton: addCarButton(context),
+            floatingActionButton: addCarButton(context),
+          );
+        } else {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }

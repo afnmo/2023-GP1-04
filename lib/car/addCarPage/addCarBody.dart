@@ -120,7 +120,7 @@ class _addCarBodyState extends State<addCarBody> {
         await carDataObj.getGradeForFuelEconomy(year, make, model, fuelEconomy);
 
     // Submit data to Firebase
-    FirebaseFirestore.instance.collection('Car').add({
+    FirebaseFirestore.instance.collection('Cars').add({
       'make': make,
       'model': model,
       'year': year,
@@ -161,7 +161,10 @@ class _addCarBodyState extends State<addCarBody> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF6EA67C), // Set the background color
-        elevation: 0, // Remove the shadow
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -169,14 +172,13 @@ class _addCarBodyState extends State<addCarBody> {
             Navigator.pop(context);
           },
         ),
-        title: Center(
-          child: Text(
-            'Add a new car',
-            style: TextStyle(
-              color: Colors.white, // Set the text color
-              fontSize: 20, // Set the text size
-              fontWeight: FontWeight.bold, // Set the font weight
-            ),
+        centerTitle: true,
+        title: Text(
+          'Add a new car',
+          style: TextStyle(
+            color: Colors.white, // Set the text color
+            fontSize: 20, // Set the text size
+            fontWeight: FontWeight.bold, // Set the font weight
           ),
         ),
       ),
