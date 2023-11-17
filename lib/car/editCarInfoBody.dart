@@ -4,26 +4,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
-import 'carData.dart';
+import 'package:gp91/car/addCarPage/carData.dart';
 import 'package:csv/csv.dart';
 import 'dart:convert';
 
-void main() {
-  runApp(
-    MaterialApp(
-      home: addCarBody(),
-    ),
-  );
-}
+class editCarInfoBody extends StatefulWidget {
+  final String carId;
 
-class addCarBody extends StatefulWidget {
-  const addCarBody({Key? key}) : super(key: key);
+  const editCarInfoBody({Key? key, required this.carId}) : super(key: key);
 
   @override
-  _addCarBodyState createState() => _addCarBodyState();
+  _editCarInfoBodyState createState() => _editCarInfoBodyState();
 }
 
-class _addCarBodyState extends State<addCarBody> {
+class _editCarInfoBodyState extends State<editCarInfoBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
@@ -33,7 +27,8 @@ class _addCarBodyState extends State<addCarBody> {
   List<String> FuelEconomys = [];
   List<String> years = [];
 
-  String? selectedYear; // Make selectedYear nullable with '?'
+  late Map<String, dynamic> carDataInfo = {};
+  String? selectedYear;
   List<String> fuelTypes = ['91', '95', 'Diesel'];
   String? selectedFuelType;
   String? selectedFuelEconomy;
@@ -43,8 +38,6 @@ class _addCarBodyState extends State<addCarBody> {
   TextEditingController arabicLettersController = TextEditingController();
   TextEditingController numbersController = TextEditingController();
   carData carDataObj = carData();
-
-  //Map<String, List<String>> mapOfCarMakeAndModel = carData.getCarData();
 
   @override
   void dispose() {
@@ -60,6 +53,51 @@ class _addCarBodyState extends State<addCarBody> {
     initializeFirebase();
     loadCSV();
     extractManufacturers();
+    getCarData();
+  }
+
+  Future<void> getCarData() async {
+    DocumentSnapshot carDoc = await FirebaseFirestore.instance
+        .collection('Cars')
+        .doc(widget.carId)
+        .get();
+
+    carDataInfo = carDoc.data() as Map<String, dynamic>;
+
+    if (carDataInfo['make'] != null) {
+      selectedCarMake = carDataInfo['make'];
+    }
+
+    if (carDataInfo['fuelType'] != null) {
+      selectedFuelType = carDataInfo['fuelType'];
+    }
+
+    if (carDataInfo['model'] != null) {
+      selectedCarModel = carDataInfo['model'];
+    }
+
+    if (carDataInfo['year'] != null) {
+      selectedYear = carDataInfo['year'];
+    }
+
+    if (carDataInfo['fuelEconomy'] != null) {
+      selectedFuelEconomy = carDataInfo['fuelEconomy'];
+    }
+
+    if (carDataInfo['englishLetters'] != null) {
+      englishLettersController =
+          TextEditingController(text: carDataInfo['englishLetters']);
+    }
+
+    if (carDataInfo['arabicLetters'] != null) {
+      arabicLettersController =
+          TextEditingController(text: carDataInfo['arabicLetters']);
+    }
+
+    if (carDataInfo['plateNumbers'] != null) {
+      numbersController =
+          TextEditingController(text: carDataInfo['plateNumbers']);
+    }
   }
 
   void initializeFirebase() async {
@@ -106,7 +144,7 @@ class _addCarBodyState extends State<addCarBody> {
     });
   }
 
-  void submitFormData(String userId) async {
+  void submitFormData() async {
     // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
@@ -120,7 +158,7 @@ class _addCarBodyState extends State<addCarBody> {
         await carDataObj.getGradeForFuelEconomy(year, make, model, fuelEconomy);
 
     // Submit data to Firebase
-    FirebaseFirestore.instance.collection('Cars').add({
+    FirebaseFirestore.instance.collection('Cars').doc(widget.carId).update({
       'make': make,
       'model': model,
       'year': year,
@@ -130,21 +168,6 @@ class _addCarBodyState extends State<addCarBody> {
       'arabicLetters': arabicLetters,
       'plateNumbers': numbers,
       'grade': grade,
-      'userId': userId,
-    });
-
-    // Optionally, you can clear the form fields after submission
-    setState(() {
-      selectedCarMake = null;
-      selectedCarModel = null;
-      selectedYear = null;
-      selectedFuelType = null;
-      selectedFuelEconomy = null;
-      englishLettersController
-          .clear(); // Use clear() to clear the text in the TextEditingController
-      arabicLettersController.clear();
-      numbersController.clear();
-      // Clear other form fields if needed
     });
 
     // Optionally, show a success message or navigate to another screen
@@ -174,7 +197,7 @@ class _addCarBodyState extends State<addCarBody> {
         ),
         centerTitle: true,
         title: Text(
-          'Add a new car',
+          'Update your car',
           style: TextStyle(
             color: Colors.white, // Set the text color
             fontSize: 20, // Set the text size
@@ -267,7 +290,7 @@ class _addCarBodyState extends State<addCarBody> {
                                       fetchCarModels(selectedCarMake!);
                                     },
                                     decoration: InputDecoration(
-                                      labelText: 'Make',
+                                      labelText: carDataInfo['make'] ?? 'Make',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -321,7 +344,8 @@ class _addCarBodyState extends State<addCarBody> {
                                           selectedCarMake!, selectedCarModel!);
                                     },
                                     decoration: InputDecoration(
-                                      labelText: 'Model',
+                                      labelText:
+                                          carDataInfo['model'] ?? 'Model',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -365,7 +389,7 @@ class _addCarBodyState extends State<addCarBody> {
                                       selectedCarMake!, selectedCarModel!);
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Year',
+                                  labelText: carDataInfo['year'] ?? 'Year',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -406,7 +430,8 @@ class _addCarBodyState extends State<addCarBody> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Fuel Type',
+                                  labelText:
+                                      carDataInfo['fuelType'] ?? 'Fuel Type',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -458,7 +483,8 @@ class _addCarBodyState extends State<addCarBody> {
                                       });
                                     },
                                     decoration: InputDecoration(
-                                      labelText: 'Fuel Economy',
+                                      labelText: carDataInfo['fuelEconomy'] ??
+                                          'Fuel Economy',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -486,7 +512,7 @@ class _addCarBodyState extends State<addCarBody> {
                             Align(
                               alignment: Alignment(-0.8, 0.8),
                               child: Text(
-                                'Plate',
+                                'Plate Number',
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -510,7 +536,8 @@ class _addCarBodyState extends State<addCarBody> {
                                       r'^[a-zA-Z]*$')), // Allow only English letters
                                 ],
                                 decoration: InputDecoration(
-                                  labelText: 'English letters',
+                                  labelText: carDataInfo['englishLetters'] ??
+                                      'English letters',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -547,7 +574,8 @@ class _addCarBodyState extends State<addCarBody> {
                                 //       r'^[\u0600-\u06FF\s]*$')), // Allow only Arabic letters
                                 // ],
                                 decoration: InputDecoration(
-                                  labelText: 'Arabic letters',
+                                  labelText: carDataInfo['arabicLetters'] ??
+                                      'Arabic letters',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -584,7 +612,8 @@ class _addCarBodyState extends State<addCarBody> {
                                       .digitsOnly // Allow only numeric input
                                 ],
                                 decoration: InputDecoration(
-                                  labelText: 'Numbers',
+                                  labelText:
+                                      carDataInfo['plateNumbers'] ?? 'Numbers',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -614,7 +643,7 @@ class _addCarBodyState extends State<addCarBody> {
                                 User? currentUser =
                                     FirebaseAuth.instance.currentUser;
 
-                                // Check if any field is empty
+                                //Check if any field is empty
                                 if (selectedCarMake == null ||
                                     selectedCarModel == null ||
                                     selectedYear == null ||
@@ -699,7 +728,7 @@ class _addCarBodyState extends State<addCarBody> {
                                   return;
                                 }
                                 if (currentUser != null) {
-                                  submitFormData(currentUser.uid);
+                                  submitFormData();
                                 } else {
                                   // Handle the case where the user is not authenticated
                                   ScaffoldMessenger.of(context)
@@ -720,7 +749,7 @@ class _addCarBodyState extends State<addCarBody> {
                                 minimumSize: Size(150, 35),
                               ),
                               child: Text(
-                                'Add',
+                                'Save',
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
