@@ -127,6 +127,7 @@ class _CarBodyState extends State<CarBody> {
                                     "assets/images/myCars.png",
                                     height: 80,
                                     width: 150,
+                                    color: Color(0xFF3C4046),
                                   ),
                                 ),
                                 Expanded(

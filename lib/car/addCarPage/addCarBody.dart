@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'carData.dart';
 import 'package:csv/csv.dart';
 import 'dart:convert';
+import 'package:gp91/car/car.dart';
 
 void main() {
   runApp(
@@ -106,7 +107,7 @@ class _addCarBodyState extends State<addCarBody> {
     });
   }
 
-  void submitFormData(String userId) async {
+  Future<void> submitFormData(String userId) async {
     // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
@@ -598,8 +599,8 @@ class _addCarBodyState extends State<addCarBody> {
                                         color: Colors
                                             .grey), // Change the color as needed
                                   ),
-                                  prefixIcon: Icon(
-                                    Icons.text_fields,
+                                  prefixIcon: Image.asset(
+                                    'assets/icons/numbers.png',
                                     color: Color(0xFFFFCEAF),
                                   ),
                                 ),
@@ -641,12 +642,12 @@ class _addCarBodyState extends State<addCarBody> {
                                   return; // Exit the function if any field is empty
                                 }
 
-                                if (englishLettersController.text.length > 3) {
+                                if (englishLettersController.text.length != 3) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'English field should not have more than 3 characters'),
+                                          'Please ensure the English field has exactly 3 characters'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -660,12 +661,12 @@ class _addCarBodyState extends State<addCarBody> {
                                   return;
                                 }
 
-                                if (arabicLettersController.text.length > 3) {
+                                if (arabicLettersController.text.length != 3) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Arabic field should not have more than 3 characters'),
+                                          'Please ensure the Arabic field has exactly 3 characters'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -680,12 +681,12 @@ class _addCarBodyState extends State<addCarBody> {
                                 }
 
                                 // Check if numbersController has exactly 3 characters
-                                if (numbersController.text.length != 3) {
+                                if (numbersController.text.length != 4) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Numbers field should have exactly 3 characters'),
+                                          'Please enter up to 4 digits in the Numbers field'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -699,7 +700,13 @@ class _addCarBodyState extends State<addCarBody> {
                                   return;
                                 }
                                 if (currentUser != null) {
-                                  submitFormData(currentUser.uid);
+                                  await submitFormData(currentUser.uid);
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CarApp()),
+                                  );
                                 } else {
                                   // Handle the case where the user is not authenticated
                                   ScaffoldMessenger.of(context)

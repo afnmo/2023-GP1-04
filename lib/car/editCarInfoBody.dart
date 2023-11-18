@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:gp91/car/addCarPage/carData.dart';
 import 'package:csv/csv.dart';
 import 'dart:convert';
+import 'carInfo.dart';
 
 class editCarInfoBody extends StatefulWidget {
   final String carId;
@@ -144,7 +145,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
     });
   }
 
-  void submitFormData() async {
+  Future<void> submitFormData() async {
     // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
@@ -287,10 +288,10 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                         selectedYear = null;
                                         selectedFuelEconomy = null;
                                       });
-                                      fetchCarModels(selectedCarMake!);
+                                      await fetchCarModels(selectedCarMake!);
                                     },
                                     decoration: InputDecoration(
-                                      labelText: carDataInfo['make'] ?? 'Make',
+                                      labelText: selectedCarMake ?? 'Make',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -344,8 +345,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                           selectedCarMake!, selectedCarModel!);
                                     },
                                     decoration: InputDecoration(
-                                      labelText:
-                                          carDataInfo['model'] ?? 'Model',
+                                      labelText: selectedCarModel ?? 'Model',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -389,7 +389,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       selectedCarMake!, selectedCarModel!);
                                 },
                                 decoration: InputDecoration(
-                                  labelText: carDataInfo['year'] ?? 'Year',
+                                  labelText: selectedYear ?? 'Year',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -430,8 +430,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText:
-                                      carDataInfo['fuelType'] ?? 'Fuel Type',
+                                  labelText: selectedFuelType ?? 'Fuel Type',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -483,8 +482,8 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       });
                                     },
                                     decoration: InputDecoration(
-                                      labelText: carDataInfo['fuelEconomy'] ??
-                                          'Fuel Economy',
+                                      labelText:
+                                          selectedFuelEconomy ?? 'Fuel Economy',
                                       labelStyle: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -536,7 +535,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       r'^[a-zA-Z]*$')), // Allow only English letters
                                 ],
                                 decoration: InputDecoration(
-                                  labelText: carDataInfo['englishLetters'] ??
+                                  labelText: englishLettersController.text ??
                                       'English letters',
                                   labelStyle: TextStyle(
                                     color: Colors
@@ -574,7 +573,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 //       r'^[\u0600-\u06FF\s]*$')), // Allow only Arabic letters
                                 // ],
                                 decoration: InputDecoration(
-                                  labelText: carDataInfo['arabicLetters'] ??
+                                  labelText: arabicLettersController.text ??
                                       'Arabic letters',
                                   labelStyle: TextStyle(
                                     color: Colors
@@ -613,7 +612,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 ],
                                 decoration: InputDecoration(
                                   labelText:
-                                      carDataInfo['plateNumbers'] ?? 'Numbers',
+                                      numbersController.text ?? 'Numbers',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -627,8 +626,8 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                         color: Colors
                                             .grey), // Change the color as needed
                                   ),
-                                  prefixIcon: Icon(
-                                    Icons.text_fields,
+                                  prefixIcon: Image.asset(
+                                    'assets/icons/numbers.png',
                                     color: Color(0xFFFFCEAF),
                                   ),
                                 ),
@@ -670,12 +669,12 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   return; // Exit the function if any field is empty
                                 }
 
-                                if (englishLettersController.text.length > 3) {
+                                if (englishLettersController.text.length != 3) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'English field should not have more than 3 characters'),
+                                          'Please ensure the English field has exactly 3 characters'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -689,12 +688,12 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   return;
                                 }
 
-                                if (arabicLettersController.text.length > 3) {
+                                if (arabicLettersController.text.length != 3) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Arabic field should not have more than 3 characters'),
+                                          'Please ensure the Arabic field has exactly 3 characters'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -709,12 +708,12 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 }
 
                                 // Check if numbersController has exactly 3 characters
-                                if (numbersController.text.length != 3) {
+                                if (numbersController.text.length != 4) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Numbers field should have exactly 3 characters'),
+                                          'Please enter up to 4 digits in the Numbers field'),
                                       backgroundColor:
                                           Color.fromARGB(255, 255, 99, 88),
                                       behavior: SnackBarBehavior.floating,
@@ -728,7 +727,14 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   return;
                                 }
                                 if (currentUser != null) {
-                                  submitFormData();
+                                  await submitFormData();
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            carInfo(carId: widget.carId)),
+                                  );
                                 } else {
                                   // Handle the case where the user is not authenticated
                                   ScaffoldMessenger.of(context)

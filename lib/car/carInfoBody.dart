@@ -118,7 +118,8 @@ class carInfoBody extends StatelessWidget {
                                 Container(
                                   alignment: Alignment.center,
                                   child: Image.asset(
-                                    "assets/images/55.png",
+                                    "assets/images/myCars.png",
+                                    color: Color(0xFF3C4046),
                                     height: 200,
                                     width: 300,
                                   ),
@@ -143,8 +144,11 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
                                             ),
                                             Padding(
                                               padding:
@@ -153,9 +157,10 @@ class carInfoBody extends StatelessWidget {
                                                 carData!['make'] as String? ??
                                                     '',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   fontWeight: FontWeight.normal,
-                                                  color: Color(0xFF0C9869),
+                                                  color: Color.fromARGB(
+                                                      215, 60, 64, 70),
                                                 ),
                                               ),
                                             ),
@@ -173,8 +178,11 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
                                             ),
                                             Padding(
                                               padding:
@@ -183,9 +191,10 @@ class carInfoBody extends StatelessWidget {
                                                 carData['model'] as String? ??
                                                     '',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   fontWeight: FontWeight.normal,
-                                                  color: Color(0xFF0C9869),
+                                                  color: Color.fromARGB(
+                                                      215, 60, 64, 70),
                                                 ),
                                               ),
                                             ),
@@ -209,8 +218,11 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
                                             ),
                                             Padding(
                                               padding:
@@ -219,9 +231,10 @@ class carInfoBody extends StatelessWidget {
                                                 carData['year'] as String? ??
                                                     '',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   fontWeight: FontWeight.normal,
-                                                  color: Color(0xFF0C9869),
+                                                  color: Color.fromARGB(
+                                                      215, 60, 64, 70),
                                                 ),
                                               ),
                                             ),
@@ -243,8 +256,11 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
                                             ),
                                             Padding(
                                               padding:
@@ -254,9 +270,10 @@ class carInfoBody extends StatelessWidget {
                                                         as String? ??
                                                     '',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   fontWeight: FontWeight.normal,
-                                                  color: Color(0xFF0C9869),
+                                                  color: Color.fromARGB(
+                                                      215, 60, 64, 70),
                                                 ),
                                               ),
                                             ),
@@ -274,8 +291,11 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
                                             ),
                                             Padding(
                                               padding:
@@ -285,9 +305,10 @@ class carInfoBody extends StatelessWidget {
                                                         as String? ??
                                                     '',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   fontWeight: FontWeight.normal,
-                                                  color: Color(0xFF0C9869),
+                                                  color: Color.fromARGB(
+                                                      215, 60, 64, 70),
                                                 ),
                                               ),
                                             ),
@@ -311,7 +332,7 @@ class carInfoBody extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFECAE),
+                                                color: Color(0xFF0C9869),
                                               ),
                                             ),
                                             SizedBox(height: 10),
