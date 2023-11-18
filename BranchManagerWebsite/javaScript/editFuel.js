@@ -56,28 +56,6 @@ async function retrieveAndPopulateForm() {
         if (docSnap.exists()) {
             // Access data for each document
             const stationData = docSnap.data();
-
-            document.getElementById("StationName").value = stationData.name;
-            document.getElementById("StationLocation").value = stationData.Location;
-            document.getElementById("StationName").style.fontSize = "larger";
-            document.getElementById("StationLocation").style.fontSize = "larger";
-            document.getElementById("StationName").style.color = "#f8a71a98";
-            document.getElementById("StationLocation").style.color = "#f8a71a98";
-
-            if(stationData.open_hour != null)
-            document.getElementById("OpenHour").value = stationData.open_hour;
-
-            if(stationData.close_hour != null)
-            document.getElementById("CloseHour").value = stationData.close_hour;
-            
-            if(stationData.image_station != null)
-            document.getElementById('imageUpload').value = stationData.image_station;
-
-            // Update the label text to the selected file's name
-            // if(stationData.image_station != null){
-            //     const imageLabel = document.getElementById('imageLabel');
-            //     imageLabel.textContent = stationData.image_station;
-            // }
             
             // Checkboxes and radio buttons can be populated here
             populateCheckBoxesAndRadioButtons(stationData);
@@ -119,14 +97,14 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     // Handle the heightBox and BKimage based on the number of checkboxes
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
-        document.getElementById("heightBox").style.height = 700;
-        document.getElementById("BKimage").height = 850;
+        document.getElementById("heightBox").style.height = 500;
+        document.getElementById("BKimage").height = 500;
     } else if (numCheckbox === 2) {
-        document.getElementById("heightBox").style.height = 800;
-        document.getElementById("BKimage").height = 910;
+        document.getElementById("heightBox").style.height = 600;
+        document.getElementById("BKimage").height = 600;
     } else if (numCheckbox === 3) {
-        document.getElementById("heightBox").style.height = 900;
-        document.getElementById("BKimage").height = 970;
+        document.getElementById("heightBox").style.height = 600;
+        document.getElementById("BKimage").height = 600;
     }
 }
 
@@ -148,8 +126,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 91 based on its checkbox state
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
-        document.getElementById("heightBox").style.height= 700;
-        document.getElementById("BKimage").height= 850;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -157,8 +135,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 95 based on its checkbox state
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
-        document.getElementById("heightBox").style.height= 800;
-        document.getElementById("BKimage").height= 910;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -166,8 +144,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for Diesel based on its checkbox state
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
-        document.getElementById("heightBox").style.height= 900;
-        document.getElementById("BKimage").height= 960;
+        document.getElementById("heightBox").style.height= 300;
+        document.getElementById("BKimage").height= 300;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -199,13 +177,6 @@ const form = document.getElementById("editStation");
             }
         }
 
-        // Check if an image has been selected
-        // const imageUpload = document.getElementById("imageUpload");
-        // if (imageUpload.files.length === 0) {
-        //     alert("Please select an image");
-        //     return; // Prevent form submission if a validation check fails
-        // }
-
         // If all validation checks pass, you can proceed to update the Firestore document
         if (hasChecked) {
             await AddStation();
@@ -221,9 +192,6 @@ const form = document.getElementById("editStation");
 
 // set to station doc
 async function AddStation() {
-    const stationImage = document.getElementById("imageUpload").value;
-    const OpenHour = document.getElementById("OpenHour").value;
-    const CloseHour = document.getElementById("CloseHour").value;
     const fuelType = document.getElementsByName("fuelType");
     let fuelTypeArray = [];
     let fuelStatevalue = [];
@@ -252,9 +220,6 @@ async function AddStation() {
     // Update the station with more information
     try {
         await updateDoc(myCollection, {
-            open_hour: OpenHour,
-            close_hour: CloseHour,
-            image_station: stationImage,
             fuel_type: fuelTypeArray,
             fuel_status: fuelStatevalue,
         });
@@ -263,16 +228,6 @@ async function AddStation() {
         console.error("Error updating data in Firestore: ", error);
     }
 }
-
-// Add an event listener to the file input
-// document.getElementById('imageUpload').addEventListener('change', function () {
-//     const imageLabel = document.getElementById('imageLabel');
-
-//     // Update the label text to the selected file's name
-//     imageLabel.textContent = imageUpload.files[0].name;
- 
-// });
-
 
 // change alert style
 function showAlert(message) {
