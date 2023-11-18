@@ -120,7 +120,7 @@ class carInfoBody extends StatelessWidget {
                                   child: Image.asset(
                                     "assets/images/myCars.png",
                                     color: Color(0xFF3C4046),
-                                    height: 200,
+                                    height: 160,
                                     width: 300,
                                   ),
                                 ),

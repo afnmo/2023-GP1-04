@@ -708,7 +708,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 }
 
                                 // Check if numbersController has exactly 3 characters
-                                if (numbersController.text.length != 4) {
+                                if (numbersController.text.length > 4) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -740,7 +740,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content: Text(
-                                        'Please sign in before adding a car.'),
+                                        'Please sign in before edit your car'),
                                     backgroundColor: Colors.red,
                                   ));
                                 }

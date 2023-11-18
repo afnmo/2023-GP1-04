@@ -107,7 +107,25 @@ class _addCarBodyState extends State<addCarBody> {
     });
   }
 
-  Future<void> submitFormData(String userId) async {
+// Function to retrieve the email of the currently authenticated user
+  Future<String?> findDocumentIdByEmail() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('Users');
+
+    QuerySnapshot querySnapshot =
+        await usersCollection.where('email', isEqualTo: user?.email).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.id;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> submitFormData() async {
     // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
@@ -120,6 +138,8 @@ class _addCarBodyState extends State<addCarBody> {
     String grade =
         await carDataObj.getGradeForFuelEconomy(year, make, model, fuelEconomy);
 
+    String? documentId = await findDocumentIdByEmail();
+
     // Submit data to Firebase
     FirebaseFirestore.instance.collection('Cars').add({
       'make': make,
@@ -131,7 +151,7 @@ class _addCarBodyState extends State<addCarBody> {
       'arabicLetters': arabicLetters,
       'plateNumbers': numbers,
       'grade': grade,
-      'userId': userId,
+      'userId': documentId,
     });
 
     // Optionally, you can clear the form fields after submission
@@ -681,7 +701,7 @@ class _addCarBodyState extends State<addCarBody> {
                                 }
 
                                 // Check if numbersController has exactly 3 characters
-                                if (numbersController.text.length != 4) {
+                                if (numbersController.text.length > 4) {
                                   // Display a message indicating that numbersController should have exactly 3 characters
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -700,7 +720,7 @@ class _addCarBodyState extends State<addCarBody> {
                                   return;
                                 }
                                 if (currentUser != null) {
-                                  await submitFormData(currentUser.uid);
+                                  await submitFormData();
 
                                   Navigator.pushReplacement(
                                     context,
@@ -712,7 +732,7 @@ class _addCarBodyState extends State<addCarBody> {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content: Text(
-                                        'Please sign in before adding a car.'),
+                                        'Please sign in before adding a car'),
                                     backgroundColor: Colors.red,
                                   ));
                                 }
