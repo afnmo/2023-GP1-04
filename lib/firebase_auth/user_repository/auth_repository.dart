@@ -13,7 +13,11 @@ class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
 
   final _auth = FirebaseAuth.instance;
+  // normal user
   late final Rx<User?> firebaseUser;
+
+  // employee?
+
 
   @override
   void onReady() {
@@ -30,65 +34,6 @@ class AuthRepository extends GetxController {
       Get.offAll(() => const HomeScreen());
     }
   }
-
-  // _setInitialScreen(User? user) async {
-  //   // Check if the onboarding screen has been shown before
-  //   // resetOnboardingFlag();
-
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
-
-  //   if (!hasSeenOnboarding) {
-  //     // The onboarding screen has not been shown, so navigate to it.
-  //     Get.offAll(() => OnBoardingScreen());
-
-  //     // Mark the onboarding screen as shown
-  //     await prefs.setBool('hasSeenOnboarding', true);
-  //   } else {
-  //     // The onboarding screen has been shown before, so navigate to the welcome or home screen.
-  //     user == null
-  //         ? Get.offAll(() => WelcomeScreen())
-  //         : Get.offAll(() => const HomeScreen());
-  //   }
-  // }
-
-  // Future<User?> signUpWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     UserCredential credential = await _auth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return credential.user;
-  //   } catch (e) {
-  //     print("Some error occured in sign(Up)WithEmailAndPassword");
-  //   }
-
-  //   return null;
-  // }
-
-  // Future<User?> createUserWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     UserCredential credential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     Get.showSnackbar(
-  //       const GetSnackBar(
-  //         message: "Good work, the name is not in use",
-  //       ),
-  //     );
-  //     return credential.user;
-  //   } on FirebaseAuthException catch (e) {
-  //     final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-  //     print('FIREBASE AUTH EXCEPTION - ${ex.message}');
-  //     throw ex;
-  //   } catch (_) {
-  //     const ex = SignUpWithEmailAndPasswordFailure();
-  //     print('Exception - ${ex.message}');
-  //     throw ex;
-  //   }
-  // }
 
   Future<void> createUserWithEmailAndPassword(UserModel userModel) async {
     try {
@@ -160,68 +105,7 @@ class AuthRepository extends GetxController {
       throw ex;
     }
   }
-
-  // Future<User?> createUserWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     // Check if the email is already associated with an account
-  //     final existingMethods =
-  //         await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
-
-  //     if (existingMethods.isEmpty) {
-  //       // The email is not in use, so proceed with registration
-  //       UserCredential credential =
-  //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: email,
-  //         password: password,
-  //       );
-  //       Get.showSnackbar(
-  //         const GetSnackBar(
-  //           message: "Good work, the email is not in use",
-  //         ),
-  //       );
-  //       return credential.user;
-  //     } else {
-  //       // The email is already in use
-  //       Get.showSnackbar(
-  //         const GetSnackBar(
-  //           message: "Oops!, the email is already in use",
-  //         ),
-  //       );
-  //       throw const SignUpWithEmailAndPasswordFailure(
-  //           'Email is already in use');
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-  //     print('FIREBASE AUTH EXCEPTION - ${ex.message}');
-  //     throw ex;
-  //   } catch (_) {
-  //     const ex = SignUpWithEmailAndPasswordFailure();
-  //     print('Exception - ${ex.message}');
-  //     throw ex;
-  //   }
-  // }
-
-  // Future<void> loginWithEmailAndPassword(String email, String password) async {
-  //   try {
-  //     await _auth.signInWithEmailAndPassword(email: email, password: password);
-  //   } on FirebaseAuthException catch (e) {
-  //     // e.code
-  //   } catch (_) {}
-  // }
-
-  // Future<User?> signInWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     UserCredential credential = await _auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return credential.user;
-  //   } catch (e) {
-  //     print("Some error occured in sign(In)WithEmailAndPassword");
-  //   }
-
-  //   return null;
-  // }
+  // 
 
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
