@@ -12,12 +12,12 @@ import 'package:gp91/welcome/welcome_screen.dart';
 class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
 
+
   final _auth = FirebaseAuth.instance;
   // normal user
   late final Rx<User?> firebaseUser;
 
   // employee?
-
 
   @override
   void onReady() {
@@ -97,15 +97,17 @@ class AuthRepository extends GetxController {
         colorText: Colors.red,
       );
       throw ex;
-    } catch (_) {
+    } catch (e, a) {
       // Handle other exceptions
+      print(e);
+      print(a);
       const ex = SignUpWithEmailAndPasswordFailure();
       Get.back();
       print('Exception - ${ex.message}');
       throw ex;
     }
   }
-  // 
+  //
 
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {

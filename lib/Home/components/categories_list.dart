@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/Station/Details_Station/Details_Station.dart';
 import 'package:gp91/Station/Station.dart';
+import 'package:gp91/car/carBody.dart';
 import 'package:gp91/consumption/intro_fuel.dart';
 import 'package:gp91/settings/settings_page.dart';
 import 'package:gp91/about_us/about_us.dart';
@@ -53,6 +54,7 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             image: "assets/images/addCar2.png",
             onTap: () {
               // Add your navigation logic here
+              Get.to(() => CarBody());
             },
           ),
           CategoryCardMallika1(

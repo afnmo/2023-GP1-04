@@ -22,20 +22,24 @@ class FuelFirebase extends GetxController {
   Future<String?> getUserDocumentIdByEmail() async {
     try {
       String? email = getCurrentUserEmail();
+      print("getUserDocumentIdByEmail(): email: $email");
       if (email == null) {
+        print("Email is null");
         // Optionally, you can show a different snackbar or handle this case separately
         return null;
       }
 
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('Users')
           .where('email', isEqualTo: email)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        print("getUserDocumentIdByEmail(): querySnapshot.docs.isNotEmpty");
         return querySnapshot.docs.first.id;
       } else {
+        print("getUserDocumentIdByEmail(): querySnapshot.docs.isEmpty");
         return null;
       }
     } catch (e) {
@@ -55,15 +59,18 @@ class FuelFirebase extends GetxController {
   Future<Map<String, dynamic>?> getFirstCarForUser() async {
     try {
       String? userId = await getUserDocumentIdByEmail();
+
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('cars')
+          .collection('Cars')
           .where('userId', isEqualTo: userId)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        print("getFirstCarForUser(): querySnapshot.docs.isNotEmpty");
         return querySnapshot.docs.first.data();
       } else {
+        print("getFirstCarForUser(): querySnapshot.docs.isEmpty");
         return null;
       }
     } catch (e) {
@@ -81,15 +88,20 @@ class FuelFirebase extends GetxController {
   Future<String?> getFirstCarDocumentIdForUser(String userId) async {
     try {
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('cars')
+          .collection('Cars')
           .where('userId', isEqualTo: userId)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        print(
+            "getFirstCarDocumentIdForUser(String userId): querySnapshot.docs.isNotEmpty");
         return querySnapshot
             .docs.first.id; // Return the first car's document ID
       } else {
+        print(
+            "getFirstCarDocumentIdForUser(String userId): querySnapshot.docs.isEmpty");
+
         return null; // Return null if the user has no cars
       }
     } catch (e) {
@@ -109,7 +121,9 @@ class FuelFirebase extends GetxController {
   Future<void> addMileage(Map<String, dynamic> data) async {
     try {
       String? userId = await getUserDocumentIdByEmail();
+      print("userId: " + userId!);
       String? carId = await getFirstCarDocumentIdForUser(userId!);
+      print("carId: " + carId!);
       Map<String, dynamic> additionalData = {
         'userId': userId,
         'carId': carId,
@@ -120,7 +134,7 @@ class FuelFirebase extends GetxController {
 
       await _db.collection("Consumption").add(data);
     } catch (error) {
-      print("Something went wrong in create user database");
+      print("Something went wrong in addMileage");
       Get.snackbar(
         "Error",
         "Something went wrong, try again",

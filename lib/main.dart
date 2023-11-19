@@ -4,13 +4,18 @@ import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_result.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/consumption/intro_fuel.dart';
+import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 import 'package:gp91/on_boarding/on_boarding_screen.dart';
 import 'package:gp91/welcome/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
+  await Firebase.initializeApp();
+  Get.put(UserRepository()); // Register UserRepository
+  Get.put(AuthRepository()); // Register AuthRepository
 
   // resetOnboardingFlag();
   // // Check if the user has seen the onboarding screen before
@@ -41,6 +46,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       home: OnBoardingScreen(),
+
       // home: IntroFuel(),
       // home: FuelResult(),
       // home: ListConsumption(),
