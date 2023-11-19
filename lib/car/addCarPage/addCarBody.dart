@@ -8,14 +8,7 @@ import 'carData.dart';
 import 'package:csv/csv.dart';
 import 'dart:convert';
 import 'package:gp91/car/car.dart';
-
-void main() {
-  runApp(
-    MaterialApp(
-      home: addCarBody(),
-    ),
-  );
-}
+import 'formDataHandler.dart';
 
 class addCarBody extends StatefulWidget {
   const addCarBody({Key? key}) : super(key: key);
@@ -28,10 +21,10 @@ class _addCarBodyState extends State<addCarBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
-  List<List<dynamic>> _carData = [];
+  //List<List<dynamic>> _carData = [];
   List<String> _uniqueManufacturers = [];
   List<String> carModels = [];
-  List<String> FuelEconomys = [];
+  List<String> fuelEconomys = [];
   List<String> years = [];
 
   String? selectedYear; // Make selectedYear nullable with '?'
@@ -41,41 +34,13 @@ class _addCarBodyState extends State<addCarBody> {
   String? selectedCarMake;
   String? selectedCarModel;
   TextEditingController englishLettersController = TextEditingController();
-  TextEditingController arabicLettersController = TextEditingController();
   TextEditingController numbersController = TextEditingController();
   carData carDataObj = carData();
-
-  //Map<String, List<String>> mapOfCarMakeAndModel = carData.getCarData();
-
-  @override
-  void dispose() {
-    englishLettersController.dispose();
-    arabicLettersController.dispose();
-    numbersController.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
-    initializeFirebase();
-    loadCSV();
     extractManufacturers();
-  }
-
-  void initializeFirebase() async {
-    try {
-      await Firebase.initializeApp();
-    } catch (e) {
-      print('Error initializing Firebase: $e');
-    }
-  }
-
-  void loadCSV() async {
-    List<List<dynamic>> csvData = await carData.loadCSVData();
-    setState(() {
-      _carData = csvData;
-    });
   }
 
   void extractManufacturers() async {
@@ -103,75 +68,141 @@ class _addCarBodyState extends State<addCarBody> {
   Future<void> fetchFuelEconomy(String year, String make, String model) async {
     List<String> Economys = await carDataObj.getFuelEconomy(year, make, model);
     setState(() {
-      FuelEconomys = Economys;
+      fuelEconomys = Economys;
     });
   }
 
-// Function to retrieve the email of the currently authenticated user
-  Future<String?> findDocumentIdByEmail() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('Users');
-
-    QuerySnapshot querySnapshot =
-        await usersCollection.where('email', isEqualTo: user?.email).get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first.id;
-    } else {
-      return null;
+  void submitFormData() async {
+    // Check if any field is empty
+    if (selectedCarMake == null ||
+        selectedCarModel == null ||
+        selectedYear == null ||
+        selectedFuelType == null ||
+        selectedFuelEconomy == null ||
+        englishLettersController.text.isEmpty ||
+        numbersController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all required fields'),
+          backgroundColor: Color.fromARGB(255, 255, 99, 88),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      );
+      return;
     }
-  }
 
-  Future<void> submitFormData() async {
-    // Gather form data
-    String make = selectedCarMake ?? '';
-    String model = selectedCarModel ?? '';
-    String year = selectedYear ?? '';
-    String fuelType = selectedFuelType ?? '';
-    String fuelEconomy = selectedFuelEconomy ?? '';
-    String englishLetters = englishLettersController.text ?? '';
-    String arabicLetters = arabicLettersController.text ?? '';
-    String numbers = numbersController.text ?? '';
-    String grade =
-        await carDataObj.getGradeForFuelEconomy(year, make, model, fuelEconomy);
+    if (englishLettersController.text.length != 3) {
+      // Display a message indicating that the English field should have exactly 3 characters
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('Please ensure the English field has exactly 3 characters'),
+          backgroundColor: Color.fromARGB(255, 255, 99, 88),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      );
+      return;
+    } else {
+      List<String> allowedLetters = [
+        'A',
+        'B',
+        'J',
+        'D',
+        'R',
+        'S',
+        'X',
+        'T',
+        'E',
+        'G',
+        'K',
+        'L',
+        'Z',
+        'N',
+        'H',
+        'U',
+        'V'
+      ];
 
-    String? documentId = await findDocumentIdByEmail();
+      List<String> nonMatchingLetters = [];
 
-    // Submit data to Firebase
-    FirebaseFirestore.instance.collection('Cars').add({
-      'make': make,
-      'model': model,
-      'year': year,
-      'fuelType': fuelType,
-      'fuelEconomy': fuelEconomy,
-      'englishLetters': englishLetters,
-      'arabicLetters': arabicLetters,
-      'plateNumbers': numbers,
-      'grade': grade,
-      'userId': documentId,
-    });
+      for (int i = 0; i < englishLettersController.text.length; i++) {
+        if (!allowedLetters
+            .contains(englishLettersController.text[i].toUpperCase())) {
+          nonMatchingLetters.add(englishLettersController.text[i]);
+        }
+      }
 
-    // Optionally, you can clear the form fields after submission
-    setState(() {
-      selectedCarMake = null;
-      selectedCarModel = null;
-      selectedYear = null;
-      selectedFuelType = null;
-      selectedFuelEconomy = null;
-      englishLettersController
-          .clear(); // Use clear() to clear the text in the TextEditingController
-      arabicLettersController.clear();
-      numbersController.clear();
-      // Clear other form fields if needed
-    });
+      if (nonMatchingLetters.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Characters not allowed: ${nonMatchingLetters.join(', ')}'),
+            backgroundColor: Color.fromARGB(255, 255, 99, 88),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+        );
+        return;
+      }
+    }
 
-    // Optionally, show a success message or navigate to another screen
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Car added successfully to Firebase!'),
-    ));
+    // Check if numbersController has more than 4 characters
+    if (numbersController.text.length > 4) {
+      // Display a message indicating that the Numbers field should have up to 4 digits
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter up to 4 digits in the Numbers field'),
+          backgroundColor: Color.fromARGB(255, 255, 99, 88),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      );
+      return;
+    }
+
+    formDataHandler formDataHandlerObj = formDataHandler();
+
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      await formDataHandlerObj.formData(
+        selectedCarMake,
+        selectedCarModel,
+        selectedYear,
+        selectedFuelType,
+        selectedFuelEconomy,
+        englishLettersController,
+        numbersController,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CarApp(),
+        ),
+      );
+    } else {
+      // Handle the case where the user is not authenticated
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please sign in before adding a car'),
+          backgroundColor: Color.fromARGB(255, 255, 99, 88),
+        ),
+      );
+    }
   }
 
   Widget build(BuildContext context) {
@@ -249,7 +280,7 @@ class _addCarBodyState extends State<addCarBody> {
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFECAE),
+                                  color: Color(0xFF6EA67C),
                                 ),
                               ),
                             ),
@@ -461,7 +492,7 @@ class _addCarBodyState extends State<addCarBody> {
                                   return DropdownButtonFormField<String>(
                                     value: selectedFuelEconomy,
                                     items:
-                                        FuelEconomys.map((String FuelEconomy) {
+                                        fuelEconomys.map((String FuelEconomy) {
                                       return DropdownMenuItem<String>(
                                         value: FuelEconomy,
                                         child: SizedBox(
@@ -507,11 +538,11 @@ class _addCarBodyState extends State<addCarBody> {
                             Align(
                               alignment: Alignment(-0.8, 0.8),
                               child: Text(
-                                'Plate',
+                                'Plate information',
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFECAE),
+                                  color: Color(0xFF6EA67C),
                                 ),
                               ),
                             ),
@@ -532,43 +563,6 @@ class _addCarBodyState extends State<addCarBody> {
                                 ],
                                 decoration: InputDecoration(
                                   labelText: 'English letters',
-                                  labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.text_fields,
-                                    color: Color(0xFFFFCEAF),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
-                              child: TextFormField(
-                                controller: arabicLettersController,
-                                //maxLength: 3,
-                                keyboardType: TextInputType
-                                    .text, // Use TextInputType.text for Arabic letters
-                                // inputFormatters: <TextInputFormatter>[
-                                //   FilteringTextInputFormatter.allow(RegExp(
-                                //       r'^[\u0600-\u06FF\s]*$')), // Allow only Arabic letters
-                                // ],
-                                decoration: InputDecoration(
-                                  labelText: 'Arabic letters',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -631,111 +625,7 @@ class _addCarBodyState extends State<addCarBody> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                // Check if the user is authenticated
-                                User? currentUser =
-                                    FirebaseAuth.instance.currentUser;
-
-                                // Check if any field is empty
-                                if (selectedCarMake == null ||
-                                    selectedCarModel == null ||
-                                    selectedYear == null ||
-                                    selectedFuelType == null ||
-                                    selectedFuelEconomy == null ||
-                                    englishLettersController.text.isEmpty ||
-                                    arabicLettersController.text.isEmpty ||
-                                    numbersController.text.isEmpty) {
-                                  // Display a message indicating that all fields are required
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Please fill in all required fields'),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 99, 88),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  );
-                                  return; // Exit the function if any field is empty
-                                }
-
-                                if (englishLettersController.text.length != 3) {
-                                  // Display a message indicating that numbersController should have exactly 3 characters
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Please ensure the English field has exactly 3 characters'),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 99, 88),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  );
-                                  return;
-                                }
-
-                                if (arabicLettersController.text.length != 3) {
-                                  // Display a message indicating that numbersController should have exactly 3 characters
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Please ensure the Arabic field has exactly 3 characters'),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 99, 88),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  );
-                                  return;
-                                }
-
-                                // Check if numbersController has exactly 3 characters
-                                if (numbersController.text.length > 4) {
-                                  // Display a message indicating that numbersController should have exactly 3 characters
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Please enter up to 4 digits in the Numbers field'),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 99, 88),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                if (currentUser != null) {
-                                  await submitFormData();
-
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CarApp()),
-                                  );
-                                } else {
-                                  // Handle the case where the user is not authenticated
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text(
-                                        'Please sign in before adding a car'),
-                                    backgroundColor: Colors.red,
-                                  ));
-                                }
+                                submitFormData();
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(

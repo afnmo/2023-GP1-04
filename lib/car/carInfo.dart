@@ -16,12 +16,12 @@ class carInfo extends StatelessWidget {
             child: carInfoBody(
                 carId: carId), // Create an instance of the CarBody widget
           ),
-          BottomNav(
-            currentIndex: 0, // Set the initial index as needed
-            onIndexChanged: (index) {
-              // Handle index changes if required
-            },
-          ),
+          // BottomNav(
+          //   currentIndex: 0, // Set the initial index as needed
+          //   onIndexChanged: (index) {
+          //     // Handle index changes if required
+          //   },
+          // ),
         ],
       ),
     );

@@ -51,7 +51,6 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
   @override
   void initState() {
     super.initState();
-    initializeFirebase();
     loadCSV();
     extractManufacturers();
     getCarData();
@@ -98,14 +97,6 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
     if (carDataInfo['plateNumbers'] != null) {
       numbersController =
           TextEditingController(text: carDataInfo['plateNumbers']);
-    }
-  }
-
-  void initializeFirebase() async {
-    try {
-      await Firebase.initializeApp();
-    } catch (e) {
-      print('Error initializing Firebase: $e');
     }
   }
 
