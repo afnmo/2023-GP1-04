@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'carData.dart';
-import 'package:csv/csv.dart';
-import 'dart:convert';
 import 'package:gp91/car/car.dart';
 import 'formDataHandler.dart';
 
@@ -35,7 +30,28 @@ class _addCarBodyState extends State<addCarBody> {
   String? selectedCarModel;
   TextEditingController englishLettersController = TextEditingController();
   TextEditingController numbersController = TextEditingController();
+  TextEditingController carNameController = TextEditingController();
+  String? selectedCarColor;
   carData carDataObj = carData();
+
+  List<String> colorMap = [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'purple',
+    'pink',
+    'teal',
+    'cyan',
+    'amber',
+    'indigo',
+    'lime',
+    'brown',
+    'grey',
+    'black',
+    'white',
+  ];
 
   @override
   void initState() {
@@ -80,7 +96,9 @@ class _addCarBodyState extends State<addCarBody> {
         selectedFuelType == null ||
         selectedFuelEconomy == null ||
         englishLettersController.text.isEmpty ||
-        numbersController.text.isEmpty) {
+        numbersController.text.isEmpty ||
+        carNameController.text.isEmpty ||
+        selectedCarColor == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please fill in all required fields'),
@@ -186,6 +204,8 @@ class _addCarBodyState extends State<addCarBody> {
         selectedFuelEconomy,
         englishLettersController,
         numbersController,
+        carNameController,
+        selectedCarColor,
       );
 
       Navigator.pushReplacement(
@@ -615,6 +635,97 @@ class _addCarBodyState extends State<addCarBody> {
                                   ),
                                   prefixIcon: Image.asset(
                                     'assets/icons/numbers.png',
+                                    color: Color(0xFFFFCEAF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 22,
+                            ),
+                            Align(
+                              alignment: Alignment(-0.8, 0.8),
+                              child: Text(
+                                'Style information',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF6EA67C),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 19,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
+                              child: DropdownButtonFormField<String>(
+                                value: selectedCarColor,
+                                items: colorMap.map((String carColor) {
+                                  return DropdownMenuItem<String>(
+                                    value: carColor,
+                                    child: Text(carColor),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCarColor = newValue;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Car color',
+                                  labelStyle: TextStyle(
+                                    color: Colors
+                                        .black, // Change the label text color as needed
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors
+                                            .grey), // Change the color as needed
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.color_lens,
+                                    color: Color(0xFFFFCEAF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
+                              child: TextFormField(
+                                controller: carNameController,
+                                keyboardType: TextInputType
+                                    .text, // Use TextInputType.text for English letters
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(RegExp(
+                                      r'^[a-zA-Z ]*$')), // Allow only English letters
+                                ],
+                                decoration: InputDecoration(
+                                  labelText: 'Car name',
+                                  labelStyle: TextStyle(
+                                    color: Colors
+                                        .black, // Change the label text color as needed
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors
+                                            .grey), // Change the color as needed
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.directions_car,
                                     color: Color(0xFFFFCEAF),
                                   ),
                                 ),

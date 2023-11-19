@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gp91/car/addCarPage/addCar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'carInfo.dart';
+import 'carInfoPage/carInfo.dart';
+import 'carDataHandler.dart';
 
 class CarBody extends StatefulWidget {
   @override
@@ -11,22 +12,12 @@ class CarBody extends StatefulWidget {
 }
 
 class _CarBodyState extends State<CarBody> {
-  late Future<void> _firebaseInitialization;
   late Future<List<String?>> _fetchCarsFuture;
-  bool _isFirebaseInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _firebaseInitialization = initializeFirebase();
-    _fetchCarsFuture = fetchDocumentIdsByEmail();
-  }
-
-  Future<void> initializeFirebase() async {
-    await Firebase.initializeApp();
-    setState(() {
-      _isFirebaseInitialized = true;
-    });
+    _fetchCarsFuture = carDataHandler.fetchDocumentIdsByEmail();
   }
 
   Widget addCarButton(BuildContext context) {
@@ -44,48 +35,52 @@ class _CarBodyState extends State<CarBody> {
     );
   }
 
-  Future<String?> findDocumentIdByEmail() async {
-    if (!_isFirebaseInitialized) {
-      await initializeFirebase();
+  Color parseColor(String? colorName) {
+    if (colorName != null) {
+      switch (colorName.toLowerCase()) {
+        case 'red':
+          return Colors.red;
+        case 'blue':
+          return Colors.blue;
+        case 'green':
+          return Colors.green;
+        case 'yellow':
+          return Colors.yellow;
+        case 'orange':
+          return Colors.orange;
+        case 'purple':
+          return Colors.purple;
+        case 'pink':
+          return Colors.pink;
+        case 'teal':
+          return Colors.teal;
+        case 'cyan':
+          return Colors.cyan;
+        case 'amber':
+          return Colors.amber;
+        case 'indigo':
+          return Colors.indigo;
+        case 'lime':
+          return Colors.lime;
+        case 'brown':
+          return Colors.brown;
+        case 'grey':
+          return Colors.grey;
+        case 'black':
+          return Colors.black;
+        case 'white':
+          return Colors.white;
+        default:
+          return Colors.black; // Default color if not found
+      }
     }
-
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('Users');
-
-    QuerySnapshot querySnapshot =
-        await usersCollection.where('email', isEqualTo: user?.email).get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first.id;
-    } else {
-      return null;
-    }
-  }
-
-  Future<List<String?>> fetchDocumentIdsByEmail() async {
-    String? userDocId = await findDocumentIdByEmail();
-
-    if (userDocId != null) {
-      final carCollection = FirebaseFirestore.instance.collection('Cars');
-      QuerySnapshot carQuerySnapshot =
-          await carCollection.where('userId', isEqualTo: userDocId).get();
-
-      List<String?> carDocumentIds =
-          carQuerySnapshot.docs.map<String?>((carDoc) => carDoc.id).toList();
-
-      return carDocumentIds;
-    } else {
-      return [];
-    }
+    return Colors.black; // Default color if colorName is null
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: _firebaseInitialization,
+      future: _fetchCarsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return FutureBuilder<List<String?>>(
@@ -140,6 +135,7 @@ class _CarBodyState extends State<CarBody> {
                           if (carSnapshot.hasData && carSnapshot.data != null) {
                             Map<String, dynamic> carData = carSnapshot.data!
                                 .data() as Map<String, dynamic>;
+                            Color carColor = parseColor(carData['color']);
                             return GestureDetector(
                               onTap: () {
                                 if (carDocumentId != null) {
@@ -179,27 +175,27 @@ class _CarBodyState extends State<CarBody> {
                                             "assets/images/myCars.png",
                                             height: 80,
                                             width: 150,
-                                            color: Color(0xFF3C4046),
+                                            color: carColor,
                                           ),
                                         ),
                                         Expanded(
                                           child: Align(
                                             alignment: Alignment(0.7, -0.7),
                                             child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFFFFECAE),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
+                                              // decoration: BoxDecoration(
+                                              //   color: Color(0xFFFFECAE),
+                                              //   borderRadius:
+                                              //       BorderRadius.circular(15),
+                                              // ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(6.0),
                                                 child: Text(
-                                                  carData['model'],
+                                                  carData['name'],
                                                   style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
+                                                    color: Color(0xFF0C9869),
                                                   ),
                                                 ),
                                               ),

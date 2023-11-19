@@ -35,7 +35,9 @@ class formDataHandler {
       selectedFuelType,
       selectedFuelEconomy,
       englishLettersController,
-      numbersController) async {
+      numbersController,
+      carNameController,
+      selectedCarColor) async {
     // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
@@ -44,6 +46,8 @@ class formDataHandler {
     String fuelEconomy = selectedFuelEconomy ?? '';
     String englishLetters = englishLettersController.text ?? '';
     String numbers = numbersController.text ?? '';
+    String name = carNameController.text ?? '';
+    String color = selectedCarColor ?? '';
     String grade =
         await carDataObj.getGradeForFuelEconomy(year, make, model, fuelEconomy);
 
@@ -60,6 +64,8 @@ class formDataHandler {
       'arabicLetters': arabicLetters,
       'plateNumbers': numbers,
       'grade': grade,
+      'color': color,
+      'name': name,
       'userId': documentId,
     });
   }

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'editCarInfo.dart';
+import '../editCarInfoPage/editCarInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'carInfoHandler.dart';
 
 class carInfoBody extends StatelessWidget {
   final String carId;
 
   carInfoBody({required this.carId});
-
-  Future<DocumentSnapshot> getCarData() async {
-    DocumentSnapshot carDoc =
-        await FirebaseFirestore.instance.collection('Cars').doc(carId).get();
-
-    return carDoc;
-  }
 
   Widget editCarButton(BuildContext context) {
     return FloatingActionButton(
@@ -53,15 +47,58 @@ class carInfoBody extends StatelessWidget {
     return convertedString;
   }
 
+  Color parseColor(String? colorName) {
+    if (colorName != null) {
+      switch (colorName.toLowerCase()) {
+        case 'red':
+          return Colors.red;
+        case 'blue':
+          return Colors.blue;
+        case 'green':
+          return Colors.green;
+        case 'yellow':
+          return Colors.yellow;
+        case 'orange':
+          return Colors.orange;
+        case 'purple':
+          return Colors.purple;
+        case 'pink':
+          return Colors.pink;
+        case 'teal':
+          return Colors.teal;
+        case 'cyan':
+          return Colors.cyan;
+        case 'amber':
+          return Colors.amber;
+        case 'indigo':
+          return Colors.indigo;
+        case 'lime':
+          return Colors.lime;
+        case 'brown':
+          return Colors.brown;
+        case 'grey':
+          return Colors.grey;
+        case 'black':
+          return Colors.black;
+        case 'white':
+          return Colors.white;
+        default:
+          return Colors.black; // Default color if not found
+      }
+    }
+    return Colors.black; // Default color if colorName is null
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: getCarData(),
+      future: carInfoHandler.getCarData(carId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else {
           var carData = snapshot.data!.data() as Map<String, dynamic>?;
+          Color carColor = parseColor(carData?['color']);
 
           return Scaffold(
             appBar: AppBar(
@@ -119,7 +156,7 @@ class carInfoBody extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Image.asset(
                                     "assets/images/myCars.png",
-                                    color: Color(0xFF3C4046),
+                                    color: carColor,
                                     height: 160,
                                     width: 300,
                                   ),
