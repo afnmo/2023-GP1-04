@@ -15,34 +15,43 @@ class carData {
   static Future<List<String>> extractManufacturers() async {
     List<String> manufacturers = [];
 
-    final rawData =
-        await rootBundle.load("assets/carDS/FE Vehicle Details.csv");
-    String csvData =
-        utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
+    try {
+      final rawData =
+          await rootBundle.load("assets/carDS/FE Vehicle Details.csv");
+      String csvData =
+          utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
-    List<List<dynamic>> listData = const CsvToListConverter().convert(csvData);
+      List<List<dynamic>> listData =
+          const CsvToListConverter().convert(csvData);
 
-    if (listData.isNotEmpty && listData[0].length > 1) {
-      int manufacturerColumnIndex =
-          1; // Assuming Manufacturer column is at index 1
+      if (listData.isNotEmpty && listData[0].length > 1) {
+        int manufacturerColumnIndex =
+            1; // Assuming Manufacturer column is at index 1
 
-      for (int i = 1; i < listData.length; i++) {
-        try {
-          String manufacturer = listData[i][manufacturerColumnIndex].toString();
-          if (manufacturer != null && manufacturer.isNotEmpty) {
-            manufacturers.add(manufacturer);
+        for (int i = 1; i < listData.length; i++) {
+          try {
+            String manufacturer =
+                listData[i][manufacturerColumnIndex].toString();
+            if (manufacturer != null && manufacturer.isNotEmpty) {
+              manufacturers.add(manufacturer);
+            }
+          } catch (e) {
+            // Handle any potential errors during extraction
+            print("Error extracting manufacturer: $e");
           }
-        } catch (e) {
-          // Handle any potential errors during extraction
-          print("Error extracting manufacturer: $e");
         }
       }
-    }
 
-    // Remove duplicates using Set and convert back to List
-    List<String> uniqueManufacturers = manufacturers.toSet().toList();
-    uniqueManufacturers.sort();
-    return uniqueManufacturers;
+      // Remove duplicates using Set and convert back to List
+      List<String> uniqueManufacturers = manufacturers.toSet().toList();
+      uniqueManufacturers.sort();
+      return uniqueManufacturers;
+    } catch (e) {
+      // Catch and handle any exceptions thrown in the process
+      print("Error occurred: $e");
+      // Return an empty list or handle the error as needed
+      return [];
+    }
   }
 
   Future<List<String>> getVehicleModels(String selectedCarMake) async {
