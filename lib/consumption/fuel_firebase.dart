@@ -54,79 +54,29 @@ class FuelFirebase extends GetxController {
     }
   }
 
-// -------------------------------------------------------------------
-  // temproraly: retrieve first car for the user
-  Future<Map<String, dynamic>?> getFirstCarForUser() async {
-    try {
-      String? userId = await getUserDocumentIdByEmail();
+  Future<List<String?>> fetchDocumentIdsByEmail() async {
+    String? userDocId = await getUserDocumentIdByEmail();
 
-      var querySnapshot = await FirebaseFirestore.instance
-          .collection('Cars')
-          .where('userId', isEqualTo: userId)
-          .limit(1)
-          .get();
+    if (userDocId != null) {
+      final carCollection = FirebaseFirestore.instance.collection('Cars');
+      QuerySnapshot carQuerySnapshot =
+          await carCollection.where('userId', isEqualTo: userDocId).get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        print("getFirstCarForUser(): querySnapshot.docs.isNotEmpty");
-        return querySnapshot.docs.first.data();
-      } else {
-        print("getFirstCarForUser(): querySnapshot.docs.isEmpty");
-        return null;
-      }
-    } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Something went wrong, try again",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-      );
-      return null;
+      List<String?> carDocumentIds =
+          carQuerySnapshot.docs.map<String?>((carDoc) => carDoc.id).toList();
+
+      return carDocumentIds;
+    } else {
+      return [];
     }
   }
-
-  Future<String?> getFirstCarDocumentIdForUser(String userId) async {
-    try {
-      var querySnapshot = await FirebaseFirestore.instance
-          .collection('Cars')
-          .where('userId', isEqualTo: userId)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        print(
-            "getFirstCarDocumentIdForUser(String userId): querySnapshot.docs.isNotEmpty");
-        return querySnapshot
-            .docs.first.id; // Return the first car's document ID
-      } else {
-        print(
-            "getFirstCarDocumentIdForUser(String userId): querySnapshot.docs.isEmpty");
-
-        return null; // Return null if the user has no cars
-      }
-    } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Something went wrong, try again",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-      );
-      return null; // Return null in case of an exception
-    }
-  }
-
-// -------------------------------------------------------------------
 
   Future<void> addMileage(Map<String, dynamic> data) async {
     try {
       String? userId = await getUserDocumentIdByEmail();
       print("userId: " + userId!);
-      String? carId = await getFirstCarDocumentIdForUser(userId!);
-      print("carId: " + carId!);
       Map<String, dynamic> additionalData = {
         'userId': userId,
-        'carId': carId,
       };
 
       // Append additional data to the existing map
@@ -180,7 +130,7 @@ class FuelFirebase extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> fetchDoc(String documentId) async {
+  Future<Map<String, dynamic>> fetchConsumptionDoc(String documentId) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> querySnapshot =
           await _db.collection("Consumption").doc(documentId).get();
@@ -189,7 +139,92 @@ class FuelFirebase extends GetxController {
       if (!querySnapshot.exists) {
         throw Exception('Document does not exist');
       }
-      Map<String, dynamic>? data = await querySnapshot.data();
+      Map<String, dynamic>? data = querySnapshot.data();
+      return data!; // Return the fetched document
+    } catch (error) {
+      print("Error retrieving the document: ${error.toString()}");
+      // Handling the error with a user-friendly message
+      Get.snackbar(
+        "Error",
+        "Failed to retrieve the document, try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
+      rethrow; // Re-throw the caught exception
+    }
+  }
+
+  Future<void> addFinalInputs(
+      Map<String, dynamic> data, String consumptionDocumentId) async {
+    try {
+      // Update the specific document with the new data
+      await _db
+          .collection("Consumption")
+          .doc(consumptionDocumentId)
+          .set(data, SetOptions(merge: true));
+    } catch (error) {
+      print("Something went wrong in addFinalInputs");
+      Get.snackbar(
+        "Error",
+        "Something went wrong, try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
+      print(error.toString());
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAllWithDoneTrue() async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection("Consumption")
+          .where('done', isEqualTo: true) // Filter for 'done' == true
+          .get();
+
+      List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>;
+      }).toList();
+
+      return allDocuments;
+    } catch (error) {
+      print("Error fetching documents with 'done' = true: ${error.toString()}");
+      return [];
+    }
+  }
+
+    Future<List<Map<String, dynamic>>> fetchAllWithDoneFalse() async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection("Consumption")
+          .where('done', isEqualTo: false) 
+          .get();
+
+      List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id, // Include the document ID
+          ...doc.data() as Map<String, dynamic>,
+        };
+      }).toList();
+
+      return allDocuments;
+    } catch (error) {
+      print("Error fetching documents with 'done' = true: ${error.toString()}");
+      return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchCarDoc(String documentId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+          await _db.collection("Cars").doc(documentId).get();
+
+      // If statement to check a condition - for example, if the document doesn't exist
+      if (!querySnapshot.exists) {
+        throw Exception('Document does not exist');
+      }
+      Map<String, dynamic>? data = querySnapshot.data();
       return data!; // Return the fetched document
     } catch (error) {
       print("Error retrieving the document: ${error.toString()}");

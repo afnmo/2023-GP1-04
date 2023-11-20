@@ -1,12 +1,9 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 
 class FuelCalculation {
   /*
-  Liters = Expenses / Cost per Liter of Chosen Fuel Type
+  1) Liters = Expenses / Cost per Liter of Chosen Fuel Type
 
   Expenses: retrieved from expense collection from database
   Cost per Liter of Chosen Fuel Type: retrieved from car collection from database
@@ -16,10 +13,10 @@ class FuelCalculation {
   Diesel => $0.75 per liter
 
 
-  Calculated Fuel Economy = Liters / (End Mileage−Start Mileage)
+  2) Calculated Fuel Economy = Liters / (End Mileage−Start Mileage)
   End Mileage−Start Mileage: retrieved from consumption collection from database
 
-  Percentage Difference=(Default Fuel Economy ∣Default Fuel Economy−Calculated Fuel Economy∣)×100
+  3) Percentage Difference=(Default Fuel Economy ∣Default Fuel Economy−Calculated Fuel Economy∣)×100
   Default Fuel Economy: retrieved from car collection from database
   */
 
@@ -28,11 +25,12 @@ class FuelCalculation {
 
   // fuel type retrieval:
 
-  Future<void> getFuelType() async {
+  Future<double> getLitersConsumed(String documentCarId) async {
     try {
-      Map<String, dynamic>? carData = await FuelFirebase().getFirstCarForUser();
+      Map<String, dynamic>? carData =
+          await FuelFirebase().fetchCarDoc(documentCarId);
 
-      if (carData != null) {
+      if (carData.isNotEmpty) {
         String fuelType = carData['fuelType'] as String? ?? 'Unknown';
         double costPerLiter = 0;
         if (fuelType == "91") {
@@ -42,39 +40,64 @@ class FuelCalculation {
         } else if (fuelType == "Diesel") {
           costPerLiter = 0.75;
         }
-
-        double expenses = 100;
-        double litersConsumed = expenses / costPerLiter;
-
         print('Fuel Type: $fuelType');
+
+        double expenses = 500;
+        double litersConsumed = expenses / costPerLiter;
+        print("litersConsumed: ${litersConsumed}");
+        return litersConsumed;
 
         // You can use these variables as needed in your application
       } else {
         print('User has no cars.');
+        return -1;
       }
     } catch (e) {
       print('An error occurred: $e');
+      return -1;
     }
   }
 
-  Future<double> calculatedFuelEconomy(
-      double litersConsumed, String documentId) async {
+  double getCalculatedFuelEconomy(
+      double litersConsumed, double startMileage, double endMileage) {
+    double calculatedFuelEconomy = (endMileage - startMileage) / litersConsumed;
+    print("litersConsumed: ${litersConsumed}");
+    print(
+        "Mileage Difference: ${endMileage} - ${startMileage} = ${(endMileage - startMileage)}");
+    print("calculatedFuelEconomy: ${calculatedFuelEconomy}");
+    return (calculatedFuelEconomy * 10).round() / 10;
+  }
+
+  //   3) Percentage Difference=(Default Fuel Economy ∣Default Fuel Economy−Calculated Fuel Economy∣)×100
+
+  Future<String> getPercentageDifference(
+      String documentCarId, double calculatedFuelEconomy) async {
     try {
-      Map<String, dynamic>? consumption =
-          await FuelFirebase().fetchDoc(documentId);
-      if (consumption != null) {
-        double startMileage = consumption['startMileage'] as double;
-        double endMileage = consumption['endMileage'] as double;
-        double calculatedFuelEconomy =
-            litersConsumed / (endMileage - startMileage);
-        return calculatedFuelEconomy;
+      Map<String, dynamic>? carData =
+          await FuelFirebase().fetchCarDoc(documentCarId);
+      if (carData.isNotEmpty) {
+        double defualtFuelEconomy =
+            double.tryParse(carData['fuelEconomy'] ?? '0') ?? 0.0;
+        print("defualtFuelEconomy: ${defualtFuelEconomy}");
+        double percentageDifference =
+            ((defualtFuelEconomy - calculatedFuelEconomy).abs() /
+                    defualtFuelEconomy) *
+                100;
+        print("percentageDifference: ${percentageDifference}");
+        if (calculatedFuelEconomy > defualtFuelEconomy) {
+          print("${percentageDifference}% higher than the default");
+          return '${(percentageDifference* 10).round() / 10}% higher than the default';
+        } else {
+          print('${percentageDifference}% lower than the default');
+          return '${(percentageDifference* 10).round() / 10}% lower than the default';
+        }
       } else {
         print('User has no cars.');
-        return 0;
+        return "";
       }
     } catch (e) {
       print('An error occurred: $e');
-      return 0;
+      return "";
     }
   }
 }

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
+import 'package:gp91/consumption/rounded_button_small.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:intl/intl.dart';
 
 class FuelEntry extends StatelessWidget {
-  FuelEntry({super.key});
+  final String carDocumentId;
+  FuelEntry({super.key, required this.carDocumentId});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,29 @@ class FuelEntry extends StatelessWidget {
         TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF6EA67C), // Set the background color
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // Handle back button press
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: const Text(
+          'Fuel Consumption',
+          style: TextStyle(
+            color: Colors.white, // Set the text color
+            fontSize: 20, // Set the text size
+            fontWeight: FontWeight.bold, // Set the font weight
+          ),
+        ),
+      ),
       backgroundColor: Colors.lightBlue[50],
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,20 +90,25 @@ class FuelEntry extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              RoundedButton(
+              RoundedButtonSmall(
                 text: "Submit",
                 press: () async {
                   DateTime currentTimestamp = DateTime.now();
 
                   // Pass these components to the toJson method
-                  await FuelFirebase().addMileage(toJson({
+                  await FuelFirebase().addMileage({
                     'startMileage': _startMileageController.text,
-                    'date': DateFormat('d, MM, yyyy').format(currentTimestamp),
-                    'time': DateFormat.jms().format(currentTimestamp),
-                  }));
+                    'startDate':
+                        DateFormat('d, MM, yyyy').format(currentTimestamp),
+                    'startTime': DateFormat.jms().format(currentTimestamp),
+                    'carId': carDocumentId,
+                    'done': false,
+                  });
 
                   Get.to(
-                    () => FuelPrev(),
+                    () => FuelPrev(
+                      carDocumentId: carDocumentId,
+                    ),
                   );
                 },
               ),
@@ -87,12 +117,6 @@ class FuelEntry extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  toJson(json) {
-    return {
-      "initialMileage": json,
-    };
   }
 }
 

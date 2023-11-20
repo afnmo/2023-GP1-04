@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/components/constants.dart';
+import 'package:gp91/consumption/fuel_cars.dart';
 import 'package:gp91/consumption/fuel_entry.dart';
 
 class IntroFuel extends StatelessWidget {
@@ -50,7 +51,9 @@ class IntroFuel extends StatelessWidget {
 
             // get started button
             GestureDetector(
-              onTap: () => Get.to(() => FuelEntry()),
+              // onTap: () => Get.to(() => FuelEntry()),
+              onTap: () => Get.to(() => FuelCars()),
+              
               // => Navigator.pushReplacement(
               //   context,
               //   MaterialPageRoute(
