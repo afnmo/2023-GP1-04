@@ -57,13 +57,17 @@ class _addCarBodyState extends State<addCarBody> {
   void initState() {
     super.initState();
     extractManufacturers();
+    print('inistateWork');
   }
 
   void extractManufacturers() async {
+    print('in extractManufacturers');
     List<String> manufacturers = await carData.extractManufacturers();
     setState(() {
       _uniqueManufacturers = manufacturers;
+      print('set extractManufacturers');
     });
+    print('not set extractManufacturers');
   }
 
 // Function to fetch car models based on the selected car make
