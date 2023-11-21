@@ -67,6 +67,7 @@ class formDataHandler {
       'color': color,
       'name': name,
       'userId': documentId,
+      'image': "",
     });
   }
 

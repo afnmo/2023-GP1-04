@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class editCarInfoHandler {
@@ -6,24 +7,38 @@ class editCarInfoHandler {
 
   editCarInfoHandler({required this.carId});
 
-  Future<void> formUpdata(selectedFuelType, englishLettersController,
-      numbersController /*, carNameController, selectedCarColor*/) async {
-    // Gather form data
+  Future<void> formUpdate(
+      selectedFuelType,
+      englishLettersController,
+      numbersController,
+      carNameController,
+      selectedCarColor,
+      File? selectedImage) async {
+    // ... (other parts of your code remain unchanged)
+
     String fuelType = selectedFuelType ?? '';
     String englishLetters = englishLettersController.text ?? '';
     String numbers = numbersController.text ?? '';
-    // String name = carNameController.text ?? '';
-    // String color = selectedCarColor ?? '';
-
+    String name = carNameController.text ?? '';
+    String color = selectedCarColor ?? '';
     String? arabicLetters = await convertEnglishToArabic(englishLetters);
-    // Submit data to Firebase
-    FirebaseFirestore.instance.collection('Cars').doc(carId).update({
+
+    // Check if arabicLetters conversion was successful
+    if (arabicLetters == null) {
+      print('Error converting English to Arabic');
+      return; // Exit the function if conversion fails
+    }
+
+    String? imageString = await convertImageToString(selectedImage);
+
+    await FirebaseFirestore.instance.collection('Cars').doc(carId).update({
       'fuelType': fuelType,
       'englishLetters': englishLetters,
       'arabicLetters': arabicLetters,
       'plateNumbers': numbers,
-      // 'color': color,
-      // 'name': name,
+      'color': color,
+      'name': name,
+      'image': imageString,
     });
   }
 
@@ -71,5 +86,25 @@ class editCarInfoHandler {
     }
 
     return carDataInfo;
+  }
+
+  Future<String?> convertImageToString(File? imageFile) async {
+    if (imageFile == null) {
+      return null; // If the image file is null, return null
+    }
+
+    try {
+      // Read the image file as a list of bytes
+      List<int> imageBytes = await imageFile.readAsBytes();
+
+      // Encode the image bytes to a base64 string
+      String base64Image = base64Encode(imageBytes);
+
+      return base64Image;
+    } catch (e) {
+      // Handle any errors that might occur during image file conversion
+      print('Error converting image to string: $e');
+      return null; // Return null in case of an error
+    }
   }
 }

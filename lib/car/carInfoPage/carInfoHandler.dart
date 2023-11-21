@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class carInfoHandler {
-  static Future<DocumentSnapshot> getCarData(String carId) async {
-    return await FirebaseFirestore.instance.collection('Cars').doc(carId).get();
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> getCarDataStream(
+      String carId) {
+    return FirebaseFirestore.instance.collection('Cars').doc(carId).snapshots();
   }
 }
