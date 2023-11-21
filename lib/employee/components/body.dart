@@ -1,15 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/home/screens/home_screen.dart';
-import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
-import 'package:gp91/login/components/already_have_an_account_acheck.dart';
-import 'package:gp91/login/components/background.dart';
+import 'package:gp91/employee/NextSprint.dart';
+import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
+import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
-import 'package:gp91/signup/signup.dart';
 
 // from StatelessWidget to stateful
 class Body extends StatefulWidget {
@@ -25,7 +22,6 @@ class _FormScreenState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   final AuthRepository _auth = AuthRepository();
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -52,7 +48,7 @@ class _FormScreenState extends State<Body> {
                 height: size.height * 0.1,
               ),
               const Text(
-                "Login For User",
+                "Login For Employee",
                 style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'NanumGothic',
@@ -96,7 +92,7 @@ class _FormScreenState extends State<Body> {
                     hintText: "Email",
                     border: InputBorder.none,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ),
               // passwordInput,
@@ -134,7 +130,7 @@ class _FormScreenState extends State<Body> {
                     hintText: "Password",
                     border: InputBorder.none,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ),
 
@@ -176,19 +172,6 @@ class _FormScreenState extends State<Body> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              AlreadyHaveAnAcoountCheck(
-                press: () {
-                  Get.to(() => SignUpScreen());
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return SignUpScreen();
-                  //     },
-                  //   ),
-                  // );
-                },
-              ),
             ],
           ),
         ),
@@ -207,98 +190,32 @@ class _FormScreenState extends State<Body> {
       },
     );
 
-    // try {
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
-    print("user: " + user.toString());
-    Get.back();
+    try {
+      // Check if the email and password match the data in Station_Employee collection
+      bool isValidEmployee =
+          await _auth.validateEmployeeCredentials(email, password);
 
-    if (user != null) {
-      print("User is successfully logged in");
-      Get.to(() => HomeScreen());
+      Get.back();
 
-      // Clear the input fields
-      _emailController.clear();
-      _passwordController.clear();
-    } else {
-      Get.snackbar(
-        "Oops!",
-        "Incorrect email or password",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-      );
+      if (isValidEmployee) {
+        print("Employee is successfully logged in");
+        Get.to(() => const NextSprint());
+
+        // Clear the input fields
+        _emailController.clear();
+        _passwordController.clear();
+      } else {
+        Get.snackbar(
+          "Oops!",
+          "Incorrect email or password",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent.withOpacity(0.1),
+          colorText: Colors.red,
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+      Get.back();
     }
-    //   } else {
-    //     print("User login failed");
-    //     Get.snackbar(
-    //       "Oops!",
-    //       "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //       snackPosition: SnackPosition.BOTTOM,
-    //       backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //       colorText: Colors.red,
-    //     );
-    //   }
-    // } catch (e) {
-    //   print("Error during login: $e");
-    //   Get.back();
-
-    //   if (e is FirebaseAuthException) {
-    //     if (e.code == 'user-not-found') {
-    //       // User not found - Display the appropriate error message
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else if (e.code == 'wrong-password') {
-    //       // Incorrect password - Display the incorrect password message
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "Incorrect Password. Please try again",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else {
-    //       // Handle other error codes as needed
-    //       // You can add more specific error handling for other cases if necessary
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "An error occurred during sign-in. Please try again later",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     }
-    //   }
-    // }
-
-    // } catch (e) {
-    //   print("Error during login: $e");
-    //   Get.back();
-
-    //   if (e is FirebaseAuthException) {
-    //     if (e.code == 'user-not-found') {
-    //       // User not found - Display the snack bar
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else {
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "Incorrect Password. Please try again",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     }
-    //   }
-    // }
   }
 }
