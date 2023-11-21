@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 import '../editCarInfoPage/editCarInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'carInfoHandler.dart';
@@ -108,25 +109,9 @@ class carInfoBody extends StatelessWidget {
           }
 
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Color(0xFF6EA67C), // Set the background color
-              elevation: 0, // Remove the shadow
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  // Handle back button press
-                  Navigator.pop(context);
-                },
-              ),
-              centerTitle: true,
-              title: Text(
-                'Car details',
-                style: TextStyle(
-                  color: Colors.white, // Set the text color
-                  fontSize: 20, // Set the text size
-                  fontWeight: FontWeight.bold, // Set the font weight
-                ),
-              ),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(80),
+              child: customShapeBorder('Car Details'),
             ),
             body: Center(
               child: SingleChildScrollView(
@@ -140,7 +125,7 @@ class carInfoBody extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 13),
                           width: 380,
-                          height: 600,
+                          height: 580,
                           decoration: BoxDecoration(
                             color: Color.fromARGB(119, 129, 218, 151),
                             borderRadius: BorderRadius.circular(22),
@@ -165,7 +150,7 @@ class carInfoBody extends StatelessWidget {
                                       alignment: Alignment.center,
                                       child: Image.memory(
                                         Uint8List.fromList(bytes),
-                                        height: 160,
+                                        height: 158,
                                         width: 300,
                                       ),
                                     )
@@ -175,13 +160,13 @@ class carInfoBody extends StatelessWidget {
                                       child: Image.asset(
                                         "assets/images/myCars.png",
                                         color: carColor,
-                                        height: 160,
+                                        height: 158,
                                         width: 300,
                                       ),
                                     ),
                                 ],
                               ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 30),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: Column(

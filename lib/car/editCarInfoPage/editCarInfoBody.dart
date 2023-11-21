@@ -28,6 +28,8 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
   TextEditingController imageController = TextEditingController();
   String? selectedCarColor;
   File? selectedImage;
+  String? imageFile;
+  Uint8List image = Uint8List(0);
 
   List<String> colorMap = [
     'red',
@@ -539,7 +541,9 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 maxHeight: fixedHeight,
                               ),
                               child: GestureDetector(
-                                onTap: getImage,
+                                onTap: () {
+                                  getImage();
+                                },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[

@@ -31,15 +31,26 @@ class editCarInfoHandler {
 
     String? imageString = await convertImageToString(selectedImage);
 
-    await FirebaseFirestore.instance.collection('Cars').doc(carId).update({
-      'fuelType': fuelType,
-      'englishLetters': englishLetters,
-      'arabicLetters': arabicLetters,
-      'plateNumbers': numbers,
-      'color': color,
-      'name': name,
-      'image': imageString,
-    });
+    if (imageString != null) {
+      await FirebaseFirestore.instance.collection('Cars').doc(carId).update({
+        'fuelType': fuelType,
+        'englishLetters': englishLetters,
+        'arabicLetters': arabicLetters,
+        'plateNumbers': numbers,
+        'color': color,
+        'name': name,
+        'image': imageString,
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('Cars').doc(carId).update({
+        'fuelType': fuelType,
+        'englishLetters': englishLetters,
+        'arabicLetters': arabicLetters,
+        'plateNumbers': numbers,
+        'color': color,
+        'name': name,
+      });
+    }
   }
 
   Future<String> convertEnglishToArabic(String input) async {
