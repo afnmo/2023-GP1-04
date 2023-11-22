@@ -7,30 +7,22 @@ class carData {
     List<String> manufacturers = [];
 
     try {
-      print('in try');
       final rawData =
           await rootBundle.load("assets/carDS/FE Vehicle Details.csv");
-      print('in load');
       String csvData =
           utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
       List<List<dynamic>> listData =
-          const CsvToListConverter().convert(csvData);
-      print('outside if');
+          const CsvToListConverter(eol: '\n').convert(csvData);
       if (listData.isNotEmpty && listData[0].length > 1) {
         int manufacturerColumnIndex =
             1; // Assuming Manufacturer column is at index 1
-        print('in if');
         for (int i = 1; i < listData.length; i++) {
-          print('in for');
           try {
-            print('in try2');
             String manufacturer =
                 listData[i][manufacturerColumnIndex].toString();
-            print('take mnu');
             if (manufacturer != null && manufacturer.isNotEmpty) {
               manufacturers.add(manufacturer);
-              print('in if 2');
             }
           } catch (e) {
             // Handle any potential errors during extraction
@@ -47,7 +39,7 @@ class carData {
       // Catch and handle any exceptions thrown in the process
       print("Error occurred: $e");
       // Return an empty list or handle the error as needed
-      return ['not work'];
+      return [];
     }
   }
 
@@ -62,7 +54,7 @@ class carData {
           utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
       List<List<dynamic>> listData =
-          const CsvToListConverter().convert(csvData);
+          const CsvToListConverter(eol: '\n').convert(csvData);
 
       if (listData.isNotEmpty && listData[0].length > 1) {
         int manufacturerIndex = 1;
@@ -107,7 +99,7 @@ class carData {
           utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
       List<List<dynamic>> listData =
-          const CsvToListConverter().convert(csvData);
+          const CsvToListConverter(eol: '\n').convert(csvData);
 
       if (listData.isNotEmpty && listData[0].length > 1) {
         int manufacturerIndex = 1;
@@ -155,7 +147,7 @@ class carData {
           utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
       List<List<dynamic>> listData =
-          const CsvToListConverter().convert(csvData);
+          const CsvToListConverter(eol: '\n').convert(csvData);
 
       if (listData.isNotEmpty && listData[0].length > 1) {
         int yearIndex = 0;
@@ -207,7 +199,7 @@ class carData {
           utf8.decode(rawData.buffer.asUint8List(), allowMalformed: true);
 
       List<List<dynamic>> listData =
-          const CsvToListConverter().convert(csvData);
+          const CsvToListConverter(eol: '\n').convert(csvData);
 
       if (listData.isNotEmpty && listData[0].length > 1) {
         int yearIndex = 0;
