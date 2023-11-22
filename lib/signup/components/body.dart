@@ -118,7 +118,7 @@ class _FormScreenState extends State<Body> {
                       hintText: "Name",
                       border: InputBorder.none,
                     ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
                 // email               emailInput,
@@ -150,7 +150,7 @@ class _FormScreenState extends State<Body> {
                       hintText: "Email",
                       border: InputBorder.none,
                     ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
 
@@ -231,7 +231,7 @@ class _FormScreenState extends State<Body> {
                       hintText: "Confirm password",
                       border: InputBorder.none,
                     ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
 
