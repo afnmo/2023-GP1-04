@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../carInfoPage/carInfo.dart';
 import 'editCarInfoHandler.dart';
+import 'package:image_picker/image_picker.dart';
 
 class editCarInfoBody extends StatefulWidget {
   final String carId;
@@ -22,6 +24,31 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
   String? selectedFuelType;
   TextEditingController englishLettersController = TextEditingController();
   TextEditingController numbersController = TextEditingController();
+  TextEditingController carNameController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
+  String? selectedCarColor;
+  File? selectedImage;
+  String? imageFile;
+  Uint8List image = Uint8List(0);
+
+  List<String> colorMap = [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'purple',
+    'pink',
+    'teal',
+    'cyan',
+    'amber',
+    'indigo',
+    'lime',
+    'brown',
+    'grey',
+    'black',
+    'white',
+  ];
 
   @override
   void initState() {
@@ -29,14 +56,24 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
     fetchCarData();
   }
 
+  Future<void> getImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      setState(() {
+        selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
   void updataFormData() async {
     // Check if any field is empty
     if (selectedFuelType == null ||
-            englishLettersController.text.isEmpty ||
-            numbersController.text.isEmpty
-        /*carNameController.text.isEmpty ||
-        selectedCarColor == null*/
-        ) {
+        englishLettersController.text.isEmpty ||
+        numbersController.text.isEmpty ||
+        carNameController.text.isEmpty ||
+        selectedCarColor == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please fill in all required fields'),
@@ -135,11 +172,14 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
 
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      await editCarInfoHandlerObj.formUpdata(
-          selectedFuelType, englishLettersController, numbersController
-          /*carNameController,
-        selectedCarColor,*/
-          );
+      await editCarInfoHandlerObj.formUpdate(
+        selectedFuelType,
+        englishLettersController,
+        numbersController,
+        carNameController,
+        selectedCarColor,
+        selectedImage,
+      );
 
       Navigator.pushReplacement(
         context,
@@ -175,6 +215,14 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
       if (carDataInfo['plateNumbers'] != null) {
         numbersController =
             TextEditingController(text: carDataInfo['plateNumbers']);
+      }
+
+      if (carDataInfo['color'] != null) {
+        selectedCarColor = carDataInfo['color'];
+      }
+
+      if (carDataInfo['name'] != null) {
+        carNameController = TextEditingController(text: carDataInfo['name']);
       }
     });
   }
@@ -254,7 +302,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFECAE),
+                                  color: Color(0xFF6EA67C),
                                 ),
                               ),
                             ),
@@ -308,11 +356,11 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                             Align(
                               alignment: Alignment(-0.8, 0.8),
                               child: Text(
-                                'Plate Number',
+                                'Plate information',
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFECAE),
+                                  color: Color(0xFF6EA67C),
                                 ),
                               ),
                             ),
@@ -389,6 +437,154 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                     'assets/icons/numbers.png',
                                     color: Color(0xFFFFCEAF),
                                   ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 22,
+                            ),
+                            Align(
+                              alignment: Alignment(-0.8, 0.8),
+                              child: Text(
+                                'Style information',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF6EA67C),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 19,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
+                              child: DropdownButtonFormField<String>(
+                                value: selectedCarColor,
+                                items: colorMap.map((String carColor) {
+                                  return DropdownMenuItem<String>(
+                                    value: carColor,
+                                    child: Text(carColor),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCarColor = newValue;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: selectedCarColor ?? 'Car color',
+                                  labelStyle: TextStyle(
+                                    color: Colors
+                                        .black, // Change the label text color as needed
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors
+                                            .grey), // Change the color as needed
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.color_lens,
+                                    color: Color(0xFFFFCEAF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
+                              child: TextFormField(
+                                controller: carNameController,
+                                keyboardType: TextInputType
+                                    .text, // Use TextInputType.text for English letters
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(RegExp(
+                                      r'^[a-zA-Z ]*$')), // Allow only English letters
+                                ],
+                                decoration: InputDecoration(
+                                  labelText:
+                                      carNameController.text ?? 'Car name',
+                                  labelStyle: TextStyle(
+                                    color: Colors
+                                        .black, // Change the label text color as needed
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors
+                                            .grey), // Change the color as needed
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.directions_car,
+                                    color: Color(0xFFFFCEAF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: fixedWidth,
+                                maxHeight: fixedHeight,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  getImage();
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    selectedImage != null
+                                        ? Image.file(
+                                            selectedImage!,
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Container(
+                                            // width: 200,
+                                            height: 200,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                            ),
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: Colors.grey),
+                                                  SizedBox(height: 10),
+                                                  Text(
+                                                    'Tap to add a photo of your car',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                  ],
                                 ),
                               ),
                             ),

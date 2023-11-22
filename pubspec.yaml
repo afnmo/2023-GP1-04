@@ -51,6 +51,8 @@ dependencies:
   http: ^1.1.0
   intl: ^0.18.1
   csv: ^5.1.1
+  image_picker: ^1.0.4
+  path_provider: ^2.1.1
 
 
 dev_dependencies:

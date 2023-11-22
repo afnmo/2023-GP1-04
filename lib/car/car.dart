@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:gp91/components/bottom_nav.dart';
 import 'carBody.dart';
-import 'package:gp91/welcome/welcome_screen.dart';
 
 class CarApp extends StatelessWidget {
   @override
