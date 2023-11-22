@@ -51,6 +51,18 @@ class FuelResult extends StatelessWidget {
             itemCount: items.length,
             itemBuilder: (context, index) {
               Map<String, dynamic> item = items[index];
+              // Determine the icon based on the percentageDifference
+              Icon arrowIcon;
+              if (item['percentageDifference'].contains('higher')) {
+                arrowIcon = const Icon(Icons.arrow_upward,
+                    color: Colors.white, size: 20);
+              } else if (item['percentageDifference'].contains('lower')) {
+                arrowIcon = const Icon(Icons.arrow_downward,
+                    color: Colors.white, size: 20);
+              } else {
+                arrowIcon = const Icon(Icons.horizontal_rule,
+                    color: Colors.white, size: 20);
+              }
               return Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
@@ -85,7 +97,7 @@ class FuelResult extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 30.0),
+                              horizontal: 40.0, vertical: 40.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
@@ -105,12 +117,18 @@ class FuelResult extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Text('${item['calculatedFuelEconomy']}',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16)),
+                              Text(
+                                'Fuel\nEconomy\n (${item['calculatedFuelEconomy']})',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
                               const SizedBox(width: 4),
-                              const Icon(Icons.arrow_upward,
-                                  color: Colors.white, size: 20),
+                              arrowIcon,
+                              // const Icon(Icons.arrow_upward,
+                              //     color: Colors.white, size: 20),
                             ],
                           ),
                         ),

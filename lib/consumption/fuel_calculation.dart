@@ -86,10 +86,10 @@ class FuelCalculation {
         print("percentageDifference: ${percentageDifference}");
         if (calculatedFuelEconomy > defualtFuelEconomy) {
           print("${percentageDifference}% higher than the default");
-          return '${(percentageDifference* 10).round() / 10}% higher than the default';
+          return '${(percentageDifference * 10).round() / 10}% higher than the default fuel economy of this car (${defualtFuelEconomy})';
         } else {
           print('${percentageDifference}% lower than the default');
-          return '${(percentageDifference* 10).round() / 10}% lower than the default';
+          return '${(percentageDifference * 10).round() / 10}% lower than the default fuel economy of this car (${defualtFuelEconomy})';
         }
       } else {
         print('User has no cars.');

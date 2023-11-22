@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gp91/Station/Details_Station/Details_Station.dart';
 import 'package:gp91/Station/Station.dart';
 import 'package:gp91/car/carBody.dart';
+import 'package:gp91/consumption/fuel_cars.dart';
 import 'package:gp91/consumption/intro_fuel.dart';
 import 'package:gp91/settings/settings_page.dart';
 import 'package:gp91/about_us/about_us.dart';
@@ -39,7 +40,7 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             title: "Fuel Consumption",
             image: "assets/images/consumption2.png",
             onTap: () {
-              Get.to(() => IntroFuel());
+              Get.to(() => FuelCars());
             },
           ),
           CategoryCardMallika1(
