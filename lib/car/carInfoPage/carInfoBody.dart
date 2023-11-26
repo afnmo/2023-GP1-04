@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 import '../editCarInfoPage/editCarInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +23,7 @@ class carInfoBody extends StatelessWidget {
             MaterialPageRoute(builder: (context) => editCarInfo(carId: carId)));
       },
       child: Icon(Icons.edit),
-      backgroundColor: Color(0xFFFFCEAF),
+      backgroundColor: Color.fromARGB(255, 211, 166, 42),
     );
   }
 
@@ -109,439 +110,349 @@ class carInfoBody extends StatelessWidget {
           }
 
           return Scaffold(
+            backgroundColor: Color.fromARGB(121, 218, 214, 214),
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(80),
               child: customShapeBorder('Car Details'),
             ),
-            body: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 9),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 13),
-                          width: 380,
-                          height: 580,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(119, 129, 218, 151),
-                            borderRadius: BorderRadius.circular(22),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 3,
-                                blurRadius: 10,
-                                offset: Offset(0, 3),
+            body: Stack(
+              children: [
+                if (imageFile != null && imageFile.isNotEmpty)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Image.memory(
+                        Uint8List.fromList(bytes),
+                        fit: BoxFit.cover,
+                        width: double.maxFinite,
+                        height: 220,
+                      ),
+                    ),
+                  )
+                else
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        "assets/images/myCars.png",
+                        fit: BoxFit.cover,
+                        color: carColor,
+                        width: double.maxFinite,
+                        height: 220,
+                      ),
+                    ),
+                  ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 230,
+                  child: Container(
+                    height: 600,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(36),
+                      color: Color.fromARGB(119, 129, 218, 151),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 70,
+                            ),
+                            Text(
+                              'Basic information',
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0C9869),
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 30),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.directions_car,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Make:",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              carData!['make'] as String? ?? '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.directions_car,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Model:",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              carData['model'] as String? ?? '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Year:",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              carData['year'] as String? ?? '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.local_gas_station,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Fuel Type:",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              carData['fuelType'] as String? ?? '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.local_gas_station,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Fuel Economy:",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              carData['fuelEconomy'] as String? ?? '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 70,
+                            ),
+                            Text(
+                              'Plate information',
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0C9869),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(150, 0, 0, 0),
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              width: 210,
+                              height: 70,
+                              child: Table(
+                                border: TableBorder.symmetric(
+                                  inside: BorderSide(
+                                    width: 2.0,
+                                    color: const Color.fromARGB(150, 0, 0, 0),
+                                  ),
+                                ),
                                 children: [
-                                  if (imageFile != null && imageFile.isNotEmpty)
-                                    Container(
-                                      alignment: Alignment.center,
-                                      child: Image.memory(
-                                        Uint8List.fromList(bytes),
-                                        height: 158,
-                                        width: 300,
+                                  TableRow(
+                                    children: [
+                                      TableCell(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                carData['plateNumbers']
+                                                        as String? ??
+                                                    '',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                convertEnglishToArabicNumbers(
+                                                  carData['plateNumbers']
+                                                          as String? ??
+                                                      '',
+                                                ),
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  else
-                                    Container(
-                                      alignment: Alignment.center,
-                                      child: Image.asset(
-                                        "assets/images/myCars.png",
-                                        color: carColor,
-                                        height: 158,
-                                        width: 300,
+                                      TableCell(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Image.asset(
+                                            'assets/images/KSA.png',
+                                            width: 30,
+                                            height: 40,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      TableCell(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                (carData['englishLetters']
+                                                            as String?)
+                                                        ?.toUpperCase() ??
+                                                    '',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                (carData['arabicLetters']
+                                                            as String?)
+                                                        ?.toUpperCase() ??
+                                                    '',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
-                              SizedBox(height: 30),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Make",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  carData!['make'] as String? ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Color.fromARGB(
-                                                        215, 60, 64, 70),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 50),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Model",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  carData['model'] as String? ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Color.fromARGB(
-                                                        215, 60, 64, 70),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Year",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  carData['year'] as String? ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Color.fromARGB(
-                                                        215, 60, 64, 70),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Fuel Type",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  carData['fuelType']
-                                                          as String? ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Color.fromARGB(
-                                                        215, 60, 64, 70),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 50),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Fuel Economy",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  carData['fuelEconomy']
-                                                          as String? ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Color.fromARGB(
-                                                        215, 60, 64, 70),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Plate",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF0C9869),
-                                                ),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Color.fromARGB(
-                                                        255, 146, 158, 145),
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                ),
-                                                width: 210,
-                                                height: 70,
-                                                child: Table(
-                                                  border: TableBorder.symmetric(
-                                                    inside: BorderSide(
-                                                      width: 2.0,
-                                                      color: Color.fromARGB(
-                                                          255, 146, 158, 145),
-                                                    ),
-                                                  ),
-                                                  children: [
-                                                    TableRow(
-                                                      children: [
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  carData['plateNumbers']
-                                                                          as String? ??
-                                                                      '',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: Color(
-                                                                        0xFF81A5A7),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                    height: 5),
-                                                                Text(
-                                                                  convertEnglishToArabicNumbers(
-                                                                    carData['plateNumbers']
-                                                                            as String? ??
-                                                                        '',
-                                                                  ),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: Color(
-                                                                        0xFF81A5A7),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Image.asset(
-                                                              'assets/images/KSA.png',
-                                                              width: 50,
-                                                              height: 50,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  (carData['englishLetters']
-                                                                              as String?)
-                                                                          ?.toUpperCase() ??
-                                                                      '',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: Color(
-                                                                        0xFF81A5A7),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                    height: 5),
-                                                                Text(
-                                                                  (carData['arabicLetters']
-                                                                              as String?)
-                                                                          ?.toUpperCase() ??
-                                                                      '',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: Color(
-                                                                        0xFF81A5A7),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
             floatingActionButton: editCarButton(context),
           );
