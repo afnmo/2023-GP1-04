@@ -12,11 +12,11 @@ Comprehensive Gas Station Information: Access detailed information about gas sta
 
 - **Programming Languages**: Dart, Python.
   
-- **Frameworks/Libraries**: Flutter framework, OpenCV (a computer vision library), PyTorch (a deep learning framework)
+- **Frameworks/Libraries**: Flutter framework, OpenCV (a computer vision library), PyTorch (a deep learning framework).
 
-- **Database**: Firebase (a backend-as-a-service platform)
+- **Database**: Firebase (a backend-as-a-service platform).
   
-- **Other Technologies**: YOLO (You Only Look Once, a real-time object detection technology)
+- **Other Technologies**: YOLO (You Only Look Once, a real-time object detection technology).
 
 
 ## Getting Started
