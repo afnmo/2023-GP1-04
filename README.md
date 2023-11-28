@@ -8,6 +8,17 @@ Automatic License Plate Recognition: The app automatically identifies Saudi lice
 
 Comprehensive Gas Station Information: Access detailed information about gas stations, including fuel availability, amenities, working hours, and promotional offers.
 
+## Technology
+
+- **Programming Languages**: Dart, Python.
+  
+- **Frameworks/Libraries**: Flutter framework, OpenCV (a computer vision library), PyTorch (a deep learning framework)
+
+- **Database**: Firebase (a backend-as-a-service platform)
+  
+- **Other Technologies**: YOLO (You Only Look Once, a real-time object detection technology)
+
+
 ## Getting Started
 
 ### Prerequisites
