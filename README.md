@@ -10,7 +10,7 @@ Comprehensive Gas Station Information: Access detailed information about gas sta
 
 ## Technology
 
-- **Programming Languages**: Dart, Python.
+- **Programming Languages**: Dart, Python, HTML, CSS, and JavaScript.
   
 - **Frameworks/Libraries**: Flutter framework, OpenCV (a computer vision library), PyTorch (a deep learning framework).
 
