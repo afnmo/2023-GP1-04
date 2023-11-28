@@ -149,306 +149,316 @@ class carInfoBody extends StatelessWidget {
                 Positioned(
                   left: 0,
                   right: 0,
+                  bottom: 0,
                   top: 230,
                   child: Container(
                     height: 600,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(36),
+                        topRight: Radius.circular(36),
+                      ),
                       color: Color.fromARGB(119, 129, 218, 151),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 70,
-                            ),
-                            Text(
-                              'Basic information',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF0C9869),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 70,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.directions_car,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Make:",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              carData!['make'] as String? ?? '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.directions_car,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Model:",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              carData['model'] as String? ?? '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.calendar_month,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Year:",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              carData['year'] as String? ?? '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.local_gas_station,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Fuel Type:",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              carData['fuelType'] as String? ?? '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.local_gas_station,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Fuel Economy:",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              carData['fuelEconomy'] as String? ?? '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 70,
-                            ),
-                            Text(
-                              'Plate information',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF0C9869),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(150, 0, 0, 0),
-                                  width: 2.0,
+                              Text(
+                                'Basic information',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0C9869),
                                 ),
-                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                              width: 210,
-                              height: 70,
-                              child: Table(
-                                border: TableBorder.symmetric(
-                                  inside: BorderSide(
-                                    width: 2.0,
+                            ],
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.directions_car,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Make:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                carData!['make'] as String? ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.directions_car,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Model:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                carData['model'] as String? ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_month,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Year:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                carData['year'] as String? ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.local_gas_station,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Fuel Type:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                carData['fuelType'] as String? ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.local_gas_station,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Fuel Economy:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                carData['fuelEconomy'] as String? ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 70,
+                              ),
+                              Text(
+                                'Plate information',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0C9869),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
                                     color: const Color.fromARGB(150, 0, 0, 0),
+                                    width: 2.0,
                                   ),
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                children: [
-                                  TableRow(
-                                    children: [
-                                      TableCell(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                carData['plateNumbers']
-                                                        as String? ??
-                                                    '',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                convertEnglishToArabicNumbers(
+                                width: 210,
+                                height: 70,
+                                child: Table(
+                                  border: TableBorder.symmetric(
+                                    inside: BorderSide(
+                                      width: 2.0,
+                                      color: const Color.fromARGB(150, 0, 0, 0),
+                                    ),
+                                  ),
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        TableCell(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
                                                   carData['plateNumbers']
                                                           as String? ??
                                                       '',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  convertEnglishToArabicNumbers(
+                                                    carData['plateNumbers']
+                                                            as String? ??
+                                                        '',
+                                                  ),
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      TableCell(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Image.asset(
-                                            'assets/images/KSA.png',
-                                            width: 30,
-                                            height: 40,
+                                        TableCell(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: Image.asset(
+                                              'assets/images/KSA.png',
+                                              width: 30,
+                                              height: 40,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      TableCell(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                (carData['englishLetters']
-                                                            as String?)
-                                                        ?.toUpperCase() ??
-                                                    '',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
+                                        TableCell(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  (carData['englishLetters']
+                                                              as String?)
+                                                          ?.toUpperCase() ??
+                                                      '',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                (carData['arabicLetters']
-                                                            as String?)
-                                                        ?.toUpperCase() ??
-                                                    '',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  (carData['arabicLetters']
+                                                              as String?)
+                                                          ?.toUpperCase() ??
+                                                      '',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

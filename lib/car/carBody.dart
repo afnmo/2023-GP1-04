@@ -115,7 +115,7 @@ class _CarBodyState extends State<CarBody> {
                         Map<String, dynamic> carData =
                             carSnapshot.data!.data() as Map<String, dynamic>;
                         Color carColor = parseColor(carData['color']);
-                        String? imageFile = carData?['image'];
+                        String? imageFile = carData['image'];
                         List<int> bytes = [];
                         if (imageFile != null && imageFile.isNotEmpty) {
                           bytes = base64Decode(imageFile);
