@@ -45,7 +45,7 @@ $ git clone https://github.com/afnmo/2023-GP1-04.git
 ```
 $ cd 2023-GP1-04
 ```
-3. run the app
+3. Run the app
 ```
 $ flutter run
 ```
