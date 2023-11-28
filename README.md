@@ -26,16 +26,16 @@ Before you begin, ensure you have the following prerequisites:
 ### Installation
 
 
-$ Clone the Repository
+1. Clone the Repository
 ```
-git clone
+$ git clone https://github.com/afnmo/2023-GP1-04.git
 ```
-$ Go to the Project Directory
+2. Go to the Project Directory
 ```
-cd your-project
+$ cd 2023-GP1-04
 ```
-$ run the app
+3. run the app
 ```
-flutter run
+$ flutter run
 ```
 
