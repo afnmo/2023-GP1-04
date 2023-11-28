@@ -99,7 +99,7 @@ class FuelEntry extends StatelessWidget {
                   await FuelFirebase().addMileage({
                     'startMileage': _startMileageController.text,
                     'startDate':
-                        DateFormat('d, MM, yyyy').format(currentTimestamp),
+                        DateFormat('yyyy-MM-dd').format(currentTimestamp),
                     'startTime': DateFormat.jms().format(currentTimestamp),
                     'carId': carDocumentId,
                     'done': false,
