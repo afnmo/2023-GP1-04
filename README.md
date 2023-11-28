@@ -25,11 +25,17 @@ Before you begin, ensure you have the following prerequisites:
 
 ### Installation
 
-```
+
 $ Clone the Repository
-git clone 
+```
+git clone
+```
 $ Go to the Project Directory
+```
 cd your-project
+```
 $ run the app
+```
 flutter run
 ```
+
