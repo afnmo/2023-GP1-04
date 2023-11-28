@@ -140,9 +140,9 @@ class _FinalEntryState extends State<FinalEntry> {
                             .getPercentageDifference(
                                 widget.carDocumentId, calculatedFuelEconomy);
 
-                        // bool oneMonthPassed = isOneMonthPast(data);
-                        // print(oneMonthPassed);
-                        // if (oneMonthPassed) {
+                        bool oneMonthPassed = isOneMonthPast(data);
+                        print(oneMonthPassed);
+                        if (oneMonthPassed) {
                         await FuelFirebase().addFinalInputs(
                           {
                             'endMileage': endMileageController.text,
@@ -166,13 +166,13 @@ class _FinalEntryState extends State<FinalEntry> {
                           // Handle result if needed
                         }
 
-                        // } else {
-                        //   setState(() {
-                        //     calculatedFuelEconomyResult = calculatedFuelEconomy;
-                        //     percentageDifferenceResult = percentageDifference;
-                        //     showResults = true;
-                        //   });
-                        // }
+                        } else {
+                          setState(() {
+                            calculatedFuelEconomyResult = calculatedFuelEconomy;
+                            percentageDifferenceResult = percentageDifference;
+                            showResults = true;
+                          });
+                        }
                       } catch (error) {
                         print("Error submitting data: ${error.toString()}");
                         Get.snackbar(
