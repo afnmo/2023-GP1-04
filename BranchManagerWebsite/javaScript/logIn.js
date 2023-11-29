@@ -86,7 +86,7 @@ async function checkRequests(email, password) {
 
                         const stationName = data.name;
                         console.log("Station name: " + stationName);
-                        const stationLocation = data.Location;
+                        const stationLocation = data.location;
                         console.log("Station Location: " + stationLocation);
 
                         // Get the ID of the logined "Branch_Manager" document
@@ -105,7 +105,7 @@ async function checkRequests(email, password) {
                             // Add to the "Station" collection
                         const stationRef = await addDoc(collection(db, "Station"), {
                             name: stationName,
-                            Location: stationLocation,
+                            location: stationLocation,
                             branch_manager_id: docID, // Store the foreign key
                         });
 

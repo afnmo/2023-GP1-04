@@ -276,7 +276,7 @@ async function Addrequests() {
         // Add to the "Station_Requests" collection
         const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
             name: stationName,
-            Location: stationLocation,
+            location: stationLocation,
             branch_manager_id: SID, // Store the foreign key
             accepted: true,
         });        
