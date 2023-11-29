@@ -5,7 +5,7 @@ import 'carInfoBody.dart';
 class carInfo extends StatelessWidget {
   final String carId;
 
-  carInfo({required this.carId});
+  carInfo({super.key, required this.carId});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

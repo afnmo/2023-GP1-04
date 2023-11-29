@@ -12,25 +12,20 @@ class FuelPrev extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C), // Set the background color
+        backgroundColor: Color(0xFF6EA67C),
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button press
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
         title: const Text(
-          'Fuel Consumption',
+          'Previous entries',
           style: TextStyle(
-            color: Colors.white, // Set the text color
-            fontSize: 20, // Set the text size
-            fontWeight: FontWeight.bold, // Set the font weight
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

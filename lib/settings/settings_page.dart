@@ -13,20 +13,21 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // Set the app bar color to white
-        centerTitle: true, // Center align the app bar text
-        title: Text(
+        backgroundColor: Color(0xFF6EA67C),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: const Text(
           'Settings',
           style: TextStyle(
-            color: Color(0xFF6EA67C), // Set the app bar text color
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Color(0xFF6EA67C),
-          onPressed: () {
-            Navigator.pop(context);
-          },
         ),
       ),
       body: Column(

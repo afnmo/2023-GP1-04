@@ -57,16 +57,21 @@ class Details_Station extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Color.fromARGB(255, 160, 141, 141),
-        backgroundColor: const Color(0xFF6EA67C),
+        backgroundColor: Color(0xFF6EA67C),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'Station details',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
         ),
       ),
       body: firestoreStream(),

@@ -42,7 +42,7 @@ class _FinalEntryState extends State<FinalEntry> {
         ),
         centerTitle: true,
         title: const Text(
-          'Cars',
+          'Final mileage entry',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -143,29 +143,28 @@ class _FinalEntryState extends State<FinalEntry> {
                         bool oneMonthPassed = isOneMonthPast(data);
                         print(oneMonthPassed);
                         if (oneMonthPassed) {
-                        await FuelFirebase().addFinalInputs(
-                          {
-                            'endMileage': endMileageController.text,
-                            'finalDate': finalDate,
-                            'finalTime':
-                                DateFormat.jms().format(currentTimestamp),
-                            'done': true,
-                            'calculatedFuelEconomy': calculatedFuelEconomy,
-                            'percentageDifference': percentageDifference,
-                          },
-                          widget.consumptionId,
-                        );
+                          await FuelFirebase().addFinalInputs(
+                            {
+                              'endMileage': endMileageController.text,
+                              'finalDate': finalDate,
+                              'finalTime':
+                                  DateFormat.jms().format(currentTimestamp),
+                              'done': true,
+                              'calculatedFuelEconomy': calculatedFuelEconomy,
+                              'percentageDifference': percentageDifference,
+                            },
+                            widget.consumptionId,
+                          );
 
-                        // Handling navigation result
-                        var result = await Get.to(() => FuelResult(
-                              consumptionDocumentId: widget.consumptionId,
-                              carDocumentId: widget.carDocumentId,
-                            ));
+                          // Handling navigation result
+                          var result = await Get.to(() => FuelResult(
+                                consumptionDocumentId: widget.consumptionId,
+                                carDocumentId: widget.carDocumentId,
+                              ));
 
-                        if (result != null) {
-                          // Handle result if needed
-                        }
-
+                          if (result != null) {
+                            // Handle result if needed
+                          }
                         } else {
                           setState(() {
                             calculatedFuelEconomyResult = calculatedFuelEconomy;

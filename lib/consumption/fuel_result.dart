@@ -25,7 +25,7 @@ class FuelResult extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Fuel Consumption Results',
+          'Fuel consumption results',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

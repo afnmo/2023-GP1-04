@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 class editCarInfoBody extends StatefulWidget {
   final String carId;
 
-  const editCarInfoBody({Key? key, required this.carId}) : super(key: key);
+  const editCarInfoBody({super.key, required this.carId});
 
   @override
   _editCarInfoBodyState createState() => _editCarInfoBodyState();
@@ -234,25 +234,20 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C), // Set the background color
+        backgroundColor: Color(0xFF6EA67C),
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button press
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Update your car',
           style: TextStyle(
-            color: Colors.white, // Set the text color
-            fontSize: 20, // Set the text size
-            fontWeight: FontWeight.bold, // Set the font weight
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

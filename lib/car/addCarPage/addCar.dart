@@ -3,9 +3,11 @@ import 'package:gp91/components/bottom_nav.dart';
 import 'addCarBody.dart';
 
 class addCar extends StatelessWidget {
+  const addCar({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         children: [
           // Add any other widgets specific to the Station screen

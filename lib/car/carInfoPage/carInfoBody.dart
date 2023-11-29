@@ -10,7 +10,7 @@ import 'carInfoHandler.dart';
 class carInfoBody extends StatelessWidget {
   final String carId;
 
-  carInfoBody({required this.carId});
+  carInfoBody({super.key, required this.carId});
 
   Widget editCarButton(BuildContext context) {
     return FloatingActionButton(
@@ -111,9 +111,27 @@ class carInfoBody extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: Color.fromARGB(121, 218, 214, 214),
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(80),
-              child: customShapeBorder('Car Details'),
+            // appBar: PreferredSize(
+            //   preferredSize: Size.fromHeight(80),
+            //   child: customShapeBorder('Car Details'),
+            // ),
+            appBar: AppBar(
+              backgroundColor: Color(0xFF6EA67C),
+              elevation: 0,
+              iconTheme: const IconThemeData(color: Colors.white),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
+              centerTitle: true,
+              title: const Text(
+                'Car details',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             body: Stack(
               children: [

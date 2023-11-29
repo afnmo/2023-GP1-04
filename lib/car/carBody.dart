@@ -8,6 +8,8 @@ import 'carDataHandler.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 
 class CarBody extends StatefulWidget {
+  const CarBody({super.key});
+
   @override
   State<CarBody> createState() => _CarBodyState();
 }
@@ -86,9 +88,27 @@ class _CarBodyState extends State<CarBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: customShapeBorder('Cars'),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(80),
+      //   child: customShapeBorder('Cars'),
+      // ),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF6EA67C),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'Cars',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: StreamBuilder<List<String?>>(
         stream: _carsStream,

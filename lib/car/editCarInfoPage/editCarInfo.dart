@@ -5,7 +5,7 @@ import 'editCarInfoBody.dart';
 class editCarInfo extends StatelessWidget {
   final String carId;
 
-  editCarInfo({required this.carId});
+  editCarInfo({super.key, required this.carId});
 
   @override
   Widget build(BuildContext context) {

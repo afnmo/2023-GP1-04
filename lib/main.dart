@@ -10,7 +10,7 @@ import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 import 'package:gp91/on_boarding/on_boarding_screen.dart';
 import 'package:gp91/welcome/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dcdg/dcdg.dart';
+// import 'package:dcdg/dcdg.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();

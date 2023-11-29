@@ -3,6 +3,8 @@ import 'package:gp91/components/bottom_nav.dart';
 import 'carBody.dart';
 
 class CarApp extends StatelessWidget {
+  const CarApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
