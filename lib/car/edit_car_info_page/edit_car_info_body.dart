@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../carInfoPage/car_info.dart';
+import '../car_info_page/car_info.dart';
 import 'edit_car_info_handler.dart';
 import 'package:image_picker/image_picker.dart';
 

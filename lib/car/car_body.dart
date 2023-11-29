@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gp91/car/add_car_page/add_car.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'carInfoPage/car_info.dart';
+import 'car_info_page/car_info.dart';
 import 'car_data_handler.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 
@@ -116,6 +116,10 @@ class _CarBodyState extends State<CarBody> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text('No cars available yet'),
             );
           } else {
             List<String?> carDocumentIds = snapshot.data!;

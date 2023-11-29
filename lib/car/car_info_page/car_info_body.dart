@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
-import '../editCarInfoPage/edit_car_info.dart';
+import '../edit_car_info_page/edit_car_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'car_info_handler.dart';
 
