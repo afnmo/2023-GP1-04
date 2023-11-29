@@ -202,7 +202,7 @@ class Details_Station extends StatelessWidget {
                       GestureDetector(
                         onTap: () async {
                           var googleMapsUrl = data[
-                              'Location']; // Replace with your desired location
+                              'location']; // Replace with your desired location
                           if (await canLaunch(googleMapsUrl)) {
                             await launch(googleMapsUrl);
                           } else {
