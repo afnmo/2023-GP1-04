@@ -85,21 +85,21 @@ class _CarBodyState extends State<CarBody> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<String?>>(
-      stream: _carsStream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          List<String?> carDocumentIds = snapshot.data!;
-          return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(80),
-              child: customShapeBorder('Cars'),
-            ),
-            body: Padding(
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: customShapeBorder('Cars'),
+      ),
+      body: StreamBuilder<List<String?>>(
+        stream: _carsStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            List<String?> carDocumentIds = snapshot.data!;
+            return Padding(
               padding: EdgeInsets.only(top: 15),
               child: ListView.builder(
                 itemCount: carDocumentIds.length,
@@ -115,7 +115,7 @@ class _CarBodyState extends State<CarBody> {
                         Map<String, dynamic> carData =
                             carSnapshot.data!.data() as Map<String, dynamic>;
                         Color carColor = parseColor(carData['color']);
-                        String? imageFile = carData?['image'];
+                        String? imageFile = carData['image'];
                         List<int> bytes = [];
                         if (imageFile != null && imageFile.isNotEmpty) {
                           bytes = base64Decode(imageFile);
@@ -227,11 +227,11 @@ class _CarBodyState extends State<CarBody> {
                   );
                 },
               ),
-            ),
-            floatingActionButton: addCarButton(context),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
+      floatingActionButton: addCarButton(context),
     );
   }
 }

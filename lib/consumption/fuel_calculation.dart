@@ -2,30 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 
 class FuelCalculation {
-  /*
-  1) Liters = Expenses / Cost per Liter of Chosen Fuel Type
-
-  Expenses: retrieved from expense collection from database
-  Cost per Liter of Chosen Fuel Type: retrieved from car collection from database
-  Based on the following:
-  Gasoline 91 => $2.18 per liter
-  Gasoline 95 => $2.33 per liter
-  Diesel => $0.75 per liter
-
-
-  2) Calculated Fuel Economy = Liters / (End Mileage−Start Mileage)
-  End Mileage−Start Mileage: retrieved from consumption collection from database
-
-  3) Percentage Difference=(Default Fuel Economy ∣Default Fuel Economy−Calculated Fuel Economy∣)×100
-  Default Fuel Economy: retrieved from car collection from database
-  */
-
-  // expenses retrieval:
-  // ---------------------------------------
-
   // fuel type retrieval:
 
-  Future<double> getLitersConsumed(String documentCarId) async {
+  Future<String?> getUserId() async {
+    String? userId = await FuelFirebase().getUserDocumentIdByEmail();
+    return userId;
+  }
+
+  Future<double> getLitersConsumed(
+      String documentCarId, String startDate, String endDate) async {
     try {
       Map<String, dynamic>? carData =
           await FuelFirebase().fetchCarDoc(documentCarId);
@@ -41,8 +26,13 @@ class FuelCalculation {
           costPerLiter = 0.75;
         }
         print('Fuel Type: $fuelType');
+        print("costPerLiter: $costPerLiter");
 
-        double expenses = 500;
+        // double expenses = 500;
+        double expenses =
+            await getTotalFuelExpenses(documentCarId, startDate, endDate);
+        print("expenses: ");
+        print(expenses);
         double litersConsumed = expenses / costPerLiter;
         print("litersConsumed: ${litersConsumed}");
         return litersConsumed;
@@ -99,5 +89,34 @@ class FuelCalculation {
       print('An error occurred: $e');
       return "";
     }
+  }
+
+  // fuel expenses for a month
+  // loop through all expenses in a duration for a specific car for specific user ofcourse
+  // ex: from 1/1 to 30/1 for user 1 car 1
+  // start from the initial date (the moment initial mileage entered)
+  // end at the moment where submit button clicked
+
+  Future<double> getTotalFuelExpenses(
+      String carId, String startDate, String endDate) async {
+    double totalExpenses = 0.0;
+    print("carId: $carId");
+    print("StartDate: $startDate");
+    print("endDate: $endDate");
+    List<Map<String, dynamic>> documents =
+        await FuelFirebase().fetchBillDocs(carId, startDate, endDate);
+
+    if (documents.isEmpty) {
+      print("EMMMPTY");
+    }
+    for (var document in documents) {
+      print("HERE");
+      print(document);
+      if (document.containsKey('amount')) {
+        totalExpenses += document['amount'];
+      }
+    }
+
+    return totalExpenses;
   }
 }

@@ -18,7 +18,7 @@ class UserModel {
   toJson() {
     return {
       "name": name,
-      "email": email,
+      "email": email?.toLowerCase(),
       "password": hashPassword(password!),
     };
   }

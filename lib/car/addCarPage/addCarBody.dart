@@ -162,7 +162,7 @@ class _addCarBodyState extends State<addCarBody> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Characters not allowed: ${nonMatchingLetters.join(', ')}'),
+                'Characters not allowed in Saudi plate: ${nonMatchingLetters.join(', ')}'),
             backgroundColor: Color.fromARGB(255, 255, 99, 88),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 3),
@@ -291,7 +291,7 @@ class _addCarBodyState extends State<addCarBody> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 19,
+                              height: 15,
                             ),
                             Align(
                               alignment: Alignment(-0.8, 0.8),
@@ -745,7 +745,7 @@ class _addCarBodyState extends State<addCarBody> {
                                   borderRadius: BorderRadius.circular(
                                       10), // Adjust the radius as needed
                                 ),
-                                minimumSize: Size(150, 35),
+                                minimumSize: Size(355, 38),
                               ),
                               child: Text(
                                 'Add',
@@ -755,7 +755,10 @@ class _addCarBodyState extends State<addCarBody> {
                                   color: Colors.white,
                                 ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                           ],
                         ),
                       ),

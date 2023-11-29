@@ -293,7 +293,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 19,
+                              height: 15,
                             ),
                             Align(
                               alignment: Alignment(-0.8, 0.8),
@@ -602,7 +602,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   borderRadius: BorderRadius.circular(
                                       10), // Adjust the radius as needed
                                 ),
-                                minimumSize: Size(150, 35),
+                                minimumSize: Size(355, 38),
                               ),
                               child: Text(
                                 'Save',
@@ -612,7 +612,10 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   color: Colors.white,
                                 ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                           ],
                         ),
                       ),

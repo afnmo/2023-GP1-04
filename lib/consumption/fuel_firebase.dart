@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/consumption/consumption_models.dart';
 
 class FuelFirebase extends GetxController {
   static FuelFirebase get instance => Get.find();
@@ -29,7 +30,7 @@ class FuelFirebase extends GetxController {
         return null;
       }
 
-      var querySnapshot = await FirebaseFirestore.instance
+      var querySnapshot = await _db
           .collection('Users')
           .where('email', isEqualTo: email)
           .limit(1)
@@ -58,7 +59,7 @@ class FuelFirebase extends GetxController {
     String? userDocId = await getUserDocumentIdByEmail();
 
     if (userDocId != null) {
-      final carCollection = FirebaseFirestore.instance.collection('Cars');
+      final carCollection = _db.collection('Cars');
       QuerySnapshot carQuerySnapshot =
           await carCollection.where('userId', isEqualTo: userDocId).get();
 
@@ -96,23 +97,23 @@ class FuelFirebase extends GetxController {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchAll() async {
-    try {
-      QuerySnapshot querySnapshot = await _db.collection("Consumption").get();
-      List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
-        // Create a new map with the document ID and all the existing data
-        return {
-          'id': doc.id, // Include the document ID
-          ...doc.data() as Map<String, dynamic>,
-        };
-      }).toList();
+  // Future<List<Map<String, dynamic>>> fetchAll() async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await _db.collection("Consumption").get();
+  //     List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
+  //       // Create a new map with the document ID and all the existing data
+  //       return {
+  //         'id': doc.id, // Include the document ID
+  //         ...doc.data() as Map<String, dynamic>,
+  //       };
+  //     }).toList();
 
-      return allDocuments;
-    } catch (error) {
-      print("Error fetching documents: ${error.toString()}");
-      return [];
-    }
-  }
+  //     return allDocuments;
+  //   } catch (error) {
+  //     print("Error fetching documents: ${error.toString()}");
+  //     return [];
+  //   }
+  // }
 
   Future<void> deleteDoc(String documentId) async {
     try {
@@ -155,6 +156,42 @@ class FuelFirebase extends GetxController {
     }
   }
 
+  // Future<List<Map<String, dynamic>>> fetchConsumptionDocs(String documentId, String carId) async {
+  //   try {
+  //     String? userId = await getUserDocumentIdByEmail();
+  //     print(userId);
+  //     if (userId == null) {
+  //       print("User ID is null");
+  //       return [];
+  //     }
+  //     // Query the Firestore collection
+  //     QuerySnapshot<Map<String, dynamic>> querySnapshot = await _db
+  //         .collection("Consumption")
+  //         .where('carId', isEqualTo: carId)
+  //         .where('userId', isEqualTo: userId)
+  //         .get();
+
+  //     // Check if the query returned any documents
+  //     if (querySnapshot.docs.isEmpty) {
+  //       throw Exception('fetchConsumptionDocs: No documents found matching the criteria');
+  //     }
+
+  //     // Map the documents to a list of data maps
+  //     return querySnapshot.docs.map((doc) => doc.data()).toList();
+  //   } catch (error) {
+  //     print("Error retrieving documents: ${error.toString()}");
+  //     // Handling the error with a user-friendly message
+  //     Get.snackbar(
+  //       "Error",
+  //       "Failed to retrieve documents, try again",
+  //       snackPosition: SnackPosition.BOTTOM,
+  //       backgroundColor: Colors.redAccent.withOpacity(0.1),
+  //       colorText: Colors.red,
+  //     );
+  //     rethrow; // Re-throw the caught exception
+  //   }
+  // }
+
   Future<void> addFinalInputs(
       Map<String, dynamic> data, String consumptionDocumentId) async {
     try {
@@ -178,9 +215,16 @@ class FuelFirebase extends GetxController {
 
   Future<List<Map<String, dynamic>>> fetchAllWithDoneTrue() async {
     try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return [];
+      }
       QuerySnapshot querySnapshot = await _db
           .collection("Consumption")
           .where('done', isEqualTo: true) // Filter for 'done' == true
+          .where('userId', isEqualTo: userId)
           .get();
 
       List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
@@ -194,11 +238,18 @@ class FuelFirebase extends GetxController {
     }
   }
 
-    Future<List<Map<String, dynamic>>> fetchAllWithDoneFalse() async {
+  Future<List<Map<String, dynamic>>> fetchAllWithDoneFalse() async {
     try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return [];
+      }
       QuerySnapshot querySnapshot = await _db
           .collection("Consumption")
-          .where('done', isEqualTo: false) 
+          .where('done', isEqualTo: false)
+          .where('userId', isEqualTo: userId)
           .get();
 
       List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
@@ -237,6 +288,125 @@ class FuelFirebase extends GetxController {
         colorText: Colors.red,
       );
       rethrow; // Re-throw the caught exception
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchBillDocs(
+      String carId, String startDate, String endDate) async {
+    try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return [];
+      }
+      print("startDate $startDate");
+      print("endDate $endDate");
+      print("userId $userId");
+      print("carId $carId");
+      var querySnapshot = await _db
+          .collection('Bills')
+          .where('userId', isEqualTo: userId)
+          .where('carId', isEqualTo: carId)
+          .where('date', isGreaterThanOrEqualTo: startDate)
+          .where('date', isLessThanOrEqualTo: endDate)
+          .get();
+      print(querySnapshot);
+      querySnapshot.printInfo();
+
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      print(e);
+      Get.snackbar(
+        "Error",
+        "Something went wrong, try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
+      return [];
+    }
+  }
+
+  Future<List<String>> getUserCarsNames(String userId) async {
+    List<String> carNames = [];
+
+    try {
+      // Fetching documents from the 'cars' collection where 'userId' field matches the provided userId
+      QuerySnapshot querySnapshot =
+          await _db.collection('cars').where('userId', isEqualTo: userId).get();
+
+      // Iterating over each document and adding the car name to the list
+      for (var doc in querySnapshot.docs) {
+        carNames.add(doc['carName']);
+      }
+
+      return carNames;
+    } catch (e) {
+      print(e);
+      return []; // Return an empty list in case of an error
+    }
+  }
+
+  Future<Map<Car, List<ConsumptionRecord>>>
+      fetchCarsWithConsumptionRecords() async {
+    Map<Car, List<ConsumptionRecord>> carsWithRecords = {};
+
+    try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return {};
+      }
+      // Fetch cars
+      QuerySnapshot carSnapshot =
+          await _db.collection('Cars').where('userId', isEqualTo: userId).get();
+
+      // Iterate over each car document
+      for (var carDoc in carSnapshot.docs) {
+        Map<String, dynamic> carData = carDoc.data() as Map<String, dynamic>;
+        Car car = Car(
+          carId: carDoc.id,
+          name: carData['name'],
+          // Add other details as necessary
+        );
+
+        try {
+          // Now fetch consumption records for this car
+          QuerySnapshot consumptionSnapshot = await _db
+              .collection('Consumption')
+              .where('carId', isEqualTo: car.carId)
+              .where('done', isEqualTo: true)
+              .get();
+
+          List<ConsumptionRecord> records =
+              consumptionSnapshot.docs.map((recordDoc) {
+            Map<String, dynamic> recordData =
+                recordDoc.data() as Map<String, dynamic>;
+            return ConsumptionRecord(
+              carId: car.carId,
+              calculatedFuelEconomy: recordData['calculatedFuelEconomy'],
+              startDate: recordData['startDate'],
+              endDate: recordData['finalDate'],
+              percentageDifference: recordData['percentageDifference'],
+              // Add other details as necessary
+            );
+          }).toList();
+
+          // Add the car and its records to the map
+          carsWithRecords[car] = records;
+        } catch (e) {
+          print("Error fetching consumption records for car ${car.name}: $e");
+          // Handle the error or add error data to the map as appropriate
+        }
+      }
+
+      return carsWithRecords;
+    } catch (e) {
+      print("Error fetching cars: $e");
+      // Handle the error, for example by returning an empty map or re-throwing the exception
+      return {};
     }
   }
 }

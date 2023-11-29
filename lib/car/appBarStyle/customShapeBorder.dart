@@ -11,7 +11,18 @@ class customShapeBorder extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = text.length == 4 ? 100.0 : 55.0;
+    double width;
+    int textLength = text.length;
+
+    if (textLength == 4) {
+      width = 100.0;
+    } else if (textLength == 13) {
+      width = 30;
+    } else if (textLength == 15) {
+      width = 5.3;
+    } else {
+      width = 55.0;
+    }
     return Container(
       height: 150,
       child: Stack(
