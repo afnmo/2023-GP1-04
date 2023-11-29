@@ -32,56 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20.0, left: 15.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Your Journey,',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontStyle: FontStyle.italic,
-                        fontFamily: 'Open Sans',
-                        fontSize: 40,
-                      ),
-                    ),
-                    const Text(
-                      'Our Priority',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontStyle: FontStyle.italic,
-                        fontFamily: 'Open Sans',
-                        fontSize: 40,
-                      ),
-                    ),
-                    RichText(
-                      text: const TextSpan(
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: 'Open Sans',
-                          fontSize: 40,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Fueling',
-                            style: TextStyle(
-                                color: Color(0xFF6EA67C)), // Change the color
-                          ),
-                          TextSpan(
-                            text: ' Made Smart.',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
               padding: const EdgeInsets.only(top: 35.0),
               child: BlurredImageWithText(),
             ),

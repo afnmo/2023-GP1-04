@@ -12,7 +12,6 @@ class CategoriesListMallika1 extends StatefulWidget {
   const CategoriesListMallika1({Key? key}) : super(key: key);
 
   @override
-  // _CategoriesListMallika1State createState() => _CategoriesListMallika1State();
   State<StatefulWidget> createState() => _CategoriesListMallika1State();
 }
 
