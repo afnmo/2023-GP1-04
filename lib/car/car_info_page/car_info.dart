@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
-import 'editCarInfoBody.dart';
+import 'car_info_body.dart';
 
-class editCarInfo extends StatelessWidget {
+class CarInfo extends StatelessWidget {
   final String carId;
 
-  editCarInfo({super.key, required this.carId});
-
+  CarInfo({super.key, required this.carId});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +13,7 @@ class editCarInfo extends StatelessWidget {
         children: [
           // Add any other widgets specific to the Station screen
           Expanded(
-            child: editCarInfoBody(
+            child: CarInfoBody(
                 carId: carId), // Create an instance of the CarBody widget
           ),
           // BottomNav(

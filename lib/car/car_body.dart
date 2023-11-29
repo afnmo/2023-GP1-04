@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:gp91/car/addCarPage/addCar.dart';
+import 'package:gp91/car/add_car_page/add_car.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'carInfoPage/carInfo.dart';
-import 'carDataHandler.dart';
+import 'car_info_page/car_info.dart';
+import 'car_data_handler.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 
 class CarBody extends StatefulWidget {
@@ -24,7 +24,7 @@ class _CarBodyState extends State<CarBody> {
   }
 
   void loadCarDocumentIds() async {
-    _carsStream = carDataHandler.fetchCarDocumentIdsAsStream();
+    _carsStream = CarDataHandler.fetchCarDocumentIdsAsStream();
     setState(() {}); // Trigger a rebuild to reflect changes from the stream
   }
 
@@ -36,7 +36,7 @@ class _CarBodyState extends State<CarBody> {
 
         // Optionally, you can navigate to another page here.
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => addCar()));
+            .push(MaterialPageRoute(builder: (context) => AddCar()));
       },
       child: Icon(Icons.add),
       backgroundColor: Color(0xFFFFCEAF),
@@ -117,6 +117,10 @@ class _CarBodyState extends State<CarBody> {
             return Center(
               child: CircularProgressIndicator(),
             );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text('No cars available yet'),
+            );
           } else {
             List<String?> carDocumentIds = snapshot.data!;
             return Padding(
@@ -146,7 +150,7 @@ class _CarBodyState extends State<CarBody> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      carInfo(carId: carDocumentId),
+                                      CarInfo(carId: carDocumentId),
                                 ),
                               );
                             }

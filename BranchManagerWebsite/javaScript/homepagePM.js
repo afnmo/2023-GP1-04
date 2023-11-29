@@ -57,11 +57,19 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
             if(stationData.open_hour != null){
                 const openHour = convertTimeToAMPM(stationData.open_hour);
                 document.getElementById("OpenHour").textContent = openHour;
+            }else{
+                document.getElementById("OpenHour").textContent = "No availabal data yet";
+                document.getElementById("OpenHour").style.fontSize = "smaller"; 
+                document.getElementById("OpenHour").style.fontWeight = "lighter";
             }
 
             if(stationData.close_hour != null){
                 const closeHour = convertTimeToAMPM(stationData.close_hour);
                 document.getElementById("CloseHour").textContent = closeHour;
+            }else{
+                document.getElementById("CloseHour").textContent = "No availabal data yet";
+                document.getElementById("CloseHour").style.fontSize = "smaller"; 
+                document.getElementById("CloseHour").style.fontWeight = "lighter";
             }
 
             const fuelStatus = stationData.fuel_status;
@@ -82,6 +90,9 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     }
                 });
 
+            }else{
+                document.getElementById("fuelDisplay").textContent = "No availabal data yet";
+                document.getElementById("fuelDisplay").style.color = "rgb(108, 110, 122)";
             }
 
              // Loop through fuel status elements and set their display and width based on the data
@@ -96,7 +107,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "91";
                             var pElement = document.getElementById("91statewidth");
-                            pElement.innerHTML = value + " unavailable";
+                            pElement.innerHTML = /*value + */" unavailable";
                             var imgElement = document.getElementById("91Img");
                             imgElement.src = "../images/91unavailable.png";
                         }
@@ -107,7 +118,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "95";
                             var pElement = document.getElementById("95statewidth");
-                            pElement.innerHTML = value + " unavailable";
+                            pElement.innerHTML = /*value +*/ " unavailable";
                             var imgElement = document.getElementById("95Img");
                             imgElement.src = "../images/95unavailable.png";
                         }
@@ -118,13 +129,16 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "Diesel";
                             var pElement = document.getElementById("Dieselstatewidth");
-                            pElement.innerHTML = value + " unavailable";
+                            pElement.innerHTML = /*value + */" unavailable";
                             var imgElement = document.getElementById("dieselImg");
                             imgElement.src = "../images/dieselunavailable.png";
                         }
                     }
                 });
 
+            }else{
+                document.getElementById("fuelStatusDisplay").textContent = "No availabal data yet";
+                document.getElementById("fuelStatusDisplay").style.color = "rgb(108, 110, 122)";
             }
         } else {
             console.log("Document does not exist.");

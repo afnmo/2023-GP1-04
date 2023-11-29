@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'carData.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'car_data.dart';
 
-class formDataHandler {
-  carData carDataObj = carData();
+class FormDataHandler {
+  CarData carDataObj = CarData();
 
   Future<String?> findDocumentIdByEmail() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -54,7 +57,8 @@ class formDataHandler {
     String? documentId = await findDocumentIdByEmail();
     String? arabicLetters = await convertEnglishToArabic(englishLetters);
     // Submit data to Firebase
-    FirebaseFirestore.instance.collection('Cars').add({
+    DocumentReference carDate =
+        await FirebaseFirestore.instance.collection('Cars').add({
       'make': make,
       'model': model,
       'year': year,
@@ -69,6 +73,8 @@ class formDataHandler {
       'userId': documentId,
       'image': "",
     });
+
+    await setInitialExpense(carDate.id, documentId);
   }
 
   Future<String> convertEnglishToArabic(String input) async {
@@ -102,5 +108,43 @@ class formDataHandler {
       }
     }
     return result.trim();
+  }
+
+  Future<void> setInitialExpense(String carId, String? userId) async {
+    try {
+      DateTime now = DateTime.now();
+      String dateString = DateFormat('yyyy-MM-dd').format(now);
+      List<String> dateParts =
+          dateString.split('-').map((s) => s.trim()).toList();
+      int year = int.parse(dateParts[0]);
+      int month = int.parse(dateParts[1]);
+      int day = int.parse(dateParts[2]);
+
+      // String? userId = await getUserId();
+      print("userId: " + userId!);
+      Map<String, dynamic> data = {
+        'userId': userId,
+        'date': dateString,
+        'year': year,
+        'month': month,
+        'day': day,
+        'amount': '500',
+        'carId': carId
+      };
+
+      // Append additional data to the existing map
+
+      await FirebaseFirestore.instance.collection("Bills").add(data);
+    } catch (error) {
+      print("Something went wrong in setting initial expenses for a car");
+      Get.snackbar(
+        "Error",
+        "Something went wrong, try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
+      print(error.toString());
+    }
   }
 }

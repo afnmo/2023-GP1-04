@@ -1,35 +1,38 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../carInfoPage/carInfo.dart';
-import 'editCarInfoHandler.dart';
-import 'package:image_picker/image_picker.dart';
+import 'car_data.dart';
+import 'package:gp91/car/car.dart';
+import 'form_data_handler.dart';
 
-class editCarInfoBody extends StatefulWidget {
-  final String carId;
-
-  const editCarInfoBody({super.key, required this.carId});
+class AddCarBody extends StatefulWidget {
+  const AddCarBody({Key? key}) : super(key: key);
 
   @override
-  _editCarInfoBodyState createState() => _editCarInfoBodyState();
+  _addCarBodyState createState() => _addCarBodyState();
 }
 
-class _editCarInfoBodyState extends State<editCarInfoBody> {
+class _addCarBodyState extends State<AddCarBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
-  late Map<String, dynamic> carDataInfo = {};
+  //List<List<dynamic>> _carData = [];
+  List<String> _uniqueManufacturers = [];
+  List<String> carModels = [];
+  List<String> fuelEconomys = [];
+  List<String> years = [];
+
+  String? selectedYear; // Make selectedYear nullable with '?'
   List<String> fuelTypes = ['91', '95', 'Diesel'];
   String? selectedFuelType;
+  String? selectedFuelEconomy;
+  String? selectedCarMake;
+  String? selectedCarModel;
   TextEditingController englishLettersController = TextEditingController();
   TextEditingController numbersController = TextEditingController();
   TextEditingController carNameController = TextEditingController();
-  TextEditingController imageController = TextEditingController();
   String? selectedCarColor;
-  File? selectedImage;
-  String? imageFile;
-  Uint8List image = Uint8List(0);
+  CarData carDataObj = CarData();
 
   List<String> colorMap = [
     'red',
@@ -53,23 +56,45 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
   @override
   void initState() {
     super.initState();
-    fetchCarData();
+    extractManufacturers();
   }
 
-  Future<void> getImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        selectedImage = File(pickedImage.path);
-      });
-    }
+  void extractManufacturers() async {
+    List<String> manufacturers = await CarData.extractManufacturers();
+    setState(() {
+      _uniqueManufacturers = manufacturers;
+    });
   }
 
-  void updataFormData() async {
+// Function to fetch car models based on the selected car make
+  Future<void> fetchCarModels(String make) async {
+    List<String> models = await carDataObj.getVehicleModels(make);
+    setState(() {
+      carModels = models;
+    });
+  }
+
+  Future<void> fetchYears(String make, String model) async {
+    List<String> models = await carDataObj.getYearsForMakeAndModel(make, model);
+    setState(() {
+      years = models;
+    });
+  }
+
+  Future<void> fetchFuelEconomy(String year, String make, String model) async {
+    List<String> Economys = await carDataObj.getFuelEconomy(year, make, model);
+    setState(() {
+      fuelEconomys = Economys;
+    });
+  }
+
+  void submitFormData() async {
     // Check if any field is empty
-    if (selectedFuelType == null ||
+    if (selectedCarMake == null ||
+        selectedCarModel == null ||
+        selectedYear == null ||
+        selectedFuelType == null ||
+        selectedFuelEconomy == null ||
         englishLettersController.text.isEmpty ||
         numbersController.text.isEmpty ||
         carNameController.text.isEmpty ||
@@ -137,7 +162,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Characters not allowed: ${nonMatchingLetters.join(', ')}'),
+                'Characters not allowed in Saudi plate: ${nonMatchingLetters.join(', ')}'),
             backgroundColor: Color.fromARGB(255, 255, 99, 88),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 3),
@@ -167,23 +192,27 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
       return;
     }
 
-    editCarInfoHandler editCarInfoHandlerObj =
-        editCarInfoHandler(carId: widget.carId);
+    FormDataHandler formDataHandlerObj = FormDataHandler();
 
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      await editCarInfoHandlerObj.formUpdate(
+      await formDataHandlerObj.formData(
+        selectedCarMake,
+        selectedCarModel,
+        selectedYear,
         selectedFuelType,
+        selectedFuelEconomy,
         englishLettersController,
         numbersController,
         carNameController,
         selectedCarColor,
-        selectedImage,
       );
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => carInfo(carId: widget.carId)),
+        MaterialPageRoute(
+          builder: (context) => CarPage(),
+        ),
       );
     } else {
       // Handle the case where the user is not authenticated
@@ -194,37 +223,6 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
         ),
       );
     }
-  }
-
-  Future<void> fetchCarData() async {
-    Map<String, dynamic> data =
-        await editCarInfoHandler.getCarData(widget.carId);
-
-    setState(() {
-      carDataInfo = data;
-
-      if (carDataInfo['fuelType'] != null) {
-        selectedFuelType = carDataInfo['fuelType'];
-      }
-
-      if (carDataInfo['englishLetters'] != null) {
-        englishLettersController =
-            TextEditingController(text: carDataInfo['englishLetters']);
-      }
-
-      if (carDataInfo['plateNumbers'] != null) {
-        numbersController =
-            TextEditingController(text: carDataInfo['plateNumbers']);
-      }
-
-      if (carDataInfo['color'] != null) {
-        selectedCarColor = carDataInfo['color'];
-      }
-
-      if (carDataInfo['name'] != null) {
-        carNameController = TextEditingController(text: carDataInfo['name']);
-      }
-    });
   }
 
   Widget build(BuildContext context) {
@@ -243,7 +241,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
         ),
         centerTitle: true,
         title: const Text(
-          'Update your car',
+          'Add new car',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -306,6 +304,160 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                             ),
                             ConstrainedBox(
                               constraints: BoxConstraints(
+                                maxWidth: fixedWidth,
+                              ),
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    void Function(void Function()) setState) {
+                                  return DropdownButtonFormField<String>(
+                                    value: selectedCarMake,
+                                    items:
+                                        _uniqueManufacturers.map((String make) {
+                                      return DropdownMenuItem<String>(
+                                        value: make,
+                                        child: SizedBox(
+                                          width: 120.0,
+                                          child: Text(
+                                            make,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) async {
+                                      setState(() {
+                                        selectedCarMake = newValue;
+                                        selectedCarModel = null;
+                                        selectedYear = null;
+                                        selectedFuelEconomy = null;
+                                      });
+                                      fetchCarModels(selectedCarMake!);
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: 'Make',
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.directions_car,
+                                        color: Color(0xFFFFCEAF),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: fixedWidth,
+                              ),
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    void Function(void Function()) setState) {
+                                  return DropdownButtonFormField<String>(
+                                    value: selectedCarModel,
+                                    items: carModels.map((String model) {
+                                      return DropdownMenuItem<String>(
+                                        value: model,
+                                        child: SizedBox(
+                                          width: 120.0,
+                                          child: Text(
+                                            model,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) async {
+                                      setState(() {
+                                        selectedCarModel = newValue;
+                                      });
+                                      fetchYears(
+                                          selectedCarMake!, selectedCarModel!);
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: 'Model',
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.directions_car,
+                                        color: Color(0xFFFFCEAF),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxWidth: fixedWidth, maxHeight: fixedHeight),
+                              child: DropdownButtonFormField<String>(
+                                value: selectedYear,
+                                items: years.map((String year) {
+                                  return DropdownMenuItem<String>(
+                                    value: year,
+                                    child: Text(year),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) async {
+                                  setState(() {
+                                    selectedYear = newValue;
+                                  });
+                                  fetchFuelEconomy(selectedYear!,
+                                      selectedCarMake!, selectedCarModel!);
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Year',
+                                  labelStyle: TextStyle(
+                                    color: Colors
+                                        .black, // Change the label text color as needed
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors
+                                            .grey), // Change the color as needed
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.calendar_month,
+                                    color: Color(0xFFFFCEAF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: DropdownButtonFormField<String>(
                                 value: selectedFuelType,
@@ -321,7 +473,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: selectedFuelType ?? 'Fuel Type',
+                                  labelText: 'Fuel Type',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -344,6 +496,56 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                             ),
                             SizedBox(
                               height: 15,
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: fixedWidth,
+                              ),
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    void Function(void Function()) setState) {
+                                  return DropdownButtonFormField<String>(
+                                    value: selectedFuelEconomy,
+                                    items:
+                                        fuelEconomys.map((String FuelEconomy) {
+                                      return DropdownMenuItem<String>(
+                                        value: FuelEconomy,
+                                        child: SizedBox(
+                                          width: 120.0,
+                                          child: Text(
+                                            FuelEconomy,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) async {
+                                      setState(() {
+                                        selectedFuelEconomy = newValue;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: 'Fuel Economy',
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.local_gas_station,
+                                        color: Color(0xFFFFCEAF),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                             SizedBox(
                               height: 22,
@@ -375,8 +577,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       r'^[a-zA-Z]*$')), // Allow only English letters
                                 ],
                                 decoration: InputDecoration(
-                                  labelText: englishLettersController.text ??
-                                      'English letters',
+                                  labelText: 'English letters',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -413,8 +614,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       .digitsOnly // Allow only numeric input
                                 ],
                                 decoration: InputDecoration(
-                                  labelText:
-                                      numbersController.text ?? 'Numbers',
+                                  labelText: 'Numbers',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -469,7 +669,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: selectedCarColor ?? 'Car color',
+                                  labelText: 'Car color',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -505,8 +705,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                       r'^[a-zA-Z ]*$')), // Allow only English letters
                                 ],
                                 decoration: InputDecoration(
-                                  labelText:
-                                      carNameController.text ?? 'Car name',
+                                  labelText: 'Car name',
                                   labelStyle: TextStyle(
                                     color: Colors
                                         .black, // Change the label text color as needed
@@ -530,65 +729,9 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                             SizedBox(
                               height: 15,
                             ),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: fixedWidth,
-                                maxHeight: fixedHeight,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  getImage();
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    selectedImage != null
-                                        ? Image.file(
-                                            selectedImage!,
-                                            width: 200,
-                                            height: 200,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Container(
-                                            // width: 200,
-                                            height: 200,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  color: Colors.grey),
-                                            ),
-                                            child: Center(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                      Icons.camera_alt_outlined,
-                                                      color: Colors.grey),
-                                                  SizedBox(height: 10),
-                                                  Text(
-                                                    'Tap to add a photo of your car',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
                             ElevatedButton(
                               onPressed: () async {
-                                updataFormData();
+                                submitFormData();
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(
@@ -600,7 +743,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
                                 minimumSize: Size(355, 38),
                               ),
                               child: Text(
-                                'Save',
+                                'Add',
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
