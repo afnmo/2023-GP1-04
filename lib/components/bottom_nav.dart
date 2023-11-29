@@ -107,7 +107,7 @@ class _BottomNavState extends State<BottomNav> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CarApp()),
+          MaterialPageRoute(builder: (context) => CarPage()),
         );
         break;
       case 2:

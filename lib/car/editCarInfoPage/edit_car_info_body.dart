@@ -2,20 +2,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../carInfoPage/carInfo.dart';
-import 'editCarInfoHandler.dart';
+import '../carInfoPage/car_info.dart';
+import 'edit_car_info_handler.dart';
 import 'package:image_picker/image_picker.dart';
 
-class editCarInfoBody extends StatefulWidget {
+class EditCarInfoBody extends StatefulWidget {
   final String carId;
 
-  const editCarInfoBody({super.key, required this.carId});
+  const EditCarInfoBody({super.key, required this.carId});
 
   @override
   _editCarInfoBodyState createState() => _editCarInfoBodyState();
 }
 
-class _editCarInfoBodyState extends State<editCarInfoBody> {
+class _editCarInfoBodyState extends State<EditCarInfoBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
@@ -167,8 +167,8 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
       return;
     }
 
-    editCarInfoHandler editCarInfoHandlerObj =
-        editCarInfoHandler(carId: widget.carId);
+    EditCarInfoHandler editCarInfoHandlerObj =
+        EditCarInfoHandler(carId: widget.carId);
 
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
@@ -183,7 +183,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => carInfo(carId: widget.carId)),
+        MaterialPageRoute(builder: (context) => CarInfo(carId: widget.carId)),
       );
     } else {
       // Handle the case where the user is not authenticated
@@ -198,7 +198,7 @@ class _editCarInfoBodyState extends State<editCarInfoBody> {
 
   Future<void> fetchCarData() async {
     Map<String, dynamic> data =
-        await editCarInfoHandler.getCarData(widget.carId);
+        await EditCarInfoHandler.getCarData(widget.carId);
 
     setState(() {
       carDataInfo = data;

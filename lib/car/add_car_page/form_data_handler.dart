@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'carData.dart';
+import 'car_data.dart';
 
-class formDataHandler {
-  carData carDataObj = carData();
+class FormDataHandler {
+  CarData carDataObj = CarData();
 
   Future<String?> findDocumentIdByEmail() async {
     FirebaseAuth auth = FirebaseAuth.instance;

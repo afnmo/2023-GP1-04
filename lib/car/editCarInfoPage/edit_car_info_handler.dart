@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class editCarInfoHandler {
+class EditCarInfoHandler {
   final String carId;
 
-  editCarInfoHandler({required this.carId});
+  EditCarInfoHandler({required this.carId});
 
   Future<void> formUpdate(
       selectedFuelType,
