@@ -1,14 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
 import 'package:gp91/consumption/rounded_button_small.dart';
-import 'package:gp91/login/components/rounded_button.dart';
 import 'package:intl/intl.dart';
 
 class FuelEntry extends StatelessWidget {
   final String carDocumentId;
+  final _formKey = GlobalKey<FormState>(); // Add a GlobalKey for the form
+
   FuelEntry({super.key, required this.carDocumentId});
 
   @override
@@ -39,75 +39,87 @@ class FuelEntry extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const InstructionCard(
-                step: "Step 1",
-                icon: Icons.local_gas_station,
-                instruction: "Record the initial odometer.",
-                color: Colors.orangeAccent,
-              ),
-              const InstructionCard(
-                step: "Step 2",
-                icon: Icons.drive_eta,
-                instruction:
-                    "Continue using your vehicle as normal until the end of the month.",
-                color: Colors.greenAccent,
-              ),
-              const InstructionCard(
-                step: "Step 3",
-                icon: Icons.local_gas_station,
-                instruction: "Record the final odometer reading.",
-                color: Colors.redAccent,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Initial Odometer Reading (Km): ",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const InstructionCard(
+                  step: "Step 1",
+                  icon: Icons.local_gas_station,
+                  instruction: "Record the initial odometer.",
+                  color: Colors.orangeAccent,
                 ),
-              ),
-              const SizedBox(height: 5),
-              TextField(
-                controller: _startMileageController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8),
+                const InstructionCard(
+                  step: "Step 2",
+                  icon: Icons.drive_eta,
+                  instruction:
+                      "Continue using your vehicle as normal until the end of the month.",
+                  color: Colors.greenAccent,
+                ),
+                const InstructionCard(
+                  step: "Step 3",
+                  icon: Icons.local_gas_station,
+                  instruction: "Record the final odometer reading.",
+                  color: Colors.redAccent,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Initial Odometer Reading (Km): ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  // labelText: "Initial Odometer Reading (Km)",
-                  hintText: 'Enter initial reading',
-                  prefixIcon: Icon(Icons.speed, color: Colors.blue),
                 ),
-              ),
-              const SizedBox(height: 20),
-              RoundedButtonSmall(
-                text: "Submit",
-                press: () async {
-                  DateTime currentTimestamp = DateTime.now();
-
-                  // Pass these components to the toJson method
-                  await FuelFirebase().addMileage({
-                    'startMileage': _startMileageController.text,
-                    'startDate':
-                        DateFormat('yyyy-MM-dd').format(currentTimestamp),
-                    'startTime': DateFormat.jms().format(currentTimestamp),
-                    'carId': carDocumentId,
-                    'done': false,
-                  });
-
-                  Get.to(
-                    () => FuelPrev(
-                      carDocumentId: carDocumentId,
+                const SizedBox(height: 5),
+                TextFormField(
+                  controller: _startMileageController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  );
-                },
-              ),
-            ],
+                    hintText: 'Enter initial reading',
+                    prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter initial reading';
+                    }
+                    if (!RegExp(r'^\d+\.?\d*$').hasMatch(value)) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                RoundedButtonSmall(
+                  text: "Submit",
+                  press: () async {
+                    if (_formKey.currentState!.validate()) {
+                      DateTime currentTimestamp = DateTime.now();
+
+                      await FuelFirebase().addMileage({
+                        'startMileage': _startMileageController.text,
+                        'startDate':
+                            DateFormat('yyyy-MM-dd').format(currentTimestamp),
+                        'startTime': DateFormat.jms().format(currentTimestamp),
+                        'carId': carDocumentId,
+                        'done': false,
+                      });
+
+                      Get.to(
+                        () => FuelPrev(
+                          carDocumentId: carDocumentId,
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

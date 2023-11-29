@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/consumption/fuel_entry.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 
@@ -155,6 +156,12 @@ class FuelCars extends StatelessWidget {
                 }
               },
             ),
+          ),
+          BottomNav(
+            currentIndex: 0, // Set the initial index as needed
+            onIndexChanged: (index) {
+              // Handle index changes if required
+            },
           ),
         ],
       ),

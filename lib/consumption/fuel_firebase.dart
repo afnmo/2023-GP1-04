@@ -97,24 +97,6 @@ class FuelFirebase extends GetxController {
     }
   }
 
-  // Future<List<Map<String, dynamic>>> fetchAll() async {
-  //   try {
-  //     QuerySnapshot querySnapshot = await _db.collection("Consumption").get();
-  //     List<Map<String, dynamic>> allDocuments = querySnapshot.docs.map((doc) {
-  //       // Create a new map with the document ID and all the existing data
-  //       return {
-  //         'id': doc.id, // Include the document ID
-  //         ...doc.data() as Map<String, dynamic>,
-  //       };
-  //     }).toList();
-
-  //     return allDocuments;
-  //   } catch (error) {
-  //     print("Error fetching documents: ${error.toString()}");
-  //     return [];
-  //   }
-  // }
-
   Future<void> deleteDoc(String documentId) async {
     try {
       await _db.collection("Consumption").doc(documentId).delete();
@@ -155,42 +137,6 @@ class FuelFirebase extends GetxController {
       rethrow; // Re-throw the caught exception
     }
   }
-
-  // Future<List<Map<String, dynamic>>> fetchConsumptionDocs(String documentId, String carId) async {
-  //   try {
-  //     String? userId = await getUserDocumentIdByEmail();
-  //     print(userId);
-  //     if (userId == null) {
-  //       print("User ID is null");
-  //       return [];
-  //     }
-  //     // Query the Firestore collection
-  //     QuerySnapshot<Map<String, dynamic>> querySnapshot = await _db
-  //         .collection("Consumption")
-  //         .where('carId', isEqualTo: carId)
-  //         .where('userId', isEqualTo: userId)
-  //         .get();
-
-  //     // Check if the query returned any documents
-  //     if (querySnapshot.docs.isEmpty) {
-  //       throw Exception('fetchConsumptionDocs: No documents found matching the criteria');
-  //     }
-
-  //     // Map the documents to a list of data maps
-  //     return querySnapshot.docs.map((doc) => doc.data()).toList();
-  //   } catch (error) {
-  //     print("Error retrieving documents: ${error.toString()}");
-  //     // Handling the error with a user-friendly message
-  //     Get.snackbar(
-  //       "Error",
-  //       "Failed to retrieve documents, try again",
-  //       snackPosition: SnackPosition.BOTTOM,
-  //       backgroundColor: Colors.redAccent.withOpacity(0.1),
-  //       colorText: Colors.red,
-  //     );
-  //     rethrow; // Re-throw the caught exception
-  //   }
-  // }
 
   Future<void> addFinalInputs(
       Map<String, dynamic> data, String consumptionDocumentId) async {
@@ -407,6 +353,38 @@ class FuelFirebase extends GetxController {
       print("Error fetching cars: $e");
       // Handle the error, for example by returning an empty map or re-throwing the exception
       return {};
+    }
+  }
+
+  Future<void> updateAmountField(String carId, String amount) async {
+    try {
+      String? userId = await getUserDocumentIdByEmail();
+      if (userId == null) throw Exception('User ID is null');
+
+      // Fetch the user's current bill
+      var billsQuery = await FirebaseFirestore.instance
+          .collection("Bills")
+          .where('userId', isEqualTo: userId)
+          .where('carId', isEqualTo: carId)
+          .limit(1)
+          .get();
+
+      if (billsQuery.docs.isEmpty)
+        throw Exception('No bill found for this user');
+
+      var bill = billsQuery.docs.first;
+
+      // Update the field 'amount' with the new amount received
+      await bill.reference.update({'amount': amount});
+    } catch (error) {
+      print("Error in adding car to bill: ${error.toString()}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong, try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
     }
   }
 }
