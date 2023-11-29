@@ -192,7 +192,7 @@
 //   }
 // }
 /////////////////////////////////////////////////////////////////////////
-import 'package:flutter/foundation.dart';
+
 import 'package:gp91/Home/components/annualGraph/aStream_builder.dart';
 import 'package:gp91/Home/components/barGraph/bar_graph.dart';
 import 'package:gp91/Home/components/annualGraph/aBar_graph.dart';
@@ -266,11 +266,13 @@ class _HomeScreenState extends State<HomeScreen> {
       if (showMonthly) {
         return SizedBox(
           height: 250,
+          width: 395,
           child: MyBarGraph(monthlySummary: monthlySummary),
         );
       } else {
         return SizedBox(
           height: 250,
+          width: 395,
           child: annualBarGraph(annualSummary: annualSummary),
         );
       }
@@ -298,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Text(
                 'Hi ${UserName ?? '...'}!',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   color: Color(0xFF6EA67C),
                   fontWeight: FontWeight.bold,
@@ -312,6 +314,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(right: 80.0),
                   child: ToggleButtons(
+                    isSelected: [showMonthly, !showMonthly],
+                    onPressed: _toggleGraph,
+                    selectedColor: Color.fromRGBO(110, 166, 124, 1),
+                    fillColor: Color.fromRGBO(110, 166, 124, 0.2),
+                    splashColor: Color.fromRGBO(110, 166, 124, 0.3),
                     children: const [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -322,11 +329,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text('annual costs'),
                       ),
                     ],
-                    isSelected: [showMonthly, !showMonthly],
-                    onPressed: _toggleGraph,
-                    selectedColor: Color.fromRGBO(110, 166, 124, 1),
-                    fillColor: Color.fromRGBO(110, 166, 124, 0.2),
-                    splashColor: Color.fromRGBO(110, 166, 124, 0.3),
                   ),
                 ),
               ),
@@ -342,11 +344,11 @@ class _HomeScreenState extends State<HomeScreen> {
             //   ),
             // ),
             if (showGraph == false)
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: BlurredImageWithText(),
               ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 30.0),
               child: CategoriesListMallika1(),
             ),
