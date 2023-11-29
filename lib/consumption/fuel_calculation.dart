@@ -114,6 +114,7 @@ class FuelCalculation {
       print(document);
       if (document.containsKey('amount')) {
         totalExpenses += document['amount'];
+        print(totalExpenses);
       }
     }
 

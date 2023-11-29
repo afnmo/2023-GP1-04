@@ -192,7 +192,7 @@
 //   }
 // }
 /////////////////////////////////////////////////////////////////////////
-import 'package:flutter/foundation.dart';
+
 import 'package:gp91/Home/components/annualGraph/aStream_builder.dart';
 import 'package:gp91/Home/components/barGraph/bar_graph.dart';
 import 'package:gp91/Home/components/annualGraph/aBar_graph.dart';
@@ -221,8 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? showGraph;
   bool showMonthly = true;
   int _currentIndex = 2;
-  Stream<QuerySnapshot> _billsStream =
-      FirebaseFirestore.instance.collection('Bills').snapshots();
+  // final Stream<QuerySnapshot> _billsStream =
+  //     FirebaseFirestore.instance.collection('Bills').snapshots();
+
   void _onIndexChanged(int index) {
     setState(() {
       _currentIndex = index;
@@ -236,21 +237,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchMonthlySummary() async {
+    final QuerySnapshot _billsStream =
+        await FirebaseFirestore.instance.collection('Bills').get();
     // Use the getUserName
     UserName = await getUserName.getUserName();
     showGraph = await checkCarExists();
     // if (kDebugMode) {
     //   print('User Name: $UserName');
     // } // this is to test
-    StreamBuilderExample example = StreamBuilderExample(stream: _billsStream);
+    StreamBuilderExample example =
+        StreamBuilderExample(billsDocuments: _billsStream);
     List<double> amounts = await example.getAmounts();
-    StreamBuilderAnnual example2 = StreamBuilderAnnual(stream: _billsStream);
+    print(amounts);
+    StreamBuilderAnnual example2 =
+        StreamBuilderAnnual(billsDocuments: _billsStream);
     List<double> amounts2 = await example2.getAnnualAmounts();
-
     setState(() {
       monthlySummary = amounts;
       annualSummary = amounts2;
     });
+    // }
   }
 
   void _toggleGraph(int index) {
@@ -267,11 +273,13 @@ class _HomeScreenState extends State<HomeScreen> {
       if (showMonthly) {
         return SizedBox(
           height: 250,
+          width: 395,
           child: MyBarGraph(monthlySummary: monthlySummary),
         );
       } else {
         return SizedBox(
           height: 250,
+          width: 395,
           child: annualBarGraph(annualSummary: annualSummary),
         );
       }
@@ -299,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Text(
                 'Hi ${UserName ?? '...'}!',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   color: Color(0xFF6EA67C),
                   fontWeight: FontWeight.bold,
@@ -313,6 +321,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(right: 80.0),
                   child: ToggleButtons(
+                    isSelected: [showMonthly, !showMonthly],
+                    onPressed: _toggleGraph,
+                    selectedColor: Color.fromRGBO(110, 166, 124, 1),
+                    fillColor: Color.fromRGBO(110, 166, 124, 0.2),
+                    splashColor: Color.fromRGBO(110, 166, 124, 0.3),
                     children: const [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -323,11 +336,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text('annual costs'),
                       ),
                     ],
-                    isSelected: [showMonthly, !showMonthly],
-                    onPressed: _toggleGraph,
-                    selectedColor: Color.fromRGBO(110, 166, 124, 1),
-                    fillColor: Color.fromRGBO(110, 166, 124, 0.2),
-                    splashColor: Color.fromRGBO(110, 166, 124, 0.3),
                   ),
                 ),
               ),
@@ -343,11 +351,11 @@ class _HomeScreenState extends State<HomeScreen> {
             //   ),
             // ),
             if (showGraph == false)
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: BlurredImageWithText(),
               ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 30.0),
               child: CategoriesListMallika1(),
             ),

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 
 class GetUserId {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,4 +38,6 @@ class GetUserId {
       return null;
     }
   }
+
+
 }

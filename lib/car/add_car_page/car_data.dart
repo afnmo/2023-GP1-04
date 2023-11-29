@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:csv/csv.dart';
 import 'dart:convert';
 
-class carData {
+class CarData {
   static Future<List<String>> extractManufacturers() async {
     List<String> manufacturers = [];
 

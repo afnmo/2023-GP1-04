@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/consumption/consumption_models.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 
@@ -25,7 +26,7 @@ class FuelResult extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Fuel Consumption Results',
+          'Fuel consumption results',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -201,6 +202,12 @@ class FuelResult extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
+                  BottomNav(
+                    currentIndex: 0, // Set the initial index as needed
+                    onIndexChanged: (index) {
+                      // Handle index changes if required
+                    },
+                  ),
                 ],
               );
             },
@@ -208,6 +215,5 @@ class FuelResult extends StatelessWidget {
         },
       ),
     );
-
   }
 }

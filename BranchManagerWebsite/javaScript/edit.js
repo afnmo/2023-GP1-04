@@ -58,7 +58,7 @@ async function retrieveAndPopulateForm() {
             const stationData = docSnap.data();
 
             document.getElementById("StationName").value = stationData.name;
-            document.getElementById("StationLocation").value = stationData.Location;
+            document.getElementById("StationLocation").value = stationData.location;
             document.getElementById("StationName").style.fontSize = "larger";
             document.getElementById("StationLocation").style.fontSize = "larger";
             document.getElementById("StationName").style.color = "#f8a71a98";

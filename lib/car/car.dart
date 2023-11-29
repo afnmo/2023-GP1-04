@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
-import 'carBody.dart';
+import 'car_body.dart';
 
-class CarApp extends StatelessWidget {
+class CarPage extends StatelessWidget {
+  const CarPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

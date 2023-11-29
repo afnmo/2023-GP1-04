@@ -3,14 +3,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
-import '../editCarInfoPage/editCarInfo.dart';
+import '../edit_car_info_page/edit_car_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'carInfoHandler.dart';
+import 'car_info_handler.dart';
 
-class carInfoBody extends StatelessWidget {
+class CarInfoBody extends StatelessWidget {
   final String carId;
 
-  carInfoBody({required this.carId});
+  CarInfoBody({super.key, required this.carId});
 
   Widget editCarButton(BuildContext context) {
     return FloatingActionButton(
@@ -20,7 +20,7 @@ class carInfoBody extends StatelessWidget {
 
         // Optionally, you can navigate to another page here.
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => editCarInfo(carId: carId)));
+            MaterialPageRoute(builder: (context) => EditCarInfo(carId: carId)));
       },
       child: Icon(Icons.edit),
       backgroundColor: Color.fromARGB(255, 211, 166, 42),
@@ -96,7 +96,7 @@ class carInfoBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: carInfoHandler.getCarDataStream(carId),
+      stream: CarInfoHandler.getCarDataStream(carId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -111,9 +111,27 @@ class carInfoBody extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: Color.fromARGB(121, 218, 214, 214),
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(80),
-              child: customShapeBorder('Car Details'),
+            // appBar: PreferredSize(
+            //   preferredSize: Size.fromHeight(80),
+            //   child: customShapeBorder('Car Details'),
+            // ),
+            appBar: AppBar(
+              backgroundColor: Color(0xFF6EA67C),
+              elevation: 0,
+              iconTheme: const IconThemeData(color: Colors.white),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
+              centerTitle: true,
+              title: const Text(
+                'Car details',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             body: Stack(
               children: [

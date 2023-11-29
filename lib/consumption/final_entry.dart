@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_calculation.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_result.dart';
+import 'package:gp91/consumption/instruction_card.dart';
 import 'package:gp91/consumption/rounded_button_small.dart';
-import 'package:gp91/login/components/rounded_button.dart';
 import 'package:intl/intl.dart';
 
 class FinalEntry extends StatefulWidget {
@@ -23,8 +22,57 @@ class FinalEntry extends StatefulWidget {
 }
 
 class _FinalEntryState extends State<FinalEntry> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAlertDialog(context);
+    });
+  }
+
+  void showAlertDialog(BuildContext context) {
+    // Set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Fuel Expense Notification",
+          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+      content: const SingleChildScrollView(
+        // Ensures content fits in smaller screens
+        child: ListBody(
+          children: <Widget>[
+            Text(
+                "Your car's initial fuel expense is set at 500 SR for this journey. "
+                "This amount is a key factor in our fuel consumption calculation. "
+                "If this estimate aligns with your expectations, you can proceed. "
+                "However, if you have a different amount in mind based on the expected mileage traveled, "
+                "please enter the new figure. This ensures that our calculations are tailored to your specific needs.",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          child: Text("Ok", style: TextStyle(color: Colors.white)),
+          style: ElevatedButton.styleFrom(primary: Colors.green),
+          onPressed: () {
+            // Code to proceed
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+      ],
+    );
+
+    // Show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   // Define the controller for end mileage
   final TextEditingController endMileageController = TextEditingController();
+  final TextEditingController expenseController = TextEditingController();
   bool showResults = false;
   // Define variables for your results
   double? calculatedFuelEconomyResult;
@@ -42,7 +90,7 @@ class _FinalEntryState extends State<FinalEntry> {
         ),
         centerTitle: true,
         title: const Text(
-          'Cars',
+          'Final mileage entry',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -73,40 +121,86 @@ class _FinalEntryState extends State<FinalEntry> {
 
               return Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      "Note: you will not be able to enter the final odometer until the end of the month",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  // const Padding(
+                  //   padding: EdgeInsets.all(20.0),
+                  //   child: Text(
+                  //     "Note: you will not be able to enter the final odometer until the end of the month",
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.redAccent,
+                  //     ),
+                  //   ),
+                  // ),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const InstructionCard(
+                        step: "Step 2",
+                        icon: Icons.local_gas_station,
+                        instruction: "Record the final odometer reading.",
                         color: Colors.redAccent,
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Final Odometer Reading (Km): ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  TextField(
-                    controller: endMileageController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(8),
+                      const Row(
+                        children: [
+                          Text(
+                            "Expenses (optional): ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Tooltip(
+                            message:
+                                "You can skip this field if you don't want to enter expenses.",
+                            child: Icon(Icons.info_outline,
+                                size: 16, color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      hintText: 'Enter Final reading',
-                      prefixIcon: Icon(Icons.speed, color: Colors.blue),
-                    ),
+                      const SizedBox(height: 5),
+                      TextField(
+                        controller: expenseController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Enter expense amount (optional)',
+                          prefixIcon: const Icon(Icons.monetization_on_outlined,
+                              color: Colors.blue),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Final Odometer Reading (Km): ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      TextField(
+                        controller: endMileageController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Enter Final reading',
+                          prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                        ),
+                      ),
+                    ],
                   ),
+
                   const SizedBox(height: 20),
                   RoundedButtonSmall(
                     text: "Submit",
@@ -114,6 +208,11 @@ class _FinalEntryState extends State<FinalEntry> {
                       // UI feedback for loading
                       // Implement any loading indicator or disable the button
                       try {
+                        if (expenseController.text.isNotEmpty) {
+                          double expense = double.parse(expenseController.text);
+                          await FuelFirebase()
+                              .updateAmountField(widget.carDocumentId, expense);
+                        }
                         double startMileage =
                             double.tryParse(data['startMileage'] ?? '0') ?? 0.0;
                         print(startMileage);
@@ -128,14 +227,13 @@ class _FinalEntryState extends State<FinalEntry> {
                         double litersConsumed = await FuelCalculation()
                             .getLitersConsumed(widget.carDocumentId,
                                 data['startDate'], finalDate);
-                        print("litersConsumed: ");
-                        print(litersConsumed);
+                        print("litersConsumed: ${litersConsumed}");
 
                         double calculatedFuelEconomy = FuelCalculation()
                             .getCalculatedFuelEconomy(
                                 litersConsumed, startMileage, endMileage);
-                        print("calculatedFuelEconomy:");
-                        print(calculatedFuelEconomy);
+                        print(
+                            "calculatedFuelEconomy: ${calculatedFuelEconomy}");
                         String percentageDifference = await FuelCalculation()
                             .getPercentageDifference(
                                 widget.carDocumentId, calculatedFuelEconomy);
@@ -143,29 +241,28 @@ class _FinalEntryState extends State<FinalEntry> {
                         bool oneMonthPassed = isOneMonthPast(data);
                         print(oneMonthPassed);
                         if (oneMonthPassed) {
-                        await FuelFirebase().addFinalInputs(
-                          {
-                            'endMileage': endMileageController.text,
-                            'finalDate': finalDate,
-                            'finalTime':
-                                DateFormat.jms().format(currentTimestamp),
-                            'done': true,
-                            'calculatedFuelEconomy': calculatedFuelEconomy,
-                            'percentageDifference': percentageDifference,
-                          },
-                          widget.consumptionId,
-                        );
+                          await FuelFirebase().addFinalInputs(
+                            {
+                              'endMileage': endMileageController.text,
+                              'finalDate': finalDate,
+                              'finalTime':
+                                  DateFormat.jms().format(currentTimestamp),
+                              'done': true,
+                              'calculatedFuelEconomy': calculatedFuelEconomy,
+                              'percentageDifference': percentageDifference,
+                            },
+                            widget.consumptionId,
+                          );
 
-                        // Handling navigation result
-                        var result = await Get.to(() => FuelResult(
-                              consumptionDocumentId: widget.consumptionId,
-                              carDocumentId: widget.carDocumentId,
-                            ));
+                          // Handling navigation result
+                          var result = await Get.to(() => FuelResult(
+                                consumptionDocumentId: widget.consumptionId,
+                                carDocumentId: widget.carDocumentId,
+                              ));
 
-                        if (result != null) {
-                          // Handle result if needed
-                        }
-
+                          if (result != null) {
+                            // Handle result if needed
+                          }
                         } else {
                           setState(() {
                             calculatedFuelEconomyResult = calculatedFuelEconomy;
@@ -189,6 +286,12 @@ class _FinalEntryState extends State<FinalEntry> {
                     height: 16,
                   ),
                   if (showResults) _buildResultsWidget(),
+                  // BottomNav(
+                  //   currentIndex: 0, // Set the initial index as needed
+                  //   onIndexChanged: (index) {
+                  //     // Handle index changes if required
+                  //   },
+                  // ),
                 ],
               );
             },
@@ -229,7 +332,7 @@ class _FinalEntryState extends State<FinalEntry> {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Percentage Difference: $percentageDifferenceResult%',
+                  'Percentage Difference: $percentageDifferenceResult',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -244,38 +347,23 @@ class _FinalEntryState extends State<FinalEntry> {
       ],
     );
   }
+
   // Widget _buildResultsWidget() {
   //   return Text('Start Mileage: $startMileageResult');
   // }
-
   bool isOneMonthPast(Map<String, dynamic> data) {
-    // Extract and split the date string
+    // Extract and split the date string based on the format YYYY-MM-DD
     String dateString = data['startDate'];
     List<String> dateParts =
-        dateString.split(', ').map((s) => s.trim()).toList();
-    int day = int.parse(dateParts[0]);
+        dateString.split('-').map((s) => s.trim()).toList();
+    int year = int.parse(dateParts[0]);
     int month = int.parse(dateParts[1]);
-    int year = int.parse(dateParts[2]);
+    int day = int.parse(dateParts[2]);
 
-    // Extract and parse the time string
-    String timeString = data['startTime'];
-    // Removing non-numeric characters from the seconds part
-    String cleanTimeString =
-        timeString.replaceAll(RegExp(r'[^0-9:APMapm]'), '');
-    List<String> timeParts = cleanTimeString.split(':');
-    int hour = int.parse(timeParts[0]);
-    int minute = int.parse(timeParts[1]);
-    // Extract seconds and AM/PM part
-    String secondPart = timeParts[2];
-    int second = int.parse(RegExp(r'\d+').firstMatch(secondPart)![0]!);
-    // Adjust for AM/PM
-    if (secondPart.contains('PM') && hour < 12) hour += 12;
-    if (secondPart.contains('AM') && hour == 12) hour = 0;
+    // Create a DateTime object from the extracted date
+    DateTime initialDateTime = DateTime(year, month, day);
 
-    // Create a DateTime object from the extracted date and time
-    DateTime initialDateTime = DateTime(year, month, day, hour, minute, second);
-
-    // Get the current date and time
+    // Get the current date
     DateTime currentDateTime = DateTime.now();
 
     // Calculate the difference

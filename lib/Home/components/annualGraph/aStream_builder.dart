@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gp91/Home/components/getUserId.dart';
 
 class StreamBuilderAnnual {
-  final Stream<QuerySnapshot> stream;
+  final QuerySnapshot billsDocuments;
 
-  StreamBuilderAnnual({required this.stream});
+  StreamBuilderAnnual({required this.billsDocuments});
 
   Future<List<double>> getAnnualAmounts() async {
     final userId = await _getUserIdAsync();
@@ -12,8 +12,8 @@ class StreamBuilderAnnual {
       return [0.0, 0.0, 0.0, 0.0];
     }
 
-    final snapshot = await stream.first;
-    final bills = snapshot.docs;
+    // final snapshot = await stream.first;
+    final bills = billsDocuments.docs;
     final currentDate = DateTime.now();
 
     double currentAmount = 0;
@@ -22,29 +22,31 @@ class StreamBuilderAnnual {
     double thirdYearAmount = 0;
 
     for (var bill in bills) {
-      final billUserId = bill['userId'] as String?;
-      final billDate = bill['date'] as String?;
-      final billAmount = bill['amount'] as num?;
+      var data = bill.data() as Map<String, dynamic>?;
+      if (data != null) {
+        final billUserId = data['userId'] as String?;
+        final billDate = data['date'] as String?;
+        final billAmount = data['amount'] as num?;
 
-      if (billUserId == userId) {
-        final parsedDate = DateTime.parse(billDate!);
+        if (billUserId == userId) {
+          final parsedDate = DateTime.parse(billDate!);
 
-        final billYear = parsedDate.year;
+          final billYear = parsedDate.year;
 
-        final currentYear = currentDate.year;
+          final currentYear = currentDate.year;
 
-        if (billYear == currentYear) {
-          currentAmount += billAmount ?? 0;
-        } else if (billYear == currentYear - 1) {
-          firstYearAmount += billAmount ?? 0;
-        } else if (billYear == currentYear - 2) {
-          secondYearAmount += billAmount ?? 0;
-        } else if (billYear == currentYear - 3) {
-          thirdYearAmount += billAmount ?? 0;
+          if (billYear == currentYear) {
+            currentAmount += billAmount ?? 0;
+          } else if (billYear == currentYear - 1) {
+            firstYearAmount += billAmount ?? 0;
+          } else if (billYear == currentYear - 2) {
+            secondYearAmount += billAmount ?? 0;
+          } else if (billYear == currentYear - 3) {
+            thirdYearAmount += billAmount ?? 0;
+          }
         }
       }
     }
-
     return [currentAmount, firstYearAmount, secondYearAmount, thirdYearAmount];
   }
 

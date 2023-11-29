@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'carData.dart';
+import 'car_data.dart';
 import 'package:gp91/car/car.dart';
-import 'formDataHandler.dart';
+import 'form_data_handler.dart';
 
-class addCarBody extends StatefulWidget {
-  const addCarBody({Key? key}) : super(key: key);
+class AddCarBody extends StatefulWidget {
+  const AddCarBody({Key? key}) : super(key: key);
 
   @override
   _addCarBodyState createState() => _addCarBodyState();
 }
 
-class _addCarBodyState extends State<addCarBody> {
+class _addCarBodyState extends State<AddCarBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
@@ -32,7 +32,7 @@ class _addCarBodyState extends State<addCarBody> {
   TextEditingController numbersController = TextEditingController();
   TextEditingController carNameController = TextEditingController();
   String? selectedCarColor;
-  carData carDataObj = carData();
+  CarData carDataObj = CarData();
 
   List<String> colorMap = [
     'red',
@@ -60,7 +60,7 @@ class _addCarBodyState extends State<addCarBody> {
   }
 
   void extractManufacturers() async {
-    List<String> manufacturers = await carData.extractManufacturers();
+    List<String> manufacturers = await CarData.extractManufacturers();
     setState(() {
       _uniqueManufacturers = manufacturers;
     });
@@ -192,7 +192,7 @@ class _addCarBodyState extends State<addCarBody> {
       return;
     }
 
-    formDataHandler formDataHandlerObj = formDataHandler();
+    FormDataHandler formDataHandlerObj = FormDataHandler();
 
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
@@ -211,7 +211,7 @@ class _addCarBodyState extends State<addCarBody> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => CarApp(),
+          builder: (context) => CarPage(),
         ),
       );
     } else {
@@ -232,25 +232,20 @@ class _addCarBodyState extends State<addCarBody> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C), // Set the background color
+        backgroundColor: Color(0xFF6EA67C),
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button press
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: Text(
-          'Add a new car',
+        title: const Text(
+          'Add new car',
           style: TextStyle(
-            color: Colors.white, // Set the text color
-            fontSize: 20, // Set the text size
-            fontWeight: FontWeight.bold, // Set the font weight
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

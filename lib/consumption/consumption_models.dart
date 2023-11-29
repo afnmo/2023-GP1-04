@@ -1,7 +1,6 @@
 class Car {
   final String carId;
   final String name;
-  // Other car details as needed.
 
   Car({
     required this.carId,
