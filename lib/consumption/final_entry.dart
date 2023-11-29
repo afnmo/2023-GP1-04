@@ -21,6 +21,54 @@ class FinalEntry extends StatefulWidget {
 }
 
 class _FinalEntryState extends State<FinalEntry> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAlertDialog(context);
+    });
+  }
+
+  void showAlertDialog(BuildContext context) {
+    // Set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Fuel Expense Notification",
+          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+      content: const SingleChildScrollView(
+        // Ensures content fits in smaller screens
+        child: ListBody(
+          children: <Widget>[
+            Text(
+                "Your car's initial fuel expense is set at 500 SR for this journey. "
+                "This amount is a key factor in our fuel consumption calculation. "
+                "If this estimate aligns with your expectations, you can proceed. "
+                "However, if you have a different amount in mind based on the expected mileage traveled, "
+                "please enter the new figure. This ensures that our calculations are tailored to your specific needs.",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          child: Text("Ok", style: TextStyle(color: Colors.white)),
+          style: ElevatedButton.styleFrom(primary: Colors.green),
+          onPressed: () {
+            // Code to proceed
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+      ],
+    );
+
+    // Show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   // Define the controller for end mileage
   final TextEditingController endMileageController = TextEditingController();
   final TextEditingController expenseController = TextEditingController();
@@ -72,63 +120,80 @@ class _FinalEntryState extends State<FinalEntry> {
 
               return Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      "Note: you will not be able to enter the final odometer until the end of the month",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.redAccent,
-                      ),
-                    ),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.all(20.0),
+                  //   child: Text(
+                  //     "Note: you will not be able to enter the final odometer until the end of the month",
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.redAccent,
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
-                  const Text(
-                    "Your car's initial fuel expense is set at 500 SR for this journey. This amount is a key factor in our fuel consumption calculation. If this estimate aligns with your expectations, you can proceed. However, if you have a different amount in mind based on the expected mileage traveled, please enter the new figure. This ensures that our calculations are tailored to your specific needs. ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  TextField(
-                    controller: expenseController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Text(
+                            "Expenses (optional): ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Tooltip(
+                            message:
+                                "You can skip this field if you don't want to enter expenses.",
+                            child: Icon(Icons.info_outline,
+                                size: 16, color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      hintText: 'Enter expense amount',
-                      prefixIcon: Icon(Icons.speed, color: Colors.blue),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Final Odometer Reading (Km): ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  TextField(
-                    controller: endMileageController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(8),
+                      const SizedBox(height: 5),
+                      TextField(
+                        controller: expenseController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Enter expense amount (optional)',
+                          prefixIcon: const Icon(Icons.monetization_on_outlined,
+                              color: Colors.blue),
+                        ),
                       ),
-                      hintText: 'Enter Final reading',
-                      prefixIcon: Icon(Icons.speed, color: Colors.blue),
-                    ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Final Odometer Reading (Km): ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      TextField(
+                        controller: endMileageController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Enter Final reading',
+                          prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                        ),
+                      ),
+                    ],
                   ),
+
                   const SizedBox(height: 20),
                   RoundedButtonSmall(
                     text: "Submit",
@@ -137,8 +202,9 @@ class _FinalEntryState extends State<FinalEntry> {
                       // Implement any loading indicator or disable the button
                       try {
                         if (expenseController.text.isNotEmpty) {
-                          await FuelFirebase().updateAmountField(
-                              widget.carDocumentId, expenseController.text);
+                          double expense = double.parse(expenseController.text);
+                          await FuelFirebase()
+                              .updateAmountField(widget.carDocumentId, expense);
                         }
                         double startMileage =
                             double.tryParse(data['startMileage'] ?? '0') ?? 0.0;

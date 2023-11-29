@@ -128,7 +128,7 @@ class FormDataHandler {
         'year': year,
         'month': month,
         'day': day,
-        'amount': '500',
+        'amount': 500,
         'carId': carId
       };
 

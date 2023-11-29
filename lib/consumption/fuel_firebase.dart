@@ -356,7 +356,7 @@ class FuelFirebase extends GetxController {
     }
   }
 
-  Future<void> updateAmountField(String carId, String amount) async {
+  Future<void> updateAmountField(String carId, double amount) async {
     try {
       String? userId = await getUserDocumentIdByEmail();
       if (userId == null) throw Exception('User ID is null');
