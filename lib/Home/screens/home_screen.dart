@@ -246,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<double> amounts = await example.getAmounts();
     StreamBuilderAnnual example2 = StreamBuilderAnnual(stream: _billsStream);
     List<double> amounts2 = await example2.getAnnualAmounts();
+
     setState(() {
       monthlySummary = amounts;
       annualSummary = amounts2;
