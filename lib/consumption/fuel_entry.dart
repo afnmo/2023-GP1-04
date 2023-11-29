@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
+import 'package:gp91/consumption/instruction_card.dart';
 import 'package:gp91/consumption/rounded_button_small.dart';
 import 'package:intl/intl.dart';
 
@@ -46,22 +47,22 @@ class FuelEntry extends StatelessWidget {
                 const InstructionCard(
                   step: "Step 1",
                   icon: Icons.local_gas_station,
-                  instruction: "Record the initial odometer.",
+                  instruction: "Record the initial odometer reading.",
                   color: Colors.orangeAccent,
                 ),
-                const InstructionCard(
-                  step: "Step 2",
-                  icon: Icons.drive_eta,
-                  instruction:
-                      "Continue using your vehicle as normal until the end of the month.",
-                  color: Colors.greenAccent,
-                ),
-                const InstructionCard(
-                  step: "Step 3",
-                  icon: Icons.local_gas_station,
-                  instruction: "Record the final odometer reading.",
-                  color: Colors.redAccent,
-                ),
+                // const InstructionCard(
+                //   step: "Step 2",
+                //   icon: Icons.drive_eta,
+                //   instruction:
+                //       "Continue using your vehicle as normal until the end of the month.",
+                //   color: Colors.greenAccent,
+                // ),
+                // const InstructionCard(
+                //   step: "Step 3",
+                //   icon: Icons.local_gas_station,
+                //   instruction: "Record the final odometer reading.",
+                //   color: Colors.redAccent,
+                // ),
                 const SizedBox(height: 20),
                 const Text(
                   "Initial Odometer Reading (Km): ",
@@ -121,56 +122,6 @@ class FuelEntry extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class InstructionCard extends StatelessWidget {
-  final String step;
-  final IconData icon;
-  final String instruction;
-  final Color color;
-
-  const InstructionCard({
-    Key? key,
-    required this.step,
-    required this.icon,
-    required this.instruction,
-    required this.color,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: color,
-      elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: 40),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    step,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(instruction, style: const TextStyle(fontSize: 16)),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

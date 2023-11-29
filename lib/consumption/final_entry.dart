@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gp91/consumption/fuel_calculation.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_result.dart';
+import 'package:gp91/consumption/instruction_card.dart';
 import 'package:gp91/consumption/rounded_button_small.dart';
 import 'package:intl/intl.dart';
 
@@ -135,6 +136,12 @@ class _FinalEntryState extends State<FinalEntry> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const InstructionCard(
+                        step: "Step 2",
+                        icon: Icons.local_gas_station,
+                        instruction: "Record the final odometer reading.",
+                        color: Colors.redAccent,
+                      ),
                       const Row(
                         children: [
                           Text(

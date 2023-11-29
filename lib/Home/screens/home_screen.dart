@@ -221,8 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? showGraph;
   bool showMonthly = true;
   int _currentIndex = 2;
-  Stream<QuerySnapshot> _billsStream =
-      FirebaseFirestore.instance.collection('Bills').snapshots();
+  // final Stream<QuerySnapshot> _billsStream =
+  //     FirebaseFirestore.instance.collection('Bills').snapshots();
+
   void _onIndexChanged(int index) {
     setState(() {
       _currentIndex = index;
@@ -236,20 +237,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchMonthlySummary() async {
+    final QuerySnapshot _billsStream =
+        await FirebaseFirestore.instance.collection('Bills').get();
     // Use the getUserName
     UserName = await getUserName.getUserName();
     showGraph = await checkCarExists();
     // if (kDebugMode) {
     //   print('User Name: $UserName');
     // } // this is to test
-    StreamBuilderExample example = StreamBuilderExample(stream: _billsStream);
+    StreamBuilderExample example =
+        StreamBuilderExample(billsDocuments: _billsStream);
     List<double> amounts = await example.getAmounts();
-    StreamBuilderAnnual example2 = StreamBuilderAnnual(stream: _billsStream);
+    print(amounts);
+    StreamBuilderAnnual example2 =
+        StreamBuilderAnnual(billsDocuments: _billsStream);
     List<double> amounts2 = await example2.getAnnualAmounts();
+    // if (mounted) {
     setState(() {
       monthlySummary = amounts;
       annualSummary = amounts2;
     });
+    // }
   }
 
   void _toggleGraph(int index) {
