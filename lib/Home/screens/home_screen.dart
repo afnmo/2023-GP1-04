@@ -252,7 +252,6 @@ class _HomeScreenState extends State<HomeScreen> {
     StreamBuilderAnnual example2 =
         StreamBuilderAnnual(billsDocuments: _billsStream);
     List<double> amounts2 = await example2.getAnnualAmounts();
-    // if (mounted) {
     setState(() {
       monthlySummary = amounts;
       annualSummary = amounts2;

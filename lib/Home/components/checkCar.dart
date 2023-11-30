@@ -8,8 +8,8 @@ Future<bool> checkCarExists() async {
       .where('userId', isEqualTo: userId)
       .get();
 
-  //return snapshot.docs.isNotEmpty;
-  return true;
+  return snapshot.docs.isNotEmpty;
+  //return true;
 }
 
 Future<String?> _getUserIdAsync() async {

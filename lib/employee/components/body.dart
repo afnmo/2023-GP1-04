@@ -1,9 +1,12 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/employee/NextSprint.dart';
-import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
 import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
+import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
@@ -191,31 +194,67 @@ class _FormScreenState extends State<Body> {
     );
 
     try {
-      // Check if the email and password match the data in Station_Employee collection
-      bool isValidEmployee =
-          await _auth.validateEmployeeCredentials(email, password);
+      // Hash the entered password
+      String hashedPassword = hashPassword(password);
 
-      Get.back();
+      // Check if the email and password match the data in Station_Employee_Deleted collection
+      bool isTerminated =
+          await _auth.isEmployeeTerminated(email, hashedPassword);
 
-      if (isValidEmployee) {
-        print("Employee is successfully logged in");
-        Get.to(() => const NextSprint());
-
-        // Clear the input fields
-        _emailController.clear();
-        _passwordController.clear();
-      } else {
+      if (isTerminated) {
+        Get.back(); // Close the loading dialog
         Get.snackbar(
-          "Oops!",
-          "Incorrect email or password",
+          "Terminated!",
+          "You are terminated. Please contact the administrator.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.redAccent.withOpacity(0.1),
           colorText: Colors.red,
         );
+        return;
+      } else {
+        // Check if the email and password match the data in Station_Employee collection
+        bool isValidEmployee =
+            await _auth.validateEmployeeCredentials(email, hashedPassword);
+
+        Get.back(); // Close the loading dialog
+
+        if (isValidEmployee) {
+          print("Employee is successfully logged in");
+          Get.to(() => const NextSprint());
+
+          // Clear the input fields
+          _emailController.clear();
+          _passwordController.clear();
+        } else {
+          Get.snackbar(
+            "Incorrect Credentials",
+            "Incorrect email or password",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent.withOpacity(0.1),
+            colorText: Colors.red,
+          );
+        }
       }
     } catch (e) {
       print("Error: $e");
-      Get.back();
+      Get.back(); // Close the loading dialog
+      // Show a generic error message if an exception occurs
+      Get.snackbar(
+        "Error",
+        "An error occurred. Please try again later.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
     }
+  }
+
+  String hashPassword(String password) {
+    // Convert password to bytes
+    var bytes = utf8.encode(password);
+    // Hash the bytes
+    var digest = sha256.convert(bytes);
+
+    return digest.toString();
   }
 }
