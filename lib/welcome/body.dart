@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/components/constants.dart';
 import 'package:gp91/employee/login.dart';
 
 import 'package:gp91/login/login.dart';
@@ -49,16 +50,16 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.07),
-                const Text(
-                  "Choose Your Role",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'NanumGothic',
-                    fontWeight: FontWeight.bold,
-                    // Adjust the color as needed
-                    color: Color(0xFFFFCEAF),
-                  ),
-                ),
+                // const Text(
+                //   "Pick Your Role",
+                //   style: TextStyle(
+                //     fontSize: 18,
+                //     fontFamily: 'NanumGothic',
+                //     fontWeight: FontWeight.bold,
+                //     // Adjust the color as needed
+                //     color: Color.fromARGB(255, 196, 151, 5),
+                //   ),
+                // ),
                 SizedBox(height: size.height * 0.04),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -71,9 +72,10 @@ class Body extends StatelessWidget {
                       child: Column(
                         children: [
                           Image.asset(
-                            "assets/images/user.png",
+                            "assets/images/userNew2.png",
                             width: 100,
                             height: 100,
+                            color: Color.fromARGB(255, 196, 151, 5),
                           ),
                           SizedBox(height: 8),
                           Text(
@@ -92,9 +94,10 @@ class Body extends StatelessWidget {
                       child: Column(
                         children: [
                           Image.asset(
-                            "assets/images/station.png",
+                            "assets/images/employeeNew.png",
                             width: 100,
                             height: 100,
+                            color: Color.fromARGB(255, 196, 151, 5),
                           ),
                           SizedBox(height: 8),
                           Text(
