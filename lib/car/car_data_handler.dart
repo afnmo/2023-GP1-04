@@ -37,4 +37,18 @@ class CarDataHandler {
       yield [];
     }
   }
+
+  Future<void> deleteCar(String carDocumentId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Cars')
+          .doc(carDocumentId)
+          .delete();
+      // Optionally, you can also update your stream here to reflect changes in real-time
+      // loadCarDocumentIds();
+    } catch (e) {
+      print('Error deleting car: $e');
+      // Handle error as needed
+    }
+  }
 }
