@@ -180,8 +180,8 @@ class _FormScreenState extends State<Body> {
                         },
                         child: Icon(
                           _obscureText1
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: primaryColor,
                         ),
                       ),
@@ -223,8 +223,8 @@ class _FormScreenState extends State<Body> {
                         },
                         child: Icon(
                           _obscureText2
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: primaryColor,
                         ),
                       ),
