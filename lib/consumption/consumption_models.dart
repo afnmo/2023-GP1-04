@@ -10,16 +10,21 @@ class Car {
 
 class ConsumptionRecord {
   final String carId;
-  final double calculatedFuelEconomy;
-  final String startDate;
-  final String endDate;
-  final String percentageDifference;
+  final String? consumptionId;
+
+  final double? calculatedFuelEconomy;
+  final String? startDate;
+  final String? endDate;
+  final String? percentageDifference;
+  final String? startMileage;
 
   ConsumptionRecord({
     required this.carId,
-    required this.calculatedFuelEconomy,
-    required this.startDate,
-    required this.endDate,
-    required this.percentageDifference,
+    this.consumptionId,
+    this.calculatedFuelEconomy,
+    this.startDate,
+    this.endDate,
+    this.percentageDifference,
+    this.startMileage,
   });
 }

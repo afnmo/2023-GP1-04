@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gp91/Station/Station.dart';
 import 'package:gp91/car/car.dart';
 import 'package:gp91/consumption/fuel_cars.dart';
+import 'package:gp91/consumption/fuel_prev.dart';
+import 'package:gp91/consumption/fuel_result.dart';
 import 'package:gp91/settings/settings_page.dart';
 import 'package:gp91/about_us/about_us.dart';
 
@@ -36,7 +38,7 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             Expanded(
               child: CategoryCardMallika1(
                 title: "Fuel Consumption",
-                image: "assets/images/consumption2.png",
+                image: "assets/images/fuelhome3.png",
                 onTap: () {
                   Get.to(() => FuelCars());
                 },
@@ -53,10 +55,10 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             ),
             Expanded(
               child: CategoryCardMallika1(
-                title: "Add Car",
-                image: "assets/images/addCar2.png",
+                title: "Fuel Stats",
+                image: "assets/images/consumption2.png",
                 onTap: () {
-                  Get.to(() => CarPage());
+                  Get.to(() => FuelResult());
                 },
               ),
             ),
@@ -69,6 +71,7 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
                 title: "My Cars",
                 image: "assets/images/myCars2.png",
                 onTap: () {
+                  Get.to(() => CarPage());
                   // Add your navigation logic here
                 },
                 selected: false,
@@ -76,9 +79,10 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
             ),
             Expanded(
               child: CategoryCardMallika1(
-                title: "Account",
-                image: "assets/images/account2.png",
+                title: "Fuel Records",
+                image: "assets/images/history.png",
                 onTap: () {
+                  Get.to(() => FuelPrev());
                   // Add your navigation logic here
                 },
               ),

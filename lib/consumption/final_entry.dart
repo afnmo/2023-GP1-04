@@ -255,9 +255,9 @@ class _FinalEntryState extends State<FinalEntry> {
                           );
 
                           // Handling navigation result
-                          var result = await Get.to(() => FuelResult(
-                                consumptionDocumentId: widget.consumptionId,
-                                carDocumentId: widget.carDocumentId,
+                          var result = await Get.to(() => const FuelResult(
+                                // consumptionDocumentId: widget.consumptionId,
+                                // carDocumentId: widget.carDocumentId,
                               ));
 
                           if (result != null) {

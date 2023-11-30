@@ -4,12 +4,13 @@ import 'package:gp91/consumption/consumption_models.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 
 class FuelResult extends StatelessWidget {
-  final String consumptionDocumentId;
-  final String carDocumentId;
-  const FuelResult(
-      {super.key,
-      required this.consumptionDocumentId,
-      required this.carDocumentId});
+  // final String? consumptionDocumentId;
+  // final String? carDocumentId;
+  const FuelResult({
+    super.key,
+    //  this.consumptionDocumentId,
+    //  this.carDocumentId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,9 @@ class FuelResult extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5), // Moderate padding
                       child: Text(
-                        '${car.name}:',
+                        records.isEmpty
+                            ? '${car.name}: No records yet'
+                            : '${car.name}:',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -87,10 +90,10 @@ class FuelResult extends StatelessWidget {
 
                       // Style the icon based on the percentageDifference
                       Icon arrowIcon;
-                      if (record.percentageDifference.contains('higher')) {
+                      if (record.percentageDifference!.contains('higher')) {
                         arrowIcon = const Icon(Icons.arrow_upward,
                             color: Colors.greenAccent, size: 20);
-                      } else if (record.percentageDifference
+                      } else if (record.percentageDifference!
                           .contains('lower')) {
                         arrowIcon = const Icon(Icons.arrow_downward,
                             color: Colors.redAccent, size: 20);
@@ -202,16 +205,16 @@ class FuelResult extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  // BottomNav(
-                  //   currentIndex: 0, // Set the initial index as needed
-                  //   onIndexChanged: (index) {
-                  //     // Handle index changes if required
-                  //   },
-                  // ),
                 ],
               );
             },
           );
+        },
+      ),
+      bottomNavigationBar: BottomNav(
+        currentIndex: 0, // Set the initial index as needed
+        onIndexChanged: (index) {
+          // Handle index changes if required
         },
       ),
     );

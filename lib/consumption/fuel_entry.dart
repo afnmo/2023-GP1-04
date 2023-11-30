@@ -113,8 +113,8 @@ class FuelEntry extends StatelessWidget {
 
                       Get.to(
                         () => FuelPrev(
-                          carDocumentId: carDocumentId,
-                        ),
+                            // carDocumentId: carDocumentId,
+                            ),
                       );
                     }
                   },

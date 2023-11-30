@@ -212,6 +212,9 @@ class FuelFirebase extends GetxController {
     }
   }
 
+
+
+
   Future<Map<String, dynamic>> fetchCarDoc(String documentId) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> querySnapshot =
@@ -385,6 +388,68 @@ class FuelFirebase extends GetxController {
         backgroundColor: Colors.redAccent.withOpacity(0.1),
         colorText: Colors.red,
       );
+    }
+  }
+
+
+  Future<Map<Car, List<ConsumptionRecord>>>
+      fetchCarsWithConsumptionDoneFalseRecords() async {
+    Map<Car, List<ConsumptionRecord>> carsWithRecords = {};
+
+    try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return {};
+      }
+      // Fetch cars
+      QuerySnapshot carSnapshot =
+          await _db.collection('Cars').where('userId', isEqualTo: userId).get();
+
+      // Iterate over each car document
+      for (var carDoc in carSnapshot.docs) {
+        Map<String, dynamic> carData = carDoc.data() as Map<String, dynamic>;
+        Car car = Car(
+          carId: carDoc.id,
+          name: carData['name'],
+          // Add other details as necessary
+        );
+
+        try {
+          // Now fetch consumption records for this car
+          QuerySnapshot consumptionSnapshot = await _db
+              .collection('Consumption')
+              .where('carId', isEqualTo: car.carId)
+              .where('done', isEqualTo: false)
+              .get();
+
+          List<ConsumptionRecord> records =
+              consumptionSnapshot.docs.map((recordDoc) {
+            Map<String, dynamic> recordData =
+                recordDoc.data() as Map<String, dynamic>;
+            return ConsumptionRecord(
+              carId: car.carId,
+              consumptionId: recordDoc.id,
+              startDate: recordData['startDate'],
+              startMileage: recordData['startMileage'],
+              // Add other details as necessary
+            );
+          }).toList();
+
+          // Add the car and its records to the map
+          carsWithRecords[car] = records;
+        } catch (e) {
+          print("Error fetching consumption records for car ${car.name}: $e");
+          // Handle the error or add error data to the map as appropriate
+        }
+      }
+
+      return carsWithRecords;
+    } catch (e) {
+      print("Error fetching cars: $e");
+      // Handle the error, for example by returning an empty map or re-throwing the exception
+      return {};
     }
   }
 }
