@@ -16,6 +16,7 @@ class CarBody extends StatefulWidget {
 
 class _CarBodyState extends State<CarBody> {
   late Stream<List<String?>> _carsStream;
+  CarDataHandler _carDataHandler = CarDataHandler();
 
   @override
   void initState() {
@@ -198,7 +199,7 @@ class _CarBodyState extends State<CarBody> {
                                       ),
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: const EdgeInsets.all(3.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -237,6 +238,109 @@ class _CarBodyState extends State<CarBody> {
                                           ],
                                         ),
                                       ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          iconSize: 30,
+                                          onPressed: () {
+                                            if (carDocumentId != null) {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          radius: 15,
+                                                          child: Icon(
+                                                            Icons.delete,
+                                                            color: Colors.white,
+                                                            size: 20,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'Confirm Deletion',
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.black,
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    content: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          'Are you sure you want to delete this car?',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text(
+                                                          'Cancel',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary: Colors.red,
+                                                          onPrimary:
+                                                              Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                        ),
+                                                        child: Text('Delete'),
+                                                        onPressed: () {
+                                                          _carDataHandler
+                                                              .deleteCar(
+                                                                  carDocumentId);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
