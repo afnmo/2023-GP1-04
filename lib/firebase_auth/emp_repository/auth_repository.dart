@@ -64,4 +64,18 @@ class AuthRepository extends GetxController {
     // Check if there is a matching record
     return querySnapshot.docs.isNotEmpty;
   }
+
+  //check if employee is del
+  Future<bool> isEmployeeTerminated(String email, String password) async {
+    // Query the Station_Employee_Deleted collection
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('Station_Employee_Deleted')
+        .where('email', isEqualTo: email)
+        .where('password', isEqualTo: password)
+        .get();
+
+    // Check if there is a matching record
+    return querySnapshot.docs.isNotEmpty;
+  }
 }
