@@ -12,7 +12,6 @@ import 'package:gp91/welcome/welcome_screen.dart';
 class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
 
-
   final _auth = FirebaseAuth.instance;
   // normal user
   late final Rx<User?> firebaseUser;
@@ -31,6 +30,7 @@ class AuthRepository extends GetxController {
     //     ? Get.offAll(() => OnBoardingScreen())
     //     : Get.offAll(() => const HomeScreen());
     if (user != null) {
+      print("HI: user ${user}");
       Get.offAll(() => const HomeScreen());
     }
   }

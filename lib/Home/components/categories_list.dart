@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/Station/Station.dart';
 import 'package:gp91/car/car.dart';
+import 'package:gp91/car/car_body.dart';
 import 'package:gp91/consumption/fuel_cars.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
 import 'package:gp91/consumption/fuel_result.dart';
@@ -40,7 +41,9 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
                 title: "Fuel Consumption",
                 image: "assets/images/fuelhome3.png",
                 onTap: () {
-                  Get.to(() => FuelCars());
+                  Get.to(() => CarBody(
+                        isConsumption: true,
+                      ));
                 },
               ),
             ),

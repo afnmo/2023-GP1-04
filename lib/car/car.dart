@@ -11,8 +11,11 @@ class CarPage extends StatelessWidget {
       body: Column(
         children: [
           // Add any other widgets specific to the Station screen
-          Expanded(
-            child: CarBody(), // Create an instance of the CarBody widget
+          const Expanded(
+            child: CarBody(
+              isConsumption: false,
+            ), // Create an instance of the CarBody widget
+            // child: CarBody(),
           ),
           BottomNav(
             currentIndex: 0, // Set the initial index as needed
