@@ -202,12 +202,12 @@ class FuelResult extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  BottomNav(
-                    currentIndex: 0, // Set the initial index as needed
-                    onIndexChanged: (index) {
-                      // Handle index changes if required
-                    },
-                  ),
+                  // BottomNav(
+                  //   currentIndex: 0, // Set the initial index as needed
+                  //   onIndexChanged: (index) {
+                  //     // Handle index changes if required
+                  //   },
+                  // ),
                 ],
               );
             },
