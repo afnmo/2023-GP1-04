@@ -28,8 +28,7 @@ class _CarBodyState extends State<CarBody> {
   }
 
   Widget addCarButton(BuildContext context) => FloatingActionButton(
-        onPressed: () =>
-        Get.to(() => AddCar()), 
+        onPressed: () => Get.to(() => AddCar()),
         // Navigator.of(context)
         //     .push(MaterialPageRoute(builder: (context) => AddCar())),
         child: const Icon(Icons.add),
@@ -249,8 +248,14 @@ class _CarBodyState extends State<CarBody> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: buildDeleteDialogTitle(),
-          content: const Text('Are you sure you want to delete this car?',
-              textAlign: TextAlign.center),
+          content: const Text(
+            'Are you sure you want to delete this car? \n\n'
+            'Please note that all related data will be permanently removed',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+            ),
+          ),
           actions: [
             TextButton(
               child: const Text('Cancel'),

@@ -383,6 +383,8 @@ class _addCarBodyState extends State<AddCarBody> {
                                     onChanged: (String? newValue) async {
                                       setState(() {
                                         selectedCarModel = newValue;
+                                        selectedYear = null;
+                                        selectedFuelEconomy = null;
                                       });
                                       fetchYears(
                                           selectedCarMake!, selectedCarModel!);
@@ -427,6 +429,7 @@ class _addCarBodyState extends State<AddCarBody> {
                                 onChanged: (String? newValue) async {
                                   setState(() {
                                     selectedYear = newValue;
+                                    selectedFuelEconomy = null;
                                   });
                                   fetchFuelEconomy(selectedYear!,
                                       selectedCarMake!, selectedCarModel!);
