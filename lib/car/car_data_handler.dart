@@ -44,11 +44,32 @@ class CarDataHandler {
           .collection('Cars')
           .doc(carDocumentId)
           .delete();
-      // Optionally, you can also update your stream here to reflect changes in real-time
-      // loadCarDocumentIds();
+
+      QuerySnapshot billsSnapshot = await FirebaseFirestore.instance
+          .collection('Bills')
+          .where('carId', isEqualTo: carDocumentId)
+          .get();
+
+      List<Future<void>> deleteBills = [];
+      for (DocumentSnapshot bill in billsSnapshot.docs) {
+        deleteBills.add(bill.reference.delete());
+      }
+
+      await Future.wait(deleteBills);
+
+      QuerySnapshot consumptionSnapshot = await FirebaseFirestore.instance
+          .collection('Consumption')
+          .where('carId', isEqualTo: carDocumentId)
+          .get();
+
+      List<Future<void>> deleteConsumption = [];
+      for (DocumentSnapshot consumption in consumptionSnapshot.docs) {
+        deleteConsumption.add(consumption.reference.delete());
+      }
+
+      await Future.wait(deleteConsumption);
     } catch (e) {
       print('Error deleting car: $e');
-      // Handle error as needed
     }
   }
 }

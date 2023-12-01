@@ -45,6 +45,7 @@ class BlurredImageWithText extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        //here will change
                         Get.to(() => CarPage());
                       },
                       style: ButtonStyle(
@@ -52,7 +53,7 @@ class BlurredImageWithText extends StatelessWidget {
                           const Color(0xFF6EA67C),
                         ),
                       ),
-                      child: const Text('Add Car'),
+                      child: const Text('My Cars'),
                     ),
                   ],
                 ),

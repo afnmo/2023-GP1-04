@@ -30,12 +30,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     const firstName = urlParams.get("FirstName");
     const lastName = urlParams.get("LastName");
     const email = urlParams.get("email");
+    const phone= urlParams.get("phone");
+    const years_experience= urlParams.get("years_experience");
     const employeeId = urlParams.get("employeeId"); // Add this line to get the employeeId
 
     // Set values to form fields
     document.getElementById("FirstName").value = firstName;
     document.getElementById("LastName").value = lastName;
     document.getElementById("Email").value = email;
+    document.getElementById("phone").value = phone;
+    document.getElementById("years_experience").value = years_experience;
+
 
     // Add event listener to the link for changing the password
     document.getElementById("changePasswordLink").addEventListener("click", function (event) {
@@ -54,6 +59,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Reset all error messages
         resetErrorMessages();
+           // Validate and get the phone number
+    const phoneInput = document.getElementById("phone");
+    const phone = phoneInput.value.trim(); // Trim leading and trailing whitespaces
+
+    if (!isValidPhone(phone)) {
+        const EmailError6 = document.getElementById("EmailError6");
+        if (EmailError6) {
+            EmailError6.innerText = 'Phone number must have exactly ten digits';
+            EmailError6.style.color = 'red';
+            EmailError6.style.fontSize = '10px';
+        }
+        return;
+    } else {
+        // Phone number is valid, display a success message
+        setSuccess(phoneInput);
+    }
 
          // Validate and get the email
     const emailInput = document.getElementById("Email");
@@ -224,6 +245,9 @@ const resetErrorMessages = () => {
       // Reset error messages for confirm password
       const EmailError5 = document.getElementById("EmailError5");
       resetErrorMessage(EmailError5);
+        // Reset error messages for confirm password
+        const EmailError6 = document.getElementById("EmailError6");
+        resetErrorMessage(EmailError6);
 };
 
 const resetErrorMessage = (element) => {
@@ -299,3 +323,8 @@ async function getCurrentEmail(employeeId) {
         return hashHex.toString();
         // You can store 'hashHex' in your database
     };
+    function isValidPhone(phone) {
+        // Phone number must contain exactly ten digits
+        const phoneRegex = /^\d{10}$/;
+        return phoneRegex.test(phone);
+    }

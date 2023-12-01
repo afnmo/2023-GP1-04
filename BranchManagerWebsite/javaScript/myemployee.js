@@ -45,7 +45,16 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
         // Clear existing employee list
         const employeeList = document.getElementById("EmployeeList");
         employeeList.innerHTML = '';
-
+        if (employeeQuerySnapshot.empty) {
+       // If the employee list is empty, display a bold statement with a margin
+const emptyListItem = document.createElement("p");
+emptyListItem.textContent = "You Don't Have Any Employee";
+//emptyListItem.style.fontWeight = "bold"; // Make the text bold
+emptyListItem.style.marginRight = "50px"; // Add margin to the top
+emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+emptyListItem.style.marginTop = "100px"; 
+employeeList.appendChild(emptyListItem);
+        }else{
         // Populate the employee list
         employeeQuerySnapshot.forEach((employeeDoc) => {
             const employeeData = employeeDoc.data();
@@ -139,7 +148,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
             
                 // Redirect to the registerFormEPUpdate page with query parameters
                 window.location.href = url;
-            });
+          });
             
             
             
@@ -171,6 +180,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
             employeeList.appendChild(listItem);
             
         });
+    };
     } catch (error) {
         console.error("Error accessing Firestore for employees:", error);
     }
