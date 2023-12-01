@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/car/add_car_page/add_car.dart';
 import 'dart:ui' as ui;
 import 'package:gp91/car/car.dart';
 
@@ -47,14 +46,14 @@ class BlurredImageWithText extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         //here will change
-                        Get.to(() => AddCar());
+                        Get.to(() => CarPage());
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           const Color(0xFF6EA67C),
                         ),
                       ),
-                      child: const Text('Add Car'),
+                      child: const Text('My Cars'),
                     ),
                   ],
                 ),
