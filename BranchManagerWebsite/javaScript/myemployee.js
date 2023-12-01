@@ -48,7 +48,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
         if (employeeQuerySnapshot.empty) {
        // If the employee list is empty, display a bold statement with a margin
 const emptyListItem = document.createElement("p");
-emptyListItem.textContent = "You Don't Have Any Employee";
+emptyListItem.textContent = "You don't have any employee yet";
 //emptyListItem.style.fontWeight = "bold"; // Make the text bold
 emptyListItem.style.marginRight = "50px"; // Add margin to the top
 emptyListItem.style.marginLeft = "50px"; // Add margin to the top
