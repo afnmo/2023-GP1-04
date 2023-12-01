@@ -7,22 +7,22 @@ class CarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         children: [
           // Add any other widgets specific to the Station screen
-          const Expanded(
+          Expanded(
             child: CarBody(
               isConsumption: false,
             ), // Create an instance of the CarBody widget
             // child: CarBody(),
           ),
-          BottomNav(
-            currentIndex: 0, // Set the initial index as needed
-            onIndexChanged: (index) {
-              // Handle index changes if required
-            },
-          ),
+          // BottomNav(
+          //   currentIndex: 0, // Set the initial index as needed
+          //   onIndexChanged: (index) {
+          //     // Handle index changes if required
+          //   },
+          // ),
         ],
       ),
     );

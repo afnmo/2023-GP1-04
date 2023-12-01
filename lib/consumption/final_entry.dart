@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/consumption/fuel_calculation.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_result.dart';
@@ -238,38 +239,38 @@ class _FinalEntryState extends State<FinalEntry> {
                             .getPercentageDifference(
                                 widget.carDocumentId, calculatedFuelEconomy);
 
-                        bool oneMonthPassed = isOneMonthPast(data);
-                        print(oneMonthPassed);
-                        if (oneMonthPassed) {
-                          await FuelFirebase().addFinalInputs(
-                            {
-                              'endMileage': endMileageController.text,
-                              'finalDate': finalDate,
-                              'finalTime':
-                                  DateFormat.jms().format(currentTimestamp),
-                              'done': true,
-                              'calculatedFuelEconomy': calculatedFuelEconomy,
-                              'percentageDifference': percentageDifference,
-                            },
-                            widget.consumptionId,
-                          );
+                        // bool oneMonthPassed = isOneMonthPast(data);
+                        // print(oneMonthPassed);
+                        // if (oneMonthPassed) {
+                        await FuelFirebase().addFinalInputs(
+                          {
+                            'endMileage': endMileageController.text,
+                            'finalDate': finalDate,
+                            'finalTime':
+                                DateFormat.jms().format(currentTimestamp),
+                            'done': true,
+                            'calculatedFuelEconomy': calculatedFuelEconomy,
+                            'percentageDifference': percentageDifference,
+                          },
+                          widget.consumptionId,
+                        );
 
-                          // Handling navigation result
-                          var result = await Get.to(() => const FuelResult(
-                                // consumptionDocumentId: widget.consumptionId,
-                                // carDocumentId: widget.carDocumentId,
-                              ));
+                        // Handling navigation result
+                        var result = await Get.to(() => const FuelResult(
+                            // consumptionDocumentId: widget.consumptionId,
+                            // carDocumentId: widget.carDocumentId,
+                            ));
 
-                          if (result != null) {
-                            // Handle result if needed
-                          }
-                        } else {
-                          setState(() {
-                            calculatedFuelEconomyResult = calculatedFuelEconomy;
-                            percentageDifferenceResult = percentageDifference;
-                            showResults = true;
-                          });
+                        if (result != null) {
+                          // Handle result if needed
                         }
+                        // } else {
+                        //   setState(() {
+                        //     calculatedFuelEconomyResult = calculatedFuelEconomy;
+                        //     percentageDifferenceResult = percentageDifference;
+                        //     showResults = true;
+                        //   });
+                        // }
                       } catch (error) {
                         print("Error submitting data: ${error.toString()}");
                         Get.snackbar(
@@ -297,6 +298,12 @@ class _FinalEntryState extends State<FinalEntry> {
             },
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNav(
+        currentIndex: 0, // Set the initial index as needed
+        onIndexChanged: (index) {
+          // Handle index changes if required
+        },
       ),
     );
   }

@@ -126,7 +126,7 @@ class _FormScreenState extends State<Body> {
                         });
                       },
                       child: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
                         color: primaryColor,
                       ),
                     ),

@@ -58,7 +58,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 const openHour = convertTimeToAMPM(stationData.open_hour);
                 document.getElementById("OpenHour").textContent = openHour;
             }else{
-                document.getElementById("OpenHour").textContent = "No availabal data yet";
+                document.getElementById("OpenHour").textContent = "No available data yet";
                 document.getElementById("OpenHour").style.fontSize = "smaller"; 
                 document.getElementById("OpenHour").style.fontWeight = "lighter";
             }
@@ -67,7 +67,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 const closeHour = convertTimeToAMPM(stationData.close_hour);
                 document.getElementById("CloseHour").textContent = closeHour;
             }else{
-                document.getElementById("CloseHour").textContent = "No availabal data yet";
+                document.getElementById("CloseHour").textContent = "No available data yet";
                 document.getElementById("CloseHour").style.fontSize = "smaller"; 
                 document.getElementById("CloseHour").style.fontWeight = "lighter";
             }
@@ -91,7 +91,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 });
 
             }else{
-                document.getElementById("fuelDisplay").textContent = "No availabal data yet";
+                document.getElementById("fuelDisplay").textContent = "No available data yet";
                 document.getElementById("fuelDisplay").style.color = "rgb(108, 110, 122)";
             }
 
@@ -137,7 +137,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 });
 
             }else{
-                document.getElementById("fuelStatusDisplay").textContent = "No availabal data yet";
+                document.getElementById("fuelStatusDisplay").textContent = "No available data yet";
                 document.getElementById("fuelStatusDisplay").style.color = "rgb(108, 110, 122)";
             }
         } else {

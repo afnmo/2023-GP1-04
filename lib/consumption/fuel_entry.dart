@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/consumption/fuel_firebase.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
 import 'package:gp91/consumption/instruction_card.dart';
@@ -123,6 +124,12 @@ class FuelEntry extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNav(
+        currentIndex: 0, // Set the initial index as needed
+        onIndexChanged: (index) {
+          // Handle index changes if required
+        },
       ),
     );
   }

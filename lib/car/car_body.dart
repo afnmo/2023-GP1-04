@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/consumption/fuel_entry.dart';
 import 'add_car_page/add_car.dart';
 import 'car_info_page/car_info.dart';
@@ -27,13 +28,15 @@ class _CarBodyState extends State<CarBody> {
     super.initState();
   }
 
+
+
   Widget addCarButton(BuildContext context) => FloatingActionButton(
         onPressed: () =>
-        Get.to(() => AddCar()), 
+        Get.to(() => AddCar()),
+        backgroundColor: const Color(0xFFFFCEAF), 
         // Navigator.of(context)
         //     .push(MaterialPageRoute(builder: (context) => AddCar())),
         child: const Icon(Icons.add),
-        backgroundColor: const Color(0xFFFFCEAF),
       );
 
   Color parseColor(String? colorName) {
@@ -61,6 +64,25 @@ class _CarBodyState extends State<CarBody> {
         Colors.black; // Default color if not found or colorName is null
   }
 
+    //   return Scaffold(
+    //   body: Column(
+    //     children: [
+    //       // Add any other widgets specific to the Station screen
+    //       const Expanded(
+    //         child: CarBody(
+    //           isConsumption: false,
+    //         ), // Create an instance of the CarBody widget
+    //         // child: CarBody(),
+    //       ),
+          // BottomNav(
+          //   currentIndex: 0, // Set the initial index as needed
+          //   onIndexChanged: (index) {
+          //     // Handle index changes if required
+          //   },
+          // ),
+    //     ],
+    //   ),
+    // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +100,12 @@ class _CarBodyState extends State<CarBody> {
         },
       ),
       floatingActionButton: widget.isConsumption ? null : addCarButton(context),
+      bottomNavigationBar: BottomNav(
+            currentIndex: 0, // Set the initial index as needed
+            onIndexChanged: (index) {
+              // Handle index changes if required
+            },
+          ),
     );
   }
 
