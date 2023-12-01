@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gp91/car/add_car_page/add_car.dart';
 import 'dart:ui' as ui;
 import 'package:gp91/car/car.dart';
 
@@ -45,7 +46,8 @@ class BlurredImageWithText extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(() => CarPage());
+                        //here will change
+                        Get.to(() => AddCar());
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(

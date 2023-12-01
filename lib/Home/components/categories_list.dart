@@ -25,19 +25,6 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
           children: [
             Expanded(
               child: CategoryCardMallika1(
-                title: "Gas Stations",
-                image: "assets/images/gasStation2.png",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Station()),
-                  );
-                },
-                selected: false,
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
                 title: "Fuel Consumption",
                 image: "assets/images/fuelhome3.png",
                 onTap: () {
@@ -71,34 +58,11 @@ class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
           children: [
             Expanded(
               child: CategoryCardMallika1(
-                title: "My Cars",
-                image: "assets/images/myCars2.png",
-                onTap: () {
-                  Get.to(() => CarPage());
-                  // Add your navigation logic here
-                },
-                selected: false,
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
                 title: "Fuel Records",
                 image: "assets/images/history.png",
                 onTap: () {
                   Get.to(() => FuelPrev());
                   // Add your navigation logic here
-                },
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "Settings",
-                image: "assets/images/settings2.png",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()),
-                  );
                 },
               ),
             ),
