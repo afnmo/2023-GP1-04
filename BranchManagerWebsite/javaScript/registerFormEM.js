@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const lastName = document.getElementById("LastName").value;
             const email = document.getElementById("l").value;
             const password = document.getElementById("d").value;
+            const phone = document.getElementById("phone").value;  // Capture phone input
+        const yearsExperience = document.getElementById("years_experience").value;  // Capture years_experience input
 
             // Validate password
             if (!isValidPassword(password)) {
@@ -74,6 +76,20 @@ const hashedPassword = await hashPassword(password);
                 successMessageElement.style.display = "none";
                 return;
             }
+            // Function to validate the phone number
+                    // Validate phone number
+        const phoneInput = document.getElementById("phone");
+        const isPhoneValid = isValidPhoneNumber(phoneInput);
+
+        if (!isPhoneValid) {
+            errorMessageElement.textContent = "Phone number must contain exactly ten digits.";
+            successMessageElement.style.display = "none";
+            return;
+        }
+      
+
+
+
             // Create user in Firebase Authentication
            // const auth = getAuth();
            // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -86,6 +102,9 @@ const hashedPassword = await hashPassword(password);
                 email: email,
                 branch_manager_id: BMID, // Store the foreign key//here
                 password: hashedPassword,
+                phone: phone,  // Include phone in the Firestore document
+            years_experience: yearsExperience,  // Include years_experience in the Firestore document
+
             });
         
 
@@ -128,6 +147,7 @@ const hashedPassword = await hashPassword(password);
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
+    
 });
     // Function to validate the password
     const isValidPassword = (password) => {
@@ -154,3 +174,10 @@ const hashedPassword = await hashPassword(password);
         document.getElementById('d').value = '';
         // Additional fields can be reset similarly
     }
+
+// Function to validate the phone number
+const isValidPhoneNumber = (phoneInput) => {
+    const phoneNumber = phoneInput.value;
+    const isValid = /^\d{10}$/.test(phoneNumber);
+    return isValid;
+};

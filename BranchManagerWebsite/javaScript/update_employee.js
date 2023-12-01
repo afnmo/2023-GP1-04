@@ -47,7 +47,16 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
         // Clear existing employee list
         const employeeList = document.getElementById("EmployeeList");
         employeeList.innerHTML = '';
-
+        if (employeeQuerySnapshot.empty) {
+            // If the employee list is empty, display a bold statement with a margin
+     const emptyListItem = document.createElement("p");
+     emptyListItem.textContent = "You Don't Have Any Employee";
+     //emptyListItem.style.fontWeight = "bold"; // Make the text bold
+     emptyListItem.style.marginRight = "50px"; // Add margin to the top
+     emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+     emptyListItem.style.marginTop = "100px"; 
+     employeeList.appendChild(emptyListItem);
+             }else{
         // Populate the employee list
         employeeQuerySnapshot.forEach((employeeDoc) => {
             const employeeData = employeeDoc.data();
@@ -97,6 +106,20 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                         // Delete the employee from the Firestore collection
                         const employeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
                         await deleteDoc(employeeDocRef);
+
+                                  // Check if there are any remaining employees
+            const remainingEmployeesQuerySnapshot = await getDocs(employeeQuery);
+            if (remainingEmployeesQuerySnapshot.empty) {
+                // If no remaining employees, display the statement
+                const employeeList = document.getElementById("EmployeeList");
+                employeeList.innerHTML = '';
+                const emptyListItem = document.createElement("p");
+                emptyListItem.textContent = "You Don't Have Any Employee";
+                emptyListItem.style.marginRight = "50px"; // Add margin to the top
+                emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+                emptyListItem.style.marginTop = "100px";
+                employeeList.appendChild(emptyListItem);
+            }
             
                         // Remove the corresponding list item from the UI
                         listItem.remove();
@@ -139,14 +162,16 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                 const employeeFirstName = employeeData.firstName;
                 const employeeLastName = employeeData.lastName;
                 const employeeEmail = employeeData.email;
-                const employeePassword = employeeData.password; // Assuming password is a property of employeeData
+                //const employeePassword = employeeData.password; // Assuming password is a property of employeeData
+                const employeePhone= employeeData.phone;
+                const employeeYearExperines= employeeData.years_experience;
                 const employeeId = employeeDoc.id; // Access id directly from employeeDoc
             
                 // Log the employeeId to the console for debugging
                 console.log("Employee ID:", employeeId);
             
                 // Construct the URL with query parameters
-                const url = `registerFormEPUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&employeeId=${employeeId}`;
+                const url = `registerFormEPUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&phone=${employeePhone}&years_experience=${employeeYearExperines}&employeeId=${employeeId}`;
             
                 // Redirect to the registerFormEPUpdate page with query parameters
                 window.location.href = url;
@@ -183,7 +208,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
             // Add the list item to the employee list
             employeeList.appendChild(listItem);
             
-        });
+        });};
     } catch (error) {
         console.error("Error accessing Firestore for employees:", error);
     }
