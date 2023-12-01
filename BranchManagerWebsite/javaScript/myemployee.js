@@ -58,6 +58,7 @@ employeeList.appendChild(emptyListItem);
         // Populate the employee list
         employeeQuerySnapshot.forEach((employeeDoc) => {
             const employeeData = employeeDoc.data();
+            if (employeeData. terminated== false){
             const listItem = document.createElement("li");
 
             // Create a container for the delete icon and employee name
@@ -177,7 +178,7 @@ employeeList.appendChild(emptyListItem);
             listItem.appendChild(horizontalLine);
 
             // Add the list item to the employee list
-            employeeList.appendChild(listItem);
+            employeeList.appendChild(listItem);};
             
         });
     };
