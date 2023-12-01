@@ -28,12 +28,9 @@ class _CarBodyState extends State<CarBody> {
     super.initState();
   }
 
-
-
   Widget addCarButton(BuildContext context) => FloatingActionButton(
-        onPressed: () =>
-        Get.to(() => AddCar()), 
-        // backgroundColor: const Color(0xFFFFCEAF),
+        onPressed: () => Get.to(() => AddCar()),
+        backgroundColor: const Color(0xFFFFCEAF),
         // Navigator.of(context)
         //     .push(MaterialPageRoute(builder: (context) => AddCar())),
         child: const Icon(Icons.add),
@@ -64,25 +61,25 @@ class _CarBodyState extends State<CarBody> {
         Colors.black; // Default color if not found or colorName is null
   }
 
-    //   return Scaffold(
-    //   body: Column(
-    //     children: [
-    //       // Add any other widgets specific to the Station screen
-    //       const Expanded(
-    //         child: CarBody(
-    //           isConsumption: false,
-    //         ), // Create an instance of the CarBody widget
-    //         // child: CarBody(),
-    //       ),
-          // BottomNav(
-          //   currentIndex: 0, // Set the initial index as needed
-          //   onIndexChanged: (index) {
-          //     // Handle index changes if required
-          //   },
-          // ),
-    //     ],
-    //   ),
-    // );
+  //   return Scaffold(
+  //   body: Column(
+  //     children: [
+  //       // Add any other widgets specific to the Station screen
+  //       const Expanded(
+  //         child: CarBody(
+  //           isConsumption: false,
+  //         ), // Create an instance of the CarBody widget
+  //         // child: CarBody(),
+  //       ),
+  // BottomNav(
+  //   currentIndex: 0, // Set the initial index as needed
+  //   onIndexChanged: (index) {
+  //     // Handle index changes if required
+  //   },
+  // ),
+  //     ],
+  //   ),
+  // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,11 +98,11 @@ class _CarBodyState extends State<CarBody> {
       ),
       floatingActionButton: widget.isConsumption ? null : addCarButton(context),
       bottomNavigationBar: BottomNav(
-            currentIndex: 0, // Set the initial index as needed
-            onIndexChanged: (index) {
-              // Handle index changes if required
-            },
-          ),
+        currentIndex: 0, // Set the initial index as needed
+        onIndexChanged: (index) {
+          // Handle index changes if required
+        },
+      ),
     );
   }
 
