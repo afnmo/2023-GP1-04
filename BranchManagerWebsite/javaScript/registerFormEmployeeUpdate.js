@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Add event listener to the link for changing the password
     document.getElementById("changePasswordLink").addEventListener("click", function (event) {
-        click_to_change_password = 1;
+        click_to_change_password = 1;//will change since click that want to change
         event.preventDefault(); // Prevent the default behavior of the link
 
         // Toggle the visibility of the password container
@@ -56,20 +56,25 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.getElementById("registrationForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
-
+         // Display wait message
+    displayPleaseWaitMessage();
         // Reset all error messages
         resetErrorMessages();
-           // Validate and get the phone number
+
+        // Validate and get the phone number
     const phoneInput = document.getElementById("phone");
     const phone = phoneInput.value.trim(); // Trim leading and trailing whitespaces
 
     if (!isValidPhone(phone)) {
-        const EmailError6 = document.getElementById("EmailError6");
-        if (EmailError6) {
-            EmailError6.innerText = 'Phone number must have exactly ten digits';
-            EmailError6.style.color = 'red';
-            EmailError6.style.fontSize = '10px';
+        const phoneError6 = document.getElementById("PhoneError6");
+        if (phoneError6) {
+
+            phoneError6.innerText = 'Phone number must have exactly ten digits';
+            phoneError6.style.color = 'red';
+            phoneError6.style.fontSize = '10px';
         }
+             // Hide wait message when displaying an error
+            hidePleaseWaitMessage();
         return;
     } else {
         // Phone number is valid, display a success message
@@ -87,6 +92,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             EmailError4.style.color = 'red';
             EmailError4.style.fontSize = '10px';
         }
+            // Hide wait message when displaying an error
+            hidePleaseWaitMessage();
         return;
     } else {
         // Email is valid, display a success message
@@ -107,6 +114,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 EmailError5.style.color = 'red';
                 EmailError5.style.fontSize = '10px';
             }
+        // Hide wait message when displaying an error
+        hidePleaseWaitMessage();
             return;
         }
     }
@@ -125,13 +134,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+
     let enteredPrevPassword = "";  // Initialize as an empty string
 
     // Check if the user is updating the password
-    if (click_to_change_password === 1) {
-        // User is updating the password, get the value from the input field
-        enteredPrevPassword = enteredPrevPasswordInput.value;
+        if (click_to_change_password === 1) {
+            // User is updating the password, get the value from the input field
+            enteredPrevPassword = enteredPrevPasswordInput.value;
 
+            // Trim leading and trailing whitespaces, if any
+            enteredPrevPassword = enteredPrevPassword.trim();
+    }
+
+    // Validate the previous password if it's not empty
+    if (click_to_change_password === 1 && enteredPrevPassword !== "") {
         // Hash the entered password using the same SHA-256 algorithm
         const hashedEnteredPrevPassword = await hashPassword(enteredPrevPassword);
 
@@ -143,6 +159,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 passwordError1.style.color = 'red';
                 passwordError1.style.fontSize = '10px';
             }
+            // Hide wait message when displaying an error
+            hidePleaseWaitMessage();
             return;
         } else {
             setSuccess(enteredPrevPasswordInput);
@@ -162,6 +180,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     passwordError2.style.color = 'red';
                     passwordError2.style.fontSize = '10px';
                 }
+                 // Hide wait message when displaying an error
+        hidePleaseWaitMessage();
                 return;
             } else {
                 setSuccess(newPasswordInput);
@@ -182,6 +202,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 passwordError3.style.color = 'red';
                 passwordError3.style.fontSize = '10px';
             }
+         // Hide wait message when displaying an error
+        hidePleaseWaitMessage();
             return;
         } else {
             setSuccess(confirmNewPasswordInput);
@@ -199,15 +221,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
 
         // Add the password to updatedData only if the user is updating the password
-        if (click_to_change_password === 1) {
-
+        if (click_to_change_password === 1 && newPassword !== "") {
             console.log(hash_new_password);
-            updatedData.password =hash_new_password ;
+            updatedData.password = hash_new_password;
         }
+
 
         // Use updateDoc from Firestore SDK to update the document
         updateDoc(employeeDocRef, updatedData)
         .then(() => {
+              // Hide wait message
+            hidePleaseWaitMessage();
             // Display success message at the end of the form
             const successMessage = document.getElementById("successMessage");
             if (successMessage) {
@@ -221,10 +245,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         })
             .catch((error) => {
+                hidePleaseWaitMessage();
                 console.error("Error updating document: ", error);
             });
+
+            
     });
 });
+
+
+
+
+
+
+//--------Method For Validation And error massege ---------
+
 
 const resetErrorMessages = () => {
     // Reset error messages for previous password
@@ -246,8 +281,8 @@ const resetErrorMessages = () => {
       const EmailError5 = document.getElementById("EmailError5");
       resetErrorMessage(EmailError5);
         // Reset error messages for confirm password
-        const EmailError6 = document.getElementById("EmailError6");
-        resetErrorMessage(EmailError6);
+        const phoneError6 = document.getElementById("PhoneError6");
+        resetErrorMessage(phoneError6);
 };
 
 const resetErrorMessage = (element) => {
@@ -328,3 +363,17 @@ async function getCurrentEmail(employeeId) {
         const phoneRegex = /^\d{10}$/;
         return phoneRegex.test(phone);
     }
+    const displayPleaseWaitMessage = () => {
+        const pleaseWaitMessage = document.getElementById("pleaseWaitMessage");
+        if (pleaseWaitMessage) {
+            pleaseWaitMessage.style.display = "block";
+            pleaseWaitMessage.innerText = 'Please wait, checking input...';
+        }
+    };
+    const hidePleaseWaitMessage = () => {
+        const pleaseWaitMessage = document.getElementById("pleaseWaitMessage");
+        if (pleaseWaitMessage) {
+            pleaseWaitMessage.style.display = "none";
+            pleaseWaitMessage.innerText = '';
+        }
+    };
