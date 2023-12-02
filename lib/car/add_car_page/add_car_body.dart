@@ -16,13 +16,12 @@ class _addCarBodyState extends State<AddCarBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
 
-  //List<List<dynamic>> _carData = [];
   List<String> _uniqueManufacturers = [];
   List<String> carModels = [];
   List<String> fuelEconomys = [];
   List<String> years = [];
 
-  String? selectedYear; // Make selectedYear nullable with '?'
+  String? selectedYear;
   List<String> fuelTypes = ['91', '95', 'Diesel'];
   String? selectedFuelType;
   String? selectedFuelEconomy;
@@ -34,23 +33,24 @@ class _addCarBodyState extends State<AddCarBody> {
   String? selectedCarColor;
   CarData carDataObj = CarData();
 
+// color list
   List<String> colorMap = [
-    'red',
-    'blue',
-    'green',
-    'yellow',
-    'orange',
-    'purple',
-    'pink',
-    'teal',
-    'cyan',
-    'amber',
-    'indigo',
-    'lime',
-    'brown',
-    'grey',
-    'black',
-    'white',
+    'Red',
+    'Blue',
+    'Green',
+    'Yellow',
+    'Orange',
+    'Purple',
+    'Pink',
+    'Teal',
+    'Cyan',
+    'Amber',
+    'Indigo',
+    'Lime',
+    'Brown',
+    'Grey',
+    'Black',
+    'White',
   ];
 
   @override
@@ -59,6 +59,7 @@ class _addCarBodyState extends State<AddCarBody> {
     extractManufacturers();
   }
 
+// extract manufacturers
   void extractManufacturers() async {
     List<String> manufacturers = await CarData.extractManufacturers();
     setState(() {
@@ -66,7 +67,7 @@ class _addCarBodyState extends State<AddCarBody> {
     });
   }
 
-// Function to fetch car models based on the selected car make
+// fetch car models based on the selected car make
   Future<void> fetchCarModels(String make) async {
     List<String> models = await carDataObj.getVehicleModels(make);
     setState(() {
@@ -74,6 +75,7 @@ class _addCarBodyState extends State<AddCarBody> {
     });
   }
 
+// fetch years based on the selected car make and model
   Future<void> fetchYears(String make, String model) async {
     List<String> models = await carDataObj.getYearsForMakeAndModel(make, model);
     setState(() {
@@ -81,6 +83,7 @@ class _addCarBodyState extends State<AddCarBody> {
     });
   }
 
+// fetch Fuel economy based on the selected car make, model, and year
   Future<void> fetchFuelEconomy(String year, String make, String model) async {
     List<String> Economys = await carDataObj.getFuelEconomy(year, make, model);
     setState(() {
@@ -113,8 +116,8 @@ class _addCarBodyState extends State<AddCarBody> {
       return;
     }
 
+// Check if English field should have not exactly 3 characters
     if (englishLettersController.text.length != 3) {
-      // Display a message indicating that the English field should have exactly 3 characters
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
@@ -129,6 +132,7 @@ class _addCarBodyState extends State<AddCarBody> {
       );
       return;
     } else {
+      // Display a message indicating that Characters not allowed in Saudi plate
       List<String> allowedLetters = [
         'A',
         'B',
@@ -177,7 +181,6 @@ class _addCarBodyState extends State<AddCarBody> {
 
     // Check if numbersController has more than 4 characters
     if (numbersController.text.length > 4) {
-      // Display a message indicating that the Numbers field should have up to 4 digits
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please enter up to 4 digits in the Numbers field'),
@@ -437,17 +440,14 @@ class _addCarBodyState extends State<AddCarBody> {
                                 decoration: InputDecoration(
                                   labelText: 'Year',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.calendar_month,
@@ -478,17 +478,14 @@ class _addCarBodyState extends State<AddCarBody> {
                                 decoration: InputDecoration(
                                   labelText: 'Fuel Type',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.local_gas_station,
@@ -572,27 +569,22 @@ class _addCarBodyState extends State<AddCarBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: englishLettersController,
-                                //maxLength: 3,
-                                keyboardType: TextInputType
-                                    .text, // Use TextInputType.text for English letters
+                                keyboardType: TextInputType.text,
                                 inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(RegExp(
-                                      r'^[a-zA-Z]*$')), // Allow only English letters
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^[a-zA-Z]*$')),
                                 ],
                                 decoration: InputDecoration(
                                   labelText: 'English letters',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.text_fields,
@@ -609,9 +601,7 @@ class _addCarBodyState extends State<AddCarBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: numbersController,
-                                //maxLength: 3,
-                                keyboardType: TextInputType
-                                    .number, // Set the keyboard type to numeric
+                                keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter
                                       .digitsOnly // Allow only numeric input
@@ -619,17 +609,14 @@ class _addCarBodyState extends State<AddCarBody> {
                                 decoration: InputDecoration(
                                   labelText: 'Numbers',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Image.asset(
                                     'assets/icons/numbers.png',
@@ -674,17 +661,14 @@ class _addCarBodyState extends State<AddCarBody> {
                                 decoration: InputDecoration(
                                   labelText: 'Car color',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.color_lens,
@@ -701,8 +685,7 @@ class _addCarBodyState extends State<AddCarBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: carNameController,
-                                keyboardType: TextInputType
-                                    .text, // Use TextInputType.text for English letters
+                                keyboardType: TextInputType.text,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.allow(RegExp(
                                       r'^[a-zA-Z ]*$')), // Allow only English letters
@@ -710,17 +693,14 @@ class _addCarBodyState extends State<AddCarBody> {
                                 decoration: InputDecoration(
                                   labelText: 'Car name',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.directions_car,
@@ -737,11 +717,9 @@ class _addCarBodyState extends State<AddCarBody> {
                                 submitFormData();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(
-                                    0xFFFFCEAF), // Set the button's background color
+                                primary: Color(0xFFFFCEAF),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Adjust the radius as needed
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 minimumSize: Size(355, 38),
                               ),

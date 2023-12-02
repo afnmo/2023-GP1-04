@@ -8,7 +8,6 @@ import 'package:gp91/consumption/fuel_entry.dart';
 import 'add_car_page/add_car.dart';
 import 'car_info_page/car_info.dart';
 import 'car_data_handler.dart';
-import 'appBarStyle/customShapeBorder.dart';
 
 class CarBody extends StatefulWidget {
   final bool isConsumption;
@@ -28,58 +27,38 @@ class _CarBodyState extends State<CarBody> {
     super.initState();
   }
 
+// add car button
   Widget addCarButton(BuildContext context) => FloatingActionButton(
         onPressed: () => Get.to(() => AddCar()),
         backgroundColor: const Color(0xFFFFCEAF),
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => AddCar())),
         child: const Icon(Icons.add),
       );
 
+// color list
   Color parseColor(String? colorName) {
     const colorMap = {
-      'red': Colors.red,
-      'blue': Colors.blue,
-      'green': Colors.green,
-      'yellow': Colors.yellow,
-      'orange': Colors.orange,
-      'purple': Colors.purple,
-      'pink': Colors.pink,
-      'teal': Colors.teal,
-      'cyan': Colors.cyan,
-      'amber': Colors.amber,
-      'indigo': Colors.indigo,
-      'lime': Colors.lime,
-      'brown': Colors.brown,
-      'grey': Colors.grey,
-      'black': Colors.black,
-      'white': Colors.white,
-      // add other color mappings here if needed
+      'Red': Colors.red,
+      'Blue': Colors.blue,
+      'Green': Colors.green,
+      'Yellow': Colors.yellow,
+      'Orange': Colors.orange,
+      'Purple': Colors.purple,
+      'Pink': Colors.pink,
+      'Teal': Colors.teal,
+      'Cyan': Colors.cyan,
+      'Amber': Colors.amber,
+      'Indigo': Colors.indigo,
+      'Lime': Colors.lime,
+      'Brown': Colors.brown,
+      'Grey': Colors.grey,
+      'Black': Colors.black,
+      'White': Colors.white,
     };
 
-    return colorMap[colorName?.toLowerCase()] ??
+    return colorMap[colorName] ??
         Colors.black; // Default color if not found or colorName is null
   }
 
-  //   return Scaffold(
-  //   body: Column(
-  //     children: [
-  //       // Add any other widgets specific to the Station screen
-  //       const Expanded(
-  //         child: CarBody(
-  //           isConsumption: false,
-  //         ), // Create an instance of the CarBody widget
-  //         // child: CarBody(),
-  //       ),
-  // BottomNav(
-  //   currentIndex: 0, // Set the initial index as needed
-  //   onIndexChanged: (index) {
-  //     // Handle index changes if required
-  //   },
-  // ),
-  //     ],
-  //   ),
-  // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,21 +77,20 @@ class _CarBodyState extends State<CarBody> {
       ),
       floatingActionButton: widget.isConsumption ? null : addCarButton(context),
       bottomNavigationBar: BottomNav(
-        currentIndex: 0, // Set the initial index as needed
-        onIndexChanged: (index) {
-          // Handle index changes if required
-        },
+        currentIndex: 0,
+        onIndexChanged: (index) {},
       ),
     );
   }
 
+// app bar style
   AppBar buildAppBar() => AppBar(
-        backgroundColor: const Color(0xFF6EA67C), // Custom color for AppBar
+        backgroundColor: const Color(0xFF6EA67C),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context), // Back button
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
         title: const Text(
@@ -169,11 +147,7 @@ class _CarBodyState extends State<CarBody> {
         return GestureDetector(
           onTap: () => widget.isConsumption
               ? Get.to(() => FuelEntry(carDocumentId: carDocumentId))
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => FuelEntry(carDocumentId: carDocumentId)))
               : Get.to(() => CarInfo(carId: carDocumentId)),
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => CarInfo(carId: carDocumentId))),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 9),
             child:
@@ -196,25 +170,22 @@ class _CarBodyState extends State<CarBody> {
         margin: const EdgeInsets.symmetric(horizontal: 13),
         height: 130,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(
-              119, 129, 218, 151), // Custom color for the card background
-          borderRadius:
-              BorderRadius.circular(22), // Rounded corners for the card
+          color: const Color.fromARGB(119, 129, 218, 151),
+          borderRadius: BorderRadius.circular(22),
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey,
                 spreadRadius: 3,
                 blurRadius: 10,
                 offset: Offset(0, 3))
-          ], // Shadow effect
+          ],
         ),
         child: Row(
           children: [
-            buildCarImage(bytes, carColor), // Car image section
-            Expanded(child: buildCarDetails(carData)), // Car details section
+            buildCarImage(bytes, carColor),
+            Expanded(child: buildCarDetails(carData)),
             if (!widget.isConsumption)
-              buildDeleteButton(
-                  carDocumentId, context), // Delete button for car management
+              buildDeleteButton(carDocumentId, context),
           ],
         ),
       ),
@@ -260,6 +231,7 @@ class _CarBodyState extends State<CarBody> {
     );
   }
 
+// delete car button
   Widget buildDeleteButton(String carDocumentId, BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.delete, color: Colors.red),
@@ -268,6 +240,7 @@ class _CarBodyState extends State<CarBody> {
     );
   }
 
+// confirm the message to delete car with all related data
   void showDeleteDialog(String carDocumentId, BuildContext context) {
     showDialog(
       context: context,
@@ -286,7 +259,6 @@ class _CarBodyState extends State<CarBody> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () => Get.back(),
-              // Navigator.of(context).pop(),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -298,7 +270,6 @@ class _CarBodyState extends State<CarBody> {
               onPressed: () {
                 _carDataHandler.deleteCar(carDocumentId);
                 Get.back();
-                // Navigator.of(context).pop();
               },
             ),
           ],

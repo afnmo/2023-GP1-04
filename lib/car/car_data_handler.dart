@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CarDataHandler {
+  //Retrieve from cars collection based on user ID
   static Stream<List<String?>> fetchCarDocumentIdsAsStream() async* {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
@@ -20,15 +21,14 @@ class CarDataHandler {
           String userDocId = querySnapshot.docs.first.id;
 
           final carCollection = FirebaseFirestore.instance.collection('Cars');
-          Stream<QuerySnapshot> carQueryStream = carCollection
-              .where('userId', isEqualTo: userDocId)
-              .snapshots(); // Get the live stream of car documents
+          Stream<QuerySnapshot> carQueryStream =
+              carCollection.where('userId', isEqualTo: userDocId).snapshots();
 
           await for (QuerySnapshot carSnapshot in carQueryStream) {
             List<String?> carDocumentIds =
                 carSnapshot.docs.map<String?>((carDoc) => carDoc.id).toList();
 
-            yield carDocumentIds; // Yield the list of car document IDs
+            yield carDocumentIds;
           }
         }
       }
@@ -38,6 +38,7 @@ class CarDataHandler {
     }
   }
 
+// Delete the car with related bills and fuel consumption
   Future<void> deleteCar(String carDocumentId) async {
     try {
       await FirebaseFirestore.instance

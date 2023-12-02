@@ -3,6 +3,7 @@ import 'package:csv/csv.dart';
 import 'dart:convert';
 
 class CarData {
+// extract manufacturers from dataset
   static Future<List<String>> extractManufacturers() async {
     List<String> manufacturers = [];
 
@@ -15,8 +16,7 @@ class CarData {
       List<List<dynamic>> listData =
           const CsvToListConverter(eol: '\n').convert(csvData);
       if (listData.isNotEmpty && listData[0].length > 1) {
-        int manufacturerColumnIndex =
-            1; // Assuming Manufacturer column is at index 1
+        int manufacturerColumnIndex = 1;
         for (int i = 1; i < listData.length; i++) {
           try {
             String manufacturer =
@@ -25,24 +25,22 @@ class CarData {
               manufacturers.add(manufacturer);
             }
           } catch (e) {
-            // Handle any potential errors during extraction
             print("Error extracting manufacturer: $e");
           }
         }
       }
 
-      // Remove duplicates using Set and convert back to List
       List<String> uniqueManufacturers = manufacturers.toSet().toList();
       uniqueManufacturers.sort();
       return uniqueManufacturers;
     } catch (e) {
-      // Catch and handle any exceptions thrown in the process
       print("Error occurred: $e");
-      // Return an empty list or handle the error as needed
+
       return [];
     }
   }
 
+// get vehicle models based on make
   Future<List<String>> getVehicleModels(String selectedCarMake) async {
     List<String> carModels = [];
 
@@ -59,8 +57,7 @@ class CarData {
       if (listData.isNotEmpty && listData[0].length > 1) {
         int manufacturerIndex = 1;
         int vehicleNameEnIndex = 2;
-        Set<String> uniqueCarModels =
-            Set<String>(); // Using Set to store unique values
+        Set<String> uniqueCarModels = Set<String>();
 
         String selectedMakeLowerCase = selectedCarMake.toLowerCase();
 
@@ -69,22 +66,22 @@ class CarData {
             String manufacturer = listData[i][manufacturerIndex].toString();
             if (manufacturer.toLowerCase() == selectedMakeLowerCase) {
               String carModel = listData[i][vehicleNameEnIndex].toString();
-              uniqueCarModels.add(carModel); // Add to set to ensure uniqueness
+              uniqueCarModels.add(carModel);
             }
           }
         }
 
-        carModels = uniqueCarModels.toList(); // Convert set to list
-        carModels.sort(); // Sort the list alphabetically
+        carModels = uniqueCarModels.toList();
+        carModels.sort();
       }
     } catch (e) {
-      // Handle any errors occurring during file loading, decoding, or parsing
       print('Error while loading/parsing CSV data: $e');
     }
 
-    return carModels; // Return the sorted and unique list of car models for the provided car make
+    return carModels;
   }
 
+// get years based on make And model
   Future<List<String>> getYearsForMakeAndModel(
     String selectedCarMake,
     String selectedCarModel,
@@ -106,8 +103,7 @@ class CarData {
         int vehicleNameEnIndex = 2;
         int yearIndex = 0;
 
-        Set<String> uniqueYears =
-            Set<String>(); // Using Set to store unique values
+        Set<String> uniqueYears = Set<String>();
 
         for (int i = 1; i < listData.length; i++) {
           if (listData[i].length > vehicleNameEnIndex) {
@@ -121,17 +117,17 @@ class CarData {
           }
         }
 
-        years = uniqueYears.toList(); // Convert set to list
-        years.sort(); // Sort the list of years
+        years = uniqueYears.toList();
+        years.sort();
       }
     } catch (e) {
-      // Handle any errors occurring during file loading, decoding, or parsing
       print('Error while loading/parsing CSV data: $e');
     }
 
     return years;
   }
 
+// get fuel economy based on make, model, and year
   Future<List<String>> getFuelEconomy(
     String selectedYear,
     String selectedCarMake,
@@ -155,8 +151,7 @@ class CarData {
         int vehicleNameEnIndex = 2;
         int fuelEconomyIndex = 3;
 
-        Set<String> uniqueFuelEconomy =
-            Set<String>(); // Using Set to store unique values
+        Set<String> uniqueFuelEconomy = Set<String>();
 
         for (int i = 1; i < listData.length; i++) {
           if (listData[i].length > vehicleNameEnIndex) {
@@ -172,17 +167,17 @@ class CarData {
           }
         }
 
-        fuelEconomyData = uniqueFuelEconomy.toList(); // Convert set to list
-        fuelEconomyData.sort(); // Sort the list
+        fuelEconomyData = uniqueFuelEconomy.toList();
+        fuelEconomyData.sort();
       }
     } catch (e) {
-      // Handle any errors occurring during file loading, decoding, or parsing
       print('Error while loading/parsing CSV data: $e');
     }
 
     return fuelEconomyData;
   }
 
+// get grade based on make, model, year, and fuel economy
   Future<String> getGradeForFuelEconomy(
     String selectedYear,
     String selectedCarMake,
@@ -220,13 +215,12 @@ class CarData {
                 carModel.toLowerCase() == selectedCarModel.toLowerCase() &&
                 fuelEconomy == selectedFuelEconomy) {
               grade = listData[i][gradeIndex].toString();
-              break; // Exit loop if the criteria match is found
+              break;
             }
           }
         }
       }
     } catch (e) {
-      // Handle any errors occurring during file loading, decoding, or parsing
       print('Error while loading/parsing CSV data: $e');
     }
 

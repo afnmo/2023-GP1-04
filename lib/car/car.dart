@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gp91/components/bottom_nav.dart';
 import 'car_body.dart';
 
 class CarPage extends StatelessWidget {
@@ -10,19 +9,11 @@ class CarPage extends StatelessWidget {
     return const Scaffold(
       body: Column(
         children: [
-          // Add any other widgets specific to the Station screen
           Expanded(
             child: CarBody(
               isConsumption: false,
             ), // Create an instance of the CarBody widget
-            // child: CarBody(),
           ),
-          // BottomNav(
-          //   currentIndex: 0, // Set the initial index as needed
-          //   onIndexChanged: (index) {
-          //     // Handle index changes if required
-          //   },
-          // ),
         ],
       ),
     );

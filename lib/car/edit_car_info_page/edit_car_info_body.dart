@@ -31,23 +31,24 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
   String? imageFile;
   Uint8List image = Uint8List(0);
 
+// color list
   List<String> colorMap = [
-    'red',
-    'blue',
-    'green',
-    'yellow',
-    'orange',
-    'purple',
-    'pink',
-    'teal',
-    'cyan',
-    'amber',
-    'indigo',
-    'lime',
-    'brown',
-    'grey',
-    'black',
-    'white',
+    'Red',
+    'Blue',
+    'Green',
+    'Yellow',
+    'Orange',
+    'Purple',
+    'Pink',
+    'Teal',
+    'Cyan',
+    'Amber',
+    'Indigo',
+    'Lime',
+    'Brown',
+    'Grey',
+    'Black',
+    'White',
   ];
 
   @override
@@ -67,6 +68,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
     }
   }
 
+// update car doc
   void updataFormData() async {
     // Check if any field is empty
     if (selectedFuelType == null ||
@@ -88,8 +90,8 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
       return;
     }
 
+// Check if English field should have not exactly 3 characters
     if (englishLettersController.text.length != 3) {
-      // Display a message indicating that the English field should have exactly 3 characters
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
@@ -104,6 +106,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
       );
       return;
     } else {
+      // Display a message indicating that Characters not allowed in Saudi plate
       List<String> allowedLetters = [
         'A',
         'B',
@@ -152,7 +155,6 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
 
     // Check if numbersController has more than 4 characters
     if (numbersController.text.length > 4) {
-      // Display a message indicating that the Numbers field should have up to 4 digits
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please enter up to 4 digits in the Numbers field'),
@@ -196,6 +198,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
     }
   }
 
+// fetch car data
   Future<void> fetchCarData() async {
     Map<String, dynamic> data =
         await EditCarInfoHandler.getCarData(widget.carId);
@@ -323,17 +326,14 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                 decoration: InputDecoration(
                                   labelText: selectedFuelType ?? 'Fuel Type',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.local_gas_station,
@@ -367,9 +367,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: englishLettersController,
-                                //maxLength: 3,
-                                keyboardType: TextInputType
-                                    .text, // Use TextInputType.text for English letters
+                                keyboardType: TextInputType.text,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.allow(RegExp(
                                       r'^[a-zA-Z]*$')), // Allow only English letters
@@ -378,17 +376,14 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   labelText: englishLettersController.text ??
                                       'English letters',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.text_fields,
@@ -405,9 +400,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: numbersController,
-                                //maxLength: 3,
-                                keyboardType: TextInputType
-                                    .number, // Set the keyboard type to numeric
+                                keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter
                                       .digitsOnly // Allow only numeric input
@@ -416,17 +409,14 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   labelText:
                                       numbersController.text ?? 'Numbers',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Image.asset(
                                     'assets/icons/numbers.png',
@@ -471,17 +461,14 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                 decoration: InputDecoration(
                                   labelText: selectedCarColor ?? 'Car color',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.color_lens,
@@ -498,8 +485,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   maxWidth: fixedWidth, maxHeight: fixedHeight),
                               child: TextFormField(
                                 controller: carNameController,
-                                keyboardType: TextInputType
-                                    .text, // Use TextInputType.text for English letters
+                                keyboardType: TextInputType.text,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.allow(RegExp(
                                       r'^[a-zA-Z ]*$')), // Allow only English letters
@@ -508,17 +494,14 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                   labelText:
                                       carNameController.text ?? 'Car name',
                                   labelStyle: TextStyle(
-                                    color: Colors
-                                        .black, // Change the label text color as needed
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Change the color as needed
+                                    borderSide: BorderSide(color: Colors.grey),
                                   ),
                                   prefixIcon: Icon(
                                     Icons.directions_car,
@@ -550,7 +533,6 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                             fit: BoxFit.cover,
                                           )
                                         : Container(
-                                            // width: 200,
                                             height: 200,
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -591,11 +573,9 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                 updataFormData();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(
-                                    0xFFFFCEAF), // Set the button's background color
+                                primary: Color(0xFFFFCEAF),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Adjust the radius as needed
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 minimumSize: Size(355, 38),
                               ),

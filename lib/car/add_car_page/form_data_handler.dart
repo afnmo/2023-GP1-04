@@ -8,6 +8,7 @@ import 'car_data.dart';
 class FormDataHandler {
   CarData carDataObj = CarData();
 
+// from email find user id
   Future<String?> findDocumentIdByEmail() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user = auth.currentUser;
@@ -22,15 +23,14 @@ class FormDataHandler {
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.first.id;
       } else {
-        // User document not found based on the provided email
         return "no doc";
       }
     } else {
-      // No current user or user email found
       return null;
     }
   }
 
+// add to cars collection
   Future<void> formData(
       selectedCarMake,
       selectedCarModel,
@@ -41,7 +41,6 @@ class FormDataHandler {
       numbersController,
       carNameController,
       selectedCarColor) async {
-    // Gather form data
     String make = selectedCarMake ?? '';
     String model = selectedCarModel ?? '';
     String year = selectedYear ?? '';
@@ -77,6 +76,7 @@ class FormDataHandler {
     await setInitialExpense(carDate.id, documentId);
   }
 
+// convert english letters To arabic letters
   Future<String> convertEnglishToArabic(String input) async {
     Map<String, String> letterMap = {
       'A': 'أ',
@@ -110,6 +110,7 @@ class FormDataHandler {
     return result.trim();
   }
 
+// set initial expense
   Future<void> setInitialExpense(String carId, String? userId) async {
     try {
       DateTime now = DateTime.now();
@@ -120,8 +121,6 @@ class FormDataHandler {
       int month = int.parse(dateParts[1]);
       int day = int.parse(dateParts[2]);
 
-      // String? userId = await getUserId();
-      print("userId: " + userId!);
       Map<String, dynamic> data = {
         'userId': userId,
         'date': dateString,
@@ -131,8 +130,6 @@ class FormDataHandler {
         'amount': 500,
         'carId': carId
       };
-
-      // Append additional data to the existing map
 
       await FirebaseFirestore.instance.collection("Bills").add(data);
     } catch (error) {

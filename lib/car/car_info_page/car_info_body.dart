@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:gp91/car/appBarStyle/customShapeBorder.dart';
 import '../edit_car_info_page/edit_car_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'car_info_handler.dart';
@@ -12,13 +10,12 @@ class CarInfoBody extends StatelessWidget {
 
   CarInfoBody({super.key, required this.carId});
 
+// edit car button
   Widget editCarButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        // Define the action you want to perform when the button is pressed
         print("Edit Car Button Clicked");
 
-        // Optionally, you can navigate to another page here.
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => EditCarInfo(carId: carId)));
       },
@@ -27,6 +24,7 @@ class CarInfoBody extends StatelessWidget {
     );
   }
 
+// convert english numbers to arabic numbers
   String convertEnglishToArabicNumbers(String input) {
     Map<String, String> numbersMap = {
       '0': '٠',
@@ -51,40 +49,41 @@ class CarInfoBody extends StatelessWidget {
     return convertedString;
   }
 
+// convert color
   Color parseColor(String? colorName) {
     if (colorName != null) {
-      switch (colorName.toLowerCase()) {
-        case 'red':
+      switch (colorName) {
+        case 'Red':
           return Colors.red;
-        case 'blue':
+        case 'Blue':
           return Colors.blue;
-        case 'green':
+        case 'Green':
           return Colors.green;
-        case 'yellow':
+        case 'Yellow':
           return Colors.yellow;
-        case 'orange':
+        case 'Orange':
           return Colors.orange;
-        case 'purple':
+        case 'Purple':
           return Colors.purple;
-        case 'pink':
+        case 'Pink':
           return Colors.pink;
-        case 'teal':
+        case 'Teal':
           return Colors.teal;
-        case 'cyan':
+        case 'Cyan':
           return Colors.cyan;
-        case 'amber':
+        case 'Amber':
           return Colors.amber;
-        case 'indigo':
+        case 'Indigo':
           return Colors.indigo;
-        case 'lime':
+        case 'Lime':
           return Colors.lime;
-        case 'brown':
+        case 'Brown':
           return Colors.brown;
-        case 'grey':
+        case 'Grey':
           return Colors.grey;
-        case 'black':
+        case 'Black':
           return Colors.black;
-        case 'white':
+        case 'White':
           return Colors.white;
         default:
           return Colors.black; // Default color if not found
@@ -111,10 +110,7 @@ class CarInfoBody extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: Color.fromARGB(121, 218, 214, 214),
-            // appBar: PreferredSize(
-            //   preferredSize: Size.fromHeight(80),
-            //   child: customShapeBorder('Car Details'),
-            // ),
+// app bar style
             appBar: AppBar(
               backgroundColor: Color(0xFF6EA67C),
               elevation: 0,
