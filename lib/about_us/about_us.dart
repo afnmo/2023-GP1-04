@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({super.key});
-
   @override
-
-  // _AboutUsPageState createState() => _AboutUsPageState();
   State<StatefulWidget> createState() => _AboutUsPageState();
 }
 
