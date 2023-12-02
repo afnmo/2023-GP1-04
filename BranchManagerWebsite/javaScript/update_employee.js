@@ -172,7 +172,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                 console.log("Employee ID:", employeeId);
             
                 // Construct the URL with query parameters
-                const url = `registerFormEPUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&phone=${employeePhone}&years_experience=${employeeYearExperines}&employeeId=${employeeId}`;
+                const url = `registerFormEmployeeUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&phone=${employeePhone}&years_experience=${employeeYearExperines}&employeeId=${employeeId}`;
             
                 // Redirect to the registerFormEPUpdate page with query parameters
                 window.location.href = url;
