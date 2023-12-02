@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Details_Station/Details_Station.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gp91/station/detailsStation/detailsStation.dart';
 
-//THIS PAGE DISPLAY THE LIST OF STATION IN STATION PAGE:
-//HERE I WILL USE DATABASE TO FETCH STATION COLLECTION:
+//This Page Display The List Of Station In Station Page -----------------
 
-class Station_list extends StatelessWidget {
+// Widget to display a list of stations
+class StationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -28,17 +28,17 @@ class Station_list extends StatelessWidget {
                   document.data() as Map<String, dynamic>;
 
               if (stationData['image_station'] != null) {
-                return RecipeCard(
-                  name: stationData['name'],
-                  state: 'Busy', // it will implement in sprint 3
-                  fuel_type_state: stationData['fuel_status'],
-                  // fuel_state: stationData['fuel_state'],
-                  img_station: stationData['image_station'],
+                return StationCard(
+                  name: stationData['name'], //name station
+                  state: 'Busy', // it will be implemented in sprint 3
+                  fuelTypeState: stationData[
+                      'fuel_status'], // the state for each type of fuel
+                  imgStation: stationData['image_station'], //image of station
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Details_Station(
+                        builder: (context) => DetailsStation(
                           id: document.id,
                         ),
                       ),
@@ -47,7 +47,6 @@ class Station_list extends StatelessWidget {
                 );
               } else {
                 // Handle the case when image_station is null
-                // You can return a different widget or handle it as needed.
                 return Container(); // Empty container as a placeholder
               }
             }).toList(),
@@ -58,25 +57,20 @@ class Station_list extends StatelessWidget {
   }
 }
 
-//HERE THE CLASS OF STATION INFRO! :
-
-// Import the flutter_svg package.
-
-class RecipeCard extends StatelessWidget {
-  const RecipeCard({
+// Widget for displaying each station card
+class StationCard extends StatelessWidget {
+  const StationCard({
     Key? key,
     required this.name,
     required this.state,
-    required this.img_station,
+    required this.imgStation,
     this.onTap,
-    // required this.fuel_type,
-    //required this.fuel_state,
-    required this.fuel_type_state,
+    required this.fuelTypeState,
   }) : super(key: key);
 
-  final name, state, img_station;
+  final name, state, imgStation;
   final onTap;
-  final List<dynamic> fuel_type_state;
+  final List<dynamic> fuelTypeState;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +103,7 @@ class RecipeCard extends StatelessWidget {
               Colors.black.withOpacity(0.35),
               BlendMode.multiply,
             ),
-            image: NetworkImage('$img_station'),
+            image: NetworkImage('$imgStation'),
             fit: BoxFit.cover,
           ),
         ),
@@ -155,53 +149,50 @@ class RecipeCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        // Insert the for loop here to display SVG icons based on fuel_type and fuel_state.
+                        // Insert the for loop here to display SVG icons based on fuelTypeState.
 
-                        for (int i = 0; i < fuel_type_state.length; i++)
-                          if (fuel_type_state[i].substring(0, 2) == '91' &&
-                              fuel_type_state[i].substring(3, 12) ==
-                                  'Available')
+                        for (int i = 0; i < fuelTypeState.length; i++)
+                          if (fuelTypeState[i].substring(0, 2) == '91' &&
+                              fuelTypeState[i].substring(3, 12) == 'Available')
                             SvgPicture.asset(
                               'assets/icons/91A.svg',
                               width: 45,
                               height: 45,
                             )
-                          else if (fuel_type_state[i].substring(0, 2) == '91' &&
-                              fuel_type_state[i].substring(3, 14) ==
+                          else if (fuelTypeState[i].substring(0, 2) == '91' &&
+                              fuelTypeState[i].substring(3, 14) ==
                                   'Unavailable')
                             SvgPicture.asset(
                               'assets/icons/91U.svg',
                               width: 45,
                               height: 45,
                             )
-                          else if (fuel_type_state[i].substring(0, 2) == '95' &&
-                              fuel_type_state[i].substring(3, 12) ==
-                                  'Available')
+                          else if (fuelTypeState[i].substring(0, 2) == '95' &&
+                              fuelTypeState[i].substring(3, 12) == 'Available')
                             SvgPicture.asset(
                               'assets/icons/95A.svg',
                               width: 45,
                               height: 45,
                             )
-                          else if (fuel_type_state[i].substring(0, 2) == '95' &&
-                              fuel_type_state[i].substring(3, 14) ==
+                          else if (fuelTypeState[i].substring(0, 2) == '95' &&
+                              fuelTypeState[i].substring(3, 14) ==
                                   'Unavailable')
                             SvgPicture.asset(
                               'assets/icons/95U.svg',
                               width: 45,
                               height: 45,
                             )
-                          else if (fuel_type_state[i].substring(0, 6) ==
+                          else if (fuelTypeState[i].substring(0, 6) ==
                                   'Diesel' &&
-                              fuel_type_state[i].substring(7, 16) ==
-                                  'Available')
+                              fuelTypeState[i].substring(7, 16) == 'Available')
                             SvgPicture.asset(
                               'assets/icons/DA.svg',
                               width: 45,
                               height: 45,
                             )
-                          else if (fuel_type_state[i].substring(0, 6) ==
+                          else if (fuelTypeState[i].substring(0, 6) ==
                                   'Diesel' &&
-                              fuel_type_state[i].substring(7, 18) ==
+                              fuelTypeState[i].substring(7, 18) ==
                                   'Unavailable')
                             SvgPicture.asset(
                               'assets/icons/Du.svg',

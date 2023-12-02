@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/NextSprint.dart';
+import 'package:gp91/employee/nextSprint.dart';
 import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
 import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
@@ -11,11 +10,8 @@ import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
 import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
 
-// from StatelessWidget to stateful
 class Body extends StatefulWidget {
-  const Body({
-    super.key,
-  });
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _FormScreenState();
@@ -24,14 +20,20 @@ class Body extends StatefulWidget {
 class _FormScreenState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   final AuthRepository _auth = AuthRepository();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-
     super.dispose();
   }
 
@@ -40,6 +42,7 @@ class _FormScreenState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Background(
       child: SingleChildScrollView(
         child: Form(
@@ -47,9 +50,9 @@ class _FormScreenState extends State<Body> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: size.height * 0.1,
-              ),
+              // Space at the top of the form
+              SizedBox(height: size.height * 0.1),
+              // Title text for the login form
               const Text(
                 "Login For Employee",
                 style: TextStyle(
@@ -59,19 +62,21 @@ class _FormScreenState extends State<Body> {
                   color: primaryColor,
                 ),
               ),
+              // Space between title and logo
               SizedBox(height: size.height * 0.03),
+              // Logo image
               Image.asset(
                 "assets/images/logo_no_bkg.png",
                 width: size.width,
                 height: size.height * 0.3,
               ),
-
-//              emailInput,
+              // Container for the email input field
               TextFieldContainer(
                 child: TextFormField(
                   controller: _emailController,
                   onChanged: (value) {},
                   validator: (value) {
+                    // Validate email format
                     RegExp emailRegex =
                         RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                     final isEmailValid = emailRegex.hasMatch(value ?? '');
@@ -85,26 +90,21 @@ class _FormScreenState extends State<Body> {
                   },
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    hintStyle: TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: Icon(
-                      Icons.email,
-                      color: primaryColor,
-                    ),
+                    hintStyle: TextStyle(fontFamily: 'NanumGothic'),
+                    icon: Icon(Icons.email, color: primaryColor),
                     hintText: "Email",
                     border: InputBorder.none,
                   ),
-                  // autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ),
-              // passwordInput,
+              // Container for the password input field
               TextFieldContainer(
                 child: TextFormField(
                   controller: _passwordController,
                   obscureText: _obscureText,
                   onChanged: (value) {},
                   validator: (value) {
+                    // Validate password presence
                     if (value!.isEmpty) {
                       return "Please enter your password";
                     } else {
@@ -112,13 +112,8 @@ class _FormScreenState extends State<Body> {
                     }
                   },
                   decoration: InputDecoration(
-                    hintStyle: const TextStyle(
-                      fontFamily: 'NanumGothic',
-                    ),
-                    icon: const Icon(
-                      Icons.lock,
-                      color: primaryColor,
-                    ),
+                    hintStyle: const TextStyle(fontFamily: 'NanumGothic'),
+                    icon: const Icon(Icons.lock, color: primaryColor),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -133,16 +128,16 @@ class _FormScreenState extends State<Body> {
                     hintText: "Password",
                     border: InputBorder.none,
                   ),
-                  // autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ),
-
+              // Container for "Forgot Password?" link
               Container(
                 margin: const EdgeInsets.only(right: 30),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
+                      // Navigate to the forgot password screen
                       Get.to(() => ForgotPasswordMailScreen());
                     },
                     child: const Text(
@@ -150,31 +145,29 @@ class _FormScreenState extends State<Body> {
                       style: TextStyle(
                         color: primaryColor,
                         fontFamily: 'NanumGothic',
-                        // fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
+              // Space between "Forgot Password?" link and login button
+              SizedBox(height: size.height * 0.01),
+              // Rounded login button
               RoundedButton(
                 text: "LOGIN",
-                // Go to the home page
                 press: () {
-                  //passwordInput.formKey.currentState?.validate() == true)
+                  // Validate form before attempting login
                   if (_formKey.currentState?.validate() == true) {
                     print("WOOOOORKED!!");
+                    // Attempt to sign in
                     _signIn();
                   } else {
                     print("did not work");
                   }
                 },
               ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
+              // Space below the login button
+              SizedBox(height: size.height * 0.03),
             ],
           ),
         ),
@@ -182,10 +175,12 @@ class _FormScreenState extends State<Body> {
     );
   }
 
+  // Function to handle the sign-in process
   void _signIn() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
+    // Show a loading dialog while signing in
     showDialog(
       context: context,
       builder: (context) {
@@ -197,12 +192,14 @@ class _FormScreenState extends State<Body> {
       // Hash the entered password
       String hashedPassword = hashPassword(password);
 
-      // Check if the email and password match the data in Station_Employee_Deleted collection
+      // Check if the employee is terminated
       bool isTerminated =
           await _auth.isEmployeeTerminated(email, hashedPassword);
 
+      // Check if the employee is terminated or not
       if (isTerminated) {
         Get.back(); // Close the loading dialog
+        // Display terminated message
         Get.snackbar(
           "Terminated!",
           "You are terminated. Please contact the administrator.",
@@ -212,7 +209,7 @@ class _FormScreenState extends State<Body> {
         );
         return;
       } else {
-        // Check if the email and password match the data in Station_Employee collection
+        // Check if the email and password match the data in the database
         bool isValidEmployee =
             await _auth.validateEmployeeCredentials(email, hashedPassword);
 
@@ -220,12 +217,14 @@ class _FormScreenState extends State<Body> {
 
         if (isValidEmployee) {
           print("Employee is successfully logged in");
+          // Navigate to the next screen
           Get.to(() => const NextSprint());
 
           // Clear the input fields
           _emailController.clear();
           _passwordController.clear();
         } else {
+          // Display incorrect credentials message
           Get.snackbar(
             "Incorrect Credentials",
             "Incorrect email or password",
@@ -249,10 +248,9 @@ class _FormScreenState extends State<Body> {
     }
   }
 
+  // Function to hash the provided password using SHA-256 algorithm
   String hashPassword(String password) {
-    // Convert password to bytes
     var bytes = utf8.encode(password);
-    // Hash the bytes
     var digest = sha256.convert(bytes);
 
     return digest.toString();

@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/NextSprint.dart';
-
-//import 'package:gp91/on_boarding/on_boarding_screen.dart';
-
+import 'package:gp91/employee/nextSprint.dart';
 import 'package:gp91/welcome/welcome_screen.dart';
 
 class AuthRepository extends GetxController {
@@ -22,9 +18,6 @@ class AuthRepository extends GetxController {
   }
 
   _setInitialScreen(User? user) {
-    // user == null
-    //     ? Get.offAll(() => OnBoardingScreen())
-    //     : Get.offAll(() => const HomeScreen());
     if (user != null) {
       Get.offAll(() => const NextSprint());
     }

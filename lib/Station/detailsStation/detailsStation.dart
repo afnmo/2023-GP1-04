@@ -1,16 +1,18 @@
-//import 'dart:js';
+// Import necessary packages and libraries
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gp91/components/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Details_Station extends StatelessWidget {
-  const Details_Station({required this.id});
+//This Page Will Display The Details Of Station -------------------
+
+// Widget for displaying details of a specific station
+class DetailsStation extends StatelessWidget {
+  const DetailsStation({required this.id});
   final id;
 
+  // StreamBuilder to listen for changes in the Firestore document
   firestoreStream() {
     return StreamBuilder<DocumentSnapshot>(
       stream:
@@ -35,6 +37,7 @@ class Details_Station extends StatelessWidget {
     );
   }
 
+  // Build the content of the screen based on the Firestore data
   Widget buildContent(Map<String, dynamic> data) {
     return SafeArea(
       child: Scaffold(
@@ -42,10 +45,8 @@ class Details_Station extends StatelessWidget {
           children: [
             SizedBox(
               width: double.infinity,
-              // THE IMAGE OF STATION:
               child: Image.network(data['image_station']),
             ),
-            //  buttonArrow(context),
             scroll(data),
           ],
         ),
@@ -78,46 +79,13 @@ class Details_Station extends StatelessWidget {
     );
   }
 
-  buttonArrow(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          height: 55,
-          width: 55,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Color.fromARGB(255, 160, 141, 141),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
+  // Build the draggable scrollable sheet for additional station details
   scroll(Map<String, dynamic> data) {
     List<String> service = [
       'car wash',
       'shop',
       'coffee'
-    ]; //It will be remove in sprint 'add services'
+    ]; // WILL BE REMOVED IN SPRINT 4 "DUMMY DATA"
 
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
@@ -126,10 +94,7 @@ class Details_Station extends StatelessWidget {
         builder: (context, scrollController) {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(
-              // color: Color.fromARGB(255, 85, 81, 74),
-              // color: mainColorDark,
               color: Color(0xFF6EA67C),
               borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
@@ -157,31 +122,14 @@ class Details_Station extends StatelessWidget {
                     data['name'],
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           fontSize: 40.0,
-                          fontFamily:
-                              'NanumGothic', // Replace 'YourCustomFont' with your font family name
+                          fontFamily: 'NanumGothic',
                         ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-
                   Row(
                     children: [
-                      // Expanded(
-                      //   flex:
-                      //       2, // You can adjust the flex values to control the width of each side
-                      //   child: Text(
-                      //     'Open hour: ' +
-                      //         data['open_hour'] +
-                      //         "     Close hour: " +
-                      //         data['close_hour'],
-                      //     style:
-                      //         Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      //               // color: Color.fromARGB(255, 161, 167, 176),
-                      //               color: Colors.black,
-                      //             ),
-                      //   ),
-                      // ),
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -197,12 +145,10 @@ class Details_Station extends StatelessWidget {
                                   ),
                         ),
                       ),
-
-                      const SizedBox(width: 15), // Adjust this for spacing
+                      const SizedBox(width: 15),
                       GestureDetector(
                         onTap: () async {
-                          var googleMapsUrl = data[
-                              'location']; // Replace with your desired location
+                          var googleMapsUrl = data['location'];
                           if (await canLaunch(googleMapsUrl)) {
                             await launch(googleMapsUrl);
                           } else {
@@ -234,39 +180,30 @@ class Details_Station extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Fuel Availiable Now:",
+                          Text("Fuel Available Now:",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
-                                  .copyWith(
-                                      // color: Color.fromARGB(255, 161, 167, 176)),
-                                      color: Colors.black)),
-                          // Add any other text or widgets you want above the loop here
+                                  .copyWith(color: Colors.black)),
                         ],
                       ),
-                      // Rest of your code (the loop) here
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: buildFuelIcons(data['fuel_status']),
                       ),
                     ],
                   ),
-
-                  //HERE FOR SERVICES AND PROMOTION:
-
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
                       height: 4,
                     ),
                   ),
-
                   Text(
                     "Services",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           fontSize: 40.0,
-                          fontFamily:
-                              'NanumGothic', // Replace 'YourCustomFont' with your font family name
+                          fontFamily: 'NanumGothic',
                         ),
                   ),
                   const SizedBox(
@@ -284,28 +221,6 @@ class Details_Station extends StatelessWidget {
                       height: 4,
                     ),
                   ),
-
-                  /*
-
-                  Text(
-                    "Promotion",
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontSize: 40.0,
-                          fontFamily:
-                              'NanumGothic', // Replace 'YourCustomFont' with your font family name
-                        ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) =>
-                        Promotion(context, data['promotion']),
-                  ),
-                  */
                 ],
               ),
             ),
@@ -313,6 +228,7 @@ class Details_Station extends StatelessWidget {
         });
   }
 
+  // Function to display services
   Services(BuildContext context, List<dynamic> services) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -337,7 +253,6 @@ class Details_Station extends StatelessWidget {
                 Text(
                   service,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        // color: Color.fromARGB(255, 161, 167, 176)
                         color: Colors.black,
                       ),
                 ),
@@ -348,6 +263,7 @@ class Details_Station extends StatelessWidget {
     );
   }
 
+  // Function to display promotion
   Widget Promotion(BuildContext context, List<dynamic> promotion) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -358,7 +274,6 @@ class Details_Station extends StatelessWidget {
             Text(
               "No promotion in station",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    // color: Color.fromARGB(255, 161, 167, 176)
                     color: Colors.black,
                   ),
             )
@@ -393,53 +308,55 @@ class Details_Station extends StatelessWidget {
       ),
     );
   }
-}
 
-String getAmOrPmIndicator(String timeString) {
-  int hour = int.parse(timeString.split(":")[0]);
-  return hour < 12 ? 'AM' : 'PM';
-}
+  // Function to get AM or PM indicator based on time
+  String getAmOrPmIndicator(String timeString) {
+    int hour = int.parse(timeString.split(":")[0]);
+    return hour < 12 ? 'AM' : 'PM';
+  }
 
-List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
-  List<Widget> fuelIcons = [];
-  bool isFuelAvailable = false;
-  for (var fuelType in fuelTypeData) {
-    if (fuelType.substring(0, 2) == '91' &&
-        fuelType.substring(3, 12) == 'Available') {
-      fuelIcons.add(
-        SvgPicture.asset(
-          'assets/icons/91A.svg',
+  // Function to build fuel icons based on availability
+  List<Widget> buildFuelIcons(List<dynamic> fuelTypeData) {
+    List<Widget> fuelIcons = [];
+    bool isFuelAvailable = false;
+    for (var fuelType in fuelTypeData) {
+      if (fuelType.substring(0, 2) == '91' &&
+          fuelType.substring(3, 12) == 'Available') {
+        fuelIcons.add(
+          SvgPicture.asset(
+            'assets/icons/91A.svg',
+            width: 45,
+            height: 45,
+          ),
+        );
+        isFuelAvailable = true;
+      } else if (fuelType.substring(0, 2) == '95' &&
+          fuelType.substring(3, 12) == 'Available') {
+        fuelIcons.add(
+          SvgPicture.asset(
+            'assets/icons/95A.svg',
+            width: 45,
+            height: 45,
+          ),
+        );
+        isFuelAvailable = true;
+      } else if (fuelType.substring(0, 6) == 'Diesel' &&
+          fuelType.substring(7, 16) == 'Available') {
+        fuelIcons.add(SvgPicture.asset(
+          'assets/icons/DA.svg',
           width: 45,
           height: 45,
-        ),
-      );
-      isFuelAvailable = true;
-    } else if (fuelType.substring(0, 2) == '95' &&
-        fuelType.substring(3, 12) == 'Available') {
-      fuelIcons.add(
-        SvgPicture.asset(
-          'assets/icons/95A.svg',
-          width: 45,
-          height: 45,
-        ),
-      );
-      isFuelAvailable = true;
-    } else if (fuelType.substring(0, 6) == 'Diesel' &&
-        fuelType.substring(7, 16) == 'Available') {
+        ));
+        isFuelAvailable = true;
+      }
+    }
+    if (!isFuelAvailable) {
       fuelIcons.add(SvgPicture.asset(
-        'assets/icons/DA.svg',
+        'assets/icons/not.svg',
         width: 45,
         height: 45,
       ));
-      isFuelAvailable = true;
     }
+    return fuelIcons;
   }
-  if (!isFuelAvailable) {
-    fuelIcons.add(SvgPicture.asset(
-      'assets/icons/not.svg',
-      width: 45,
-      height: 45,
-    ));
-  }
-  return fuelIcons;
 }

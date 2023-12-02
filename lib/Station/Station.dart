@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/Station/Body_Station.dart';
 import 'package:gp91/components/bottom_nav.dart';
-//import 'package:gp91/components/constants.dart';
-//import 'package:../components/constants.dart';
-import 'Body_Station.dart';
 
 class Station extends StatelessWidget {
   @override
@@ -12,7 +10,7 @@ class Station extends StatelessWidget {
         children: [
           // Add any other widgets specific to the Station screen
           Expanded(
-            child: Body_Station(),
+            child: BodyStation(),
           ),
           BottomNav(
             currentIndex: 0, // Set the initial index as needed

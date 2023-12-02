@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gp91/employee/components/body.dart';
 
 // ignore: camel_case_types
-class LoginScreen_E extends StatelessWidget {
-  const LoginScreen_E({super.key});
+class Login_Employee extends StatelessWidget {
+  const Login_Employee({super.key});
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

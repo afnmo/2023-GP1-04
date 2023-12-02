@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gp91/Station/Details_Station/Details_Station.dart';
-import 'package:gp91/Station/Station.dart';
+import 'package:gp91/station/detailsStation/detailsStation.dart';
+import 'package:gp91/station/station.dart';
 import 'package:gp91/car/car.dart';
 import '../settings/settings_page.dart';
 import 'package:gp91/home/screens/home_screen.dart';

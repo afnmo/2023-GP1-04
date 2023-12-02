@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/components/constants.dart';
 import 'package:gp91/employee/login.dart';
-
 import 'package:gp91/login/login.dart';
-
-//import 'package:gp91/signup/signup.dart';
-//import 'package:gp91/signup_employee/signup_employee.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Get the size of the screen
     Size size = MediaQuery.of(context).size;
 
+    // Main container containing the entire body
     return Container(
       height: size.height,
       width: double.infinity,
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          // Positioned widget for the top background image
           Positioned(
             top: 0,
             child: Image.asset(
@@ -26,6 +24,7 @@ class Body extends StatelessWidget {
               width: size.width * 1,
             ),
           ),
+          // Positioned widget for the logo
           Positioned(
             top: size.height * 0.1,
             child: Image.asset(
@@ -34,39 +33,32 @@ class Body extends StatelessWidget {
               height: size.height * 0.3,
             ),
           ),
+          // SingleChildScrollView for scrollable content
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: size.height * 0.3),
+                // Welcome text
                 const Text(
                   "WELCOME TO 91",
                   style: TextStyle(
                     fontSize: 20,
                     fontFamily: 'NanumGothic',
                     fontWeight: FontWeight.bold,
-                    // Adjust the color as needed
                     color: Colors.black,
                   ),
                 ),
                 SizedBox(height: size.height * 0.07),
-                // const Text(
-                //   "Pick Your Role",
-                //   style: TextStyle(
-                //     fontSize: 18,
-                //     fontFamily: 'NanumGothic',
-                //     fontWeight: FontWeight.bold,
-                //     // Adjust the color as needed
-                //     color: Color.fromARGB(255, 196, 151, 5),
-                //   ),
-                // ),
                 SizedBox(height: size.height * 0.04),
+                // Row containing role options
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // User role option
                     InkWell(
                       onTap: () {
-                        // Navigate to the desired screen
+                        // Navigate to the user login screen
                         Get.to(() => LoginScreen());
                       },
                       child: Column(
@@ -86,10 +78,11 @@ class Body extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 75),
+                    // Employee role option
                     InkWell(
                       onTap: () {
-                        // Navigate to the desired screen
-                        Get.to(() => LoginScreen_E());
+                        // Navigate to the employee login screen
+                        Get.to(() => Login_Employee());
                       },
                       child: Column(
                         children: [
