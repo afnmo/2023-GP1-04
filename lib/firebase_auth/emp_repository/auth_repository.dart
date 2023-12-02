@@ -59,6 +59,7 @@ class AuthRepository extends GetxController {
         .collection('Station_Employee')
         .where('email', isEqualTo: email)
         .where('password', isEqualTo: password)
+        .where('terminated', isEqualTo: false)
         .get();
 
     // Check if there is a matching record
@@ -70,9 +71,10 @@ class AuthRepository extends GetxController {
     // Query the Station_Employee_Deleted collection
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
-        .collection('Station_Employee_Deleted')
+        .collection('Station_Employee')
         .where('email', isEqualTo: email)
         .where('password', isEqualTo: password)
+        .where('terminated', isEqualTo: true)
         .get();
 
     // Check if there is a matching record

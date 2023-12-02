@@ -104,6 +104,7 @@ const hashedPassword = await hashPassword(password);
                 password: hashedPassword,
                 phone: phone,  // Include phone in the Firestore document
             years_experience: yearsExperience,  // Include years_experience in the Firestore document
+                terminated:false,
 
             });
         

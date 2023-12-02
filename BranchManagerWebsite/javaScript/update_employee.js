@@ -20,9 +20,7 @@ const db = getFirestore(app);
 // Specify the correct name of the collection for employees
 const employeeCollectionName = "Station_Employee";
 
-// Specify the correct name of the collection for employees deleted:
-const deletedEmployeeCollectionName = "Station_Employee_Deleted";
-const deletedEmployeeCollectionRef = collection(db, deletedEmployeeCollectionName);
+
 
 
 // Retrieve branch manager ID
@@ -60,6 +58,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
         // Populate the employee list
         employeeQuerySnapshot.forEach((employeeDoc) => {
             const employeeData = employeeDoc.data();
+            if (employeeData. terminated== false){
             const listItem = document.createElement("li");
 
             // Create a container for the delete icon and employee name
@@ -94,18 +93,20 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                 const confirmHandler = async () => {
                     try {
                         // Create a reference to the deleted employee collection
-                        const deletedEmployeeDocRef = doc(db, `${deletedEmployeeCollectionName}/${employeeDoc.id}`);
+                        const terminateEmployeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
             
                         // Add employee data to the deleted employee collection
-                        await setDoc(deletedEmployeeDocRef, {
-                            email: employeeData.email,
-                            password: employeeData.password,
+                        await setDoc(terminateEmployeeDocRef, {
+                            firstName:employeeData.firstName,
+                            lastName:employeeData.lastName,
+                            email:employeeData.email,
+                            password:employeeData.password,
+                            phone:employeeData.phone,
+                            terminated: true,
                             // Add other fields as needed
                         });
             
-                        // Delete the employee from the Firestore collection
-                        const employeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
-                        await deleteDoc(employeeDocRef);
+                  
 
                                   // Check if there are any remaining employees
             const remainingEmployeesQuerySnapshot = await getDocs(employeeQuery);
@@ -206,7 +207,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
             listItem.appendChild(horizontalLine);
 
             // Add the list item to the employee list
-            employeeList.appendChild(listItem);
+            employeeList.appendChild(listItem);};
             
         });};
     } catch (error) {
