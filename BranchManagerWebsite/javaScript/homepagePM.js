@@ -107,7 +107,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "91";
                             var pElement = document.getElementById("91statewidth");
-                            pElement.innerHTML = /*value + */" unavailable";
+                            pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("91Img");
                             imgElement.src = "../images/91unavailable.png";
                         }
@@ -118,7 +118,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "95";
                             var pElement = document.getElementById("95statewidth");
-                            pElement.innerHTML = /*value +*/ " unavailable";
+                            pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("95Img");
                             imgElement.src = "../images/95unavailable.png";
                         }
@@ -129,7 +129,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                         if (state === 'Unavailable') {
                             var value = "Diesel";
                             var pElement = document.getElementById("Dieselstatewidth");
-                            pElement.innerHTML = /*value + */" unavailable";
+                            pElement.innerHTML = value + " unavailable";
                             var imgElement = document.getElementById("dieselImg");
                             imgElement.src = "../images/dieselunavailable.png";
                         }

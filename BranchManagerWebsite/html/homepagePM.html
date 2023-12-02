@@ -99,61 +99,13 @@
           <div class="row">
 
             <!-- Fuel type -->
-            <div class="col-lg-5 col-xl-4">
+            <div class="col-lg-5 col-xl-4" style="display: none;">
               <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h6 class="fs-4 fw-bold text-primary m-0"
                     style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel type</h6>
                 </div>
                 <div class="card-body">
-                  <!-- <div class="row align-items-left no-gutters">
-                    <div class="col-xl-12 me-2">
-            
-                      <div class="row g-0 align-items-center" id="91state" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: #1cc88a;">91</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="91statewidth"><span class="visually-hidden">50%</span></div>
-                          </div>
-                        </div>
-                      </div>
-            
-                      <br>
-
-                      <div class="row g-0 align-items-center" id="95state" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: #e74a3b;">95</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="95statewidth"><span class="visually-hidden">50%</span></div>
-                          </div>
-                        </div>
-                      </div>
-            
-                      <br>
-
-                      <div class="row g-0 align-items-center" id="Dieselstate" style="display: none;">
-                        <div class="col-auto">
-                          <div class="fw-bold text-dark h5 mb-0 me-3"><span style="color: rgb(133,135,150);">Diesel</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm"
-                            style="--bs-primary:rgb(248,165,26);--bs-primary-rgb:248,165,26; height: 12px;">
-                            <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="1"
-                              style="width:0%;" id="Dieselstatewidth"><span class="visually-hidden">50%</span></div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                    </div>
-                  </div> -->
 
                   <ol class="fueltype">
                     <li id="91state" style="display: none;">
@@ -195,7 +147,7 @@
               <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h6 class="fs-4 fw-bold text-primary m-0"
-                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;"> Fuel status</h6>
+                    style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118;">Fuel</h6>
                     <div id="buttonEditFuelStatus" style="display: none;">
                       <a href="editfuel.html"><img src="../images/editIcon.png" height="30px" width="30px"></a>
                   </div>
@@ -207,7 +159,7 @@
                         <span>
                           <img src="..\images\91available.png" style="display: inline; float: left; margin-right: 10px;" id="91Img" height="30px" width="30px">
                         </span>
-                        <span id="91statewidth"><!--91--> available</span>
+                        <span id="91statewidth">91 available</span>
                       </p>
                     </li>
                     <br>
@@ -216,7 +168,7 @@
                         <span>
                           <img src="..\images\95available.png" style="display: inline; float: left; margin-right: 10px;" id="95Img" height="30px" width="30px">
                         </span>
-                        <span id="95statewidth"><!--95 -->available</span>
+                        <span id="95statewidth">95 available</span>
                       </p>
                     </li>
                     <span id="fuelStatusDisplay"></span>
@@ -226,7 +178,7 @@
                         <span>
                           <img src="..\images\dieselavailable.png" style="display: inline; float: left; margin-right: 10px;" id="dieselImg" height="30px" width="30px">
                         </span>
-                        <span id="Dieselstatewidth"><!--Diesel--> available</span>
+                        <span id="Dieselstatewidth">Diesel available</span>
                       </p>
                     </li>
                   </ol>
@@ -261,10 +213,10 @@
               </div>
             </div>
             <!-- Services -->
-          </div>
+       
 
 
-          <div class="row">
+    
             <div class="col-md-6 col-xl-3 mb-4">
               <!-- open hour -->
               <div class="card shadow border-start-info py-2" style="height:120.333px;width:270.333px;">
@@ -287,7 +239,9 @@
                 </div>
               </div>
               <!-- open hour -->
-            </div>
+           
+              <br>
+              <br>
 
               <div class="col-md-6 col-xl-3 mb-4">
               <!-- close hour -->
@@ -311,7 +265,7 @@
               <!-- close hour -->
             </div>
 
-
+        
 
           </div>
 
