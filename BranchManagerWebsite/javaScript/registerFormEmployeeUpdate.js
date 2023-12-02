@@ -21,7 +21,7 @@ const db = getFirestore(app);
 const employeeCollectionName = "Station_Employee";
 
 document.addEventListener("DOMContentLoaded", async function () {
-    var count = 0;
+    var click_to_change_password = 0;
     let hash_new_password; 
     // Retrieve query parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Add event listener to the link for changing the password
     document.getElementById("changePasswordLink").addEventListener("click", function (event) {
-        count = 1;
+        click_to_change_password = 1;
         event.preventDefault(); // Prevent the default behavior of the link
 
         // Toggle the visibility of the password container
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         passwordContainer.style.display = passwordContainer.style.display === "none" ? "block" : "none";
     });
 
-    // Your existing code...
+    
 
     document.getElementById("registrationForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let enteredPrevPassword = "";  // Initialize as an empty string
 
     // Check if the user is updating the password
-    if (count === 1) {
+    if (click_to_change_password === 1) {
         // User is updating the password, get the value from the input field
         enteredPrevPassword = enteredPrevPasswordInput.value;
 
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const newPasswordInput = document.getElementById("New_Password");
         const newPassword = newPasswordInput.value.trim(); // Trim leading and trailing whitespaces
 
-        if (count === 1 && newPassword !== "") {
+        if (click_to_change_password === 1 && newPassword !== "") {
             // User is updating the password, validate the new password
             if (!isValidPassword(newPassword)) {
                 const passwordError2 = document.getElementById("passwordError2");
@@ -167,14 +167,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 setSuccess(newPasswordInput);
             }
               // Hash the new password before updating the data
-    hash_new_password = await hashPassword(newPassword); 
+          hash_new_password = await hashPassword(newPassword); 
         }
 
         // Validate and get the confirmation password
         const confirmNewPasswordInput = document.getElementById("Re_Password");
         const confirmNewPassword = confirmNewPasswordInput.value.trim(); // Trim leading and trailing whitespaces
 
-        if (count === 1 && confirmNewPassword !== newPassword) {
+        if (click_to_change_password === 1 && confirmNewPassword !== newPassword) {
             // User is updating the password, validate the confirmation password
             const passwordError3 = document.getElementById("passwordError3");
             if (passwordError3) {
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
 
         // Add the password to updatedData only if the user is updating the password
-        if (count === 1) {
+        if (click_to_change_password === 1) {
 
             console.log(hash_new_password);
             updatedData.password =hash_new_password ;
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // Wait for 1.5 seconds
                 setTimeout(() => {
                     // Redirect to employee.html after 1.5 seconds
-                    window.location.href = "my_employee.html";
+                    window.location.href = "myEmployee.html";
                 }, 1500);
             }
         })
