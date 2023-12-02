@@ -8,6 +8,7 @@ class AboutUsPage extends StatefulWidget {
 
 class _AboutUsPageState extends State<AboutUsPage> {
   final Map<String, bool> _sectionsExpandedState = {
+    // all the values are false so none of it opens automaticallywhem the page is open
     'Who Are We?': false,
     'Contact Us': false,
     'Privacy Policy': false,
@@ -17,7 +18,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C),
+        backgroundColor: const Color(0xFF6EA67C),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
