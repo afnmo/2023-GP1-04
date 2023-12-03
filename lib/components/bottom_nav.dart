@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gp91/station/details_station/detailsStation.dart';
+import 'package:gp91/station/details_station/details_station.dart';
 import 'package:gp91/station/station.dart';
 import 'package:gp91/car/car.dart';
 import '../settings/settings_page.dart';
