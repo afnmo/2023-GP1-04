@@ -1,102 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/Station/Station.dart';
-import 'package:gp91/car/car.dart';
 import 'package:gp91/car/car_body.dart';
-import 'package:gp91/consumption/fuel_cars.dart';
 import 'package:gp91/consumption/fuel_prev.dart';
 import 'package:gp91/consumption/fuel_result.dart';
-import 'package:gp91/settings/settings_page.dart';
 import 'package:gp91/about_us/about_us.dart';
 
-class CategoriesListMallika1 extends StatefulWidget {
-  const CategoriesListMallika1({Key? key}) : super(key: key);
+class CategoriesList extends StatefulWidget {
+  const CategoriesList({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CategoriesListMallika1State();
+  State<StatefulWidget> createState() => _CategoriesListState();
 }
 
-class _CategoriesListMallika1State extends State<CategoriesListMallika1> {
+class _CategoriesListState extends State<CategoriesList> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "Fuel Consumption",
-                image: "assets/images/fuelhome3.png",
-                onTap: () {
-                  Get.to(() => CarBody(
-                        isConsumption: true,
-                      ));
-                },
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "Promotions",
-                image: "assets/images/promos2.png",
-                onTap: () {
-                  // Add your navigation logic here
-                },
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "Fuel Stats",
-                image: "assets/images/consumption2.png",
-                onTap: () {
-                  Get.to(() => FuelResult());
-                },
-              ),
-            ),
-          ],
+        Expanded(
+          child: CategoryCard(
+            title: "Consumption",
+            image: "assets/images/fuelhome3.png",
+            onTap: () {
+              Get.to(() => const CarBody(
+                    isConsumption: true,
+                  ));
+            },
+          ),
         ),
-        Row(
-          children: [
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "Fuel Records",
-                image: "assets/images/history.png",
-                onTap: () {
-                  Get.to(() => FuelPrev());
-                  // Add your navigation logic here
-                },
-              ),
-            ),
-            Expanded(
-              child: CategoryCardMallika1(
-                title: "About Us",
-                image: "assets/images/about2.png",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutUsPage()),
-                  );
-                },
-              ),
-            ),
-          ],
+        Expanded(
+          child: CategoryCard(
+            title: "Fuel Stats",
+            image: "assets/images/consumption2.png",
+            onTap: () {
+              Get.to(() => const FuelResult());
+            },
+          ),
+        ),
+        Expanded(
+          child: CategoryCard(
+            title: "Fuel Records",
+            image: "assets/images/history.png",
+            onTap: () {
+              Get.to(() => const FuelPrev());
+            },
+          ),
+        ),
+        Expanded(
+          child: CategoryCard(
+            title: "Promotions",
+            image: "assets/images/promos2.png",
+            onTap: () {
+              // Add your navigation logic here
+            },
+          ),
+        ),
+        Expanded(
+          child: CategoryCard(
+            title: "About Us",
+            image: "assets/images/about2.png",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutUsPage()),
+              );
+            },
+          ),
         ),
       ],
     );
   }
 }
 
-////////////////////////
-class CategoryCardMallika1 extends StatelessWidget {
+//////////////////////////////
+class CategoryCard extends StatelessWidget {
+  // cards attributes
   final String title;
   final String image;
   final Function() onTap;
   final bool selected;
 
-  const CategoryCardMallika1({
+  const CategoryCard({
     required this.title,
     required this.image,
     required this.onTap,
+    // false so it is not auto selected
     this.selected = false,
     Key? key,
   }) : super(key: key);
@@ -112,15 +100,11 @@ class CategoryCardMallika1 extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: const Color(0xFF6EA67C),
-                //border: Border.all(
-                //width: selected ? 2 : 0,
-                //color: const Color(0xffFF8527),
-                //),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: ClipRRect(
                 child: Image.asset(
-                  image, // Use Image.asset instead of Image.network
+                  image,
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
@@ -133,7 +117,7 @@ class CategoryCardMallika1 extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 13,
                 color: selected ? const Color(0xffFF8527) : Colors.black,
               ),
             ),

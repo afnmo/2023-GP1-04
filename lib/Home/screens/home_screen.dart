@@ -1,229 +1,32 @@
-// import 'package:gp91/Home/components/barGraph/bar_graph.dart';
-// import 'package:gp91/Home/components/barGraph/stream_builder.dart';
-// import 'package:gp91/Home/components/categories_list.dart';
-// import 'package:gp91/home/components/topBar.dart';
-// import 'package:flutter/material.dart';
-// import 'package:gp91/components/bottom_nav.dart';
-// import 'package:gp91/home/components/blurred_image_with_text.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({super.key});
-//   @override
-//   // _HomeScreenState createState() => _HomeScreenState();
-//   State<StatefulWidget> createState() => _HomeScreenState();
-// }
-
-// class _HomeScreenState extends State<HomeScreen> {
-//   List<double> monthlySummary = [
-//     100.0,
-//     800.0,
-//     300.0,
-//     500.0,
-//   ];
-//   int _currentIndex = 2;
-//   Stream<QuerySnapshot> _billsStream =
-//       FirebaseFirestore.instance.collection('Bills').snapshots();
-
-//   void _onIndexChanged(int index) {
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: TopBar(),
-//       bottomNavigationBar: BottomNav(
-//         currentIndex: _currentIndex,
-//         onIndexChanged: _onIndexChanged,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             // Padding(
-//             //   padding: const EdgeInsets.only(top: 20.0, left: 15.0),
-//             //   child: Align(
-//             //     alignment: Alignment.centerLeft,
-//             //     child: Column(
-//             //       crossAxisAlignment: CrossAxisAlignment.start,
-//             //       children: [
-//             //         const Text(
-//             //           'Your Journey,',
-//             //           style: TextStyle(
-//             //             fontWeight: FontWeight.w900,
-//             //             fontStyle: FontStyle.italic,
-//             //             fontFamily: 'Open Sans',
-//             //             fontSize: 40,
-//             //           ),
-//             //         ),
-//             //         const Text(
-//             //           'Our Priority',
-//             //           style: TextStyle(
-//             //             fontWeight: FontWeight.w900,
-//             //             fontStyle: FontStyle.italic,
-//             //             fontFamily: 'Open Sans',
-//             //             fontSize: 40,
-//             //           ),
-//             //         ),
-//             //         RichText(
-//             //           text: const TextSpan(
-//             //             style: TextStyle(
-//             //               fontWeight: FontWeight.w900,
-//             //               fontStyle: FontStyle.italic,
-//             //               fontFamily: 'Open Sans',
-//             //               fontSize: 40,
-//             //               color: Colors.black,
-//             //             ),
-//             //             children: [
-//             //               TextSpan(
-//             //                 text: 'Fueling',
-//             //                 style: TextStyle(
-//             //                     color: Color(0xFF6EA67C)), // Change the color
-//             //               ),
-//             //               TextSpan(
-//             //                 text: ' Made Smart.',
-//             //               ),
-//             //             ],
-//             //           ),
-//             //         ),
-//             //       ],
-//             //     ),
-//             //   ),
-//             // ),
-//             Padding(
-//               padding: const EdgeInsets.only(top: 35.0),
-//               //child: BlurredImageWithText(),
-//               child: SizedBox(
-//                 height: 100,
-//                 child: MyBarGraph(monthlySummary: monthlySummary),
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(top: 10.0),
-//               //child: StreamBuilderExample(stream: _billsStream),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(top: 10.0),
-//               child: CategoriesListMallika1(),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-////////////////////////////////////////////////////////////////////////////////////////////
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:gp91/Home/components/barGraph/bar_data.dart';
-// import 'package:gp91/Home/components/barGraph/bar_graph.dart';
-// import 'package:gp91/components/bottom_nav.dart';
-// import 'package:gp91/home/components/categories_list.dart';
-// import 'package:gp91/home/components/topBar.dart';
-
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({Key? key}) : super(key: key);
-
-//   @override
-//   _HomeScreenState createState() => _HomeScreenState();
-// }
-
-// class _HomeScreenState extends State<HomeScreen> {
-//   int _currentIndex = 2;
-//   Stream<QuerySnapshot> _billsStream =
-//       FirebaseFirestore.instance.collection('Bills').snapshots();
-
-//   void _onIndexChanged(int index) {
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: TopBar(),
-//       bottomNavigationBar: BottomNav(
-//         currentIndex: _currentIndex,
-//         onIndexChanged: _onIndexChanged,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.only(top: 35.0),
-//               child: StreamBuilder<QuerySnapshot>(
-//                 stream: _billsStream,
-//                 builder: (context, snapshot) {
-//                   if (snapshot.connectionState == ConnectionState.waiting) {
-//                     return CircularProgressIndicator();
-//                   }
-
-//                   if (snapshot.hasError) {
-//                     return Text('Error: ${snapshot.error}');
-//                   }
-
-//                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//                     return Text('No data available');
-//                   }
-
-//                   final monthlySummary = snapshot.data!.docs
-//                       .map((doc) => (doc['amount'] as int?)?.toDouble())
-//                       .whereType<double>()
-//                       .toList();
-
-//                   return SizedBox(
-//                     height: 300,
-//                     child: MyBarGraph(monthlySummary: monthlySummary),
-//                   );
-//                 },
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(top: 10.0),
-//               child: CategoriesListMallika1(),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-/////////////////////////////////////////////////////////////////////////
-
-import 'package:gp91/Home/components/annualGraph/aStream_builder.dart';
-import 'package:gp91/Home/components/barGraph/bar_graph.dart';
-import 'package:gp91/Home/components/annualGraph/aBar_graph.dart';
-import 'package:gp91/Home/components/barGraph/stream_builder.dart';
+import 'package:gp91/Home/components/barGraph/monthly_bar_graph.dart';
+import 'package:gp91/Home/components/barGraph/annual_bar_graph.dart';
+import 'package:gp91/Home/components/barGraph/get_expenses.dart';
 import 'package:gp91/Home/components/categories_list.dart';
-import 'package:gp91/Home/components/checkCar.dart';
+import 'package:gp91/Home/components/check_car.dart';
 import 'package:gp91/home/components/top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/home/components/blurred_image_with_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gp91/Home/components/getUserName.dart';
+import 'package:gp91/Home/components/get_user_name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<StatefulWidget> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   GetUserName getUserName = GetUserName();
-  String? UserName;
+  String? userName;
   List<double> monthlySummary = [];
   List<double> annualSummary = [];
-  bool? showGraph;
-  bool showMonthly = true;
-  int _currentIndex = 2;
-  // final Stream<QuerySnapshot> _billsStream =
-  //     FirebaseFirestore.instance.collection('Bills').snapshots();
+  bool? showGraph; // DECIDES WHETHER TO SHOW THE GRAPH OR THE BLURRED PROMPT TO ADD A CAR
+  bool showMonthly = true; // THE DEFAULT IN THE MONTHLY GRAPH
+  int _currentIndex = 2; // BOTTOM NAV INDEX SO THE DEFAULT IS HOME
 
+// WHEN BOTTOM NAV INDEX CHANGE THE PAGE WILL CHANGE
   void _onIndexChanged(int index) {
     setState(() {
       _currentIndex = index;
@@ -233,30 +36,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchMonthlySummary();
+    _fetchSummary();
   }
 
-  Future<void> _fetchMonthlySummary() async {
-    final QuerySnapshot _billsStream =
+  Future<void> _fetchSummary() async {
+    //GET THE BILLS
+    final QuerySnapshot billsStream =
         await FirebaseFirestore.instance.collection('Bills').get();
-    // Use the getUserName
-    UserName = await getUserName.getUserName();
+    //GET THE USER NAME
+    userName = await getUserName.getUserName();
+    // CHECK IF A CAR EXISTS TO DECIDE IF YOU NEED TO SHOW GRAPH
     showGraph = await checkCarExists();
     // if (kDebugMode) {
     //   print('User Name: $UserName');
     // } // this is to test
-    StreamBuilderExample example =
-        StreamBuilderExample(billsDocuments: _billsStream);
-    List<double> amounts = await example.getAmounts();
-    print(amounts);
-    StreamBuilderAnnual example2 =
-        StreamBuilderAnnual(billsDocuments: _billsStream);
-    List<double> amounts2 = await example2.getAnnualAmounts();
-    setState(() {
-      monthlySummary = amounts;
-      annualSummary = amounts2;
-    });
-    // }
+    GetExpenses getExpenses = GetExpenses(billsDocuments: billsStream);
+    //GET THE MONTHLY EXPENSES
+    List<double> amounts = await getExpenses.getMontlhyAmounts();
+    //print(amounts);
+    // GET THE ANNUAL EXPENSES
+    List<double> amounts2 = await getExpenses.getAnnualAmounts();
+    if (mounted) {
+      setState(() {
+        monthlySummary = amounts;
+        annualSummary = amounts2;
+      });
+    }
   }
 
   void _toggleGraph(int index) {
@@ -265,22 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
           0; // Set showGraph based on index (0: monthly costs, 1: annual costs)
     });
   }
-
+// BUILD THE GRAPH BASED ON THE SHOW GRAPH
   Widget _buildGraphWidget() {
     if (showGraph == null) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     } else if (showGraph == true) {
       if (showMonthly) {
         return SizedBox(
           height: 250,
           width: 395,
-          child: MyBarGraph(monthlySummary: monthlySummary),
+          child: MonthlyBarGraph(monthlySummary: monthlySummary),
         );
       } else {
         return SizedBox(
           height: 250,
           width: 395,
-          child: annualBarGraph(annualSummary: annualSummary),
+          child: AnnualBarGraph(annualSummary: annualSummary),
         );
       }
     }
@@ -290,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(),
+      appBar: const TopBar(),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentIndex,
         onIndexChanged: _onIndexChanged,
@@ -306,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 20.0,
               ),
               child: Text(
-                'Hi ${UserName ?? '...'}!',
+                'Hi ${userName ?? '...'}!',
                 style: const TextStyle(
                   fontSize: 25,
                   color: Color(0xFF6EA67C),
@@ -314,18 +119,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            // if (showGraph == null) CircularProgressIndicator(),
-            if (showGraph == true)
+            if (showGraph == true) //SHOW THE GRAPH
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 80.0),
+                  padding: const EdgeInsets.only(right: 80.0),
+                  // SHOW THE TOGGLE BUTTONS THAT TOGGLE BETWEEN MONTHLY AND ANUALL GRAPHS
                   child: ToggleButtons(
                     isSelected: [showMonthly, !showMonthly],
                     onPressed: _toggleGraph,
-                    selectedColor: Color.fromRGBO(110, 166, 124, 1),
-                    fillColor: Color.fromRGBO(110, 166, 124, 0.2),
-                    splashColor: Color.fromRGBO(110, 166, 124, 0.3),
+                    selectedColor: const Color.fromRGBO(110, 166, 124, 1),
+                    fillColor: const Color.fromRGBO(110, 166, 124, 0.2),
+                    splashColor: const Color.fromRGBO(110, 166, 124, 0.3),
                     children: const [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -343,21 +148,14 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 10.0),
               child: _buildGraphWidget(),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 10.0),
-            //   child: SizedBox(
-            //     height: 250,
-            //     child: annualBarGraph(annualSummary: annualSummary),
-            //   ),
-            // ),
-            if (showGraph == false)
+            if (showGraph == false) // IF THERE IS NO CAR PROMPT THE USER TO ADD A CAR TO START CALCULATING THEIR EXPENSES
               const Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: BlurredImageWithText(),
               ),
             const Padding(
-              padding: EdgeInsets.only(top: 30.0),
-              child: CategoriesListMallika1(),
+              padding: EdgeInsets.only(top: 50.0),
+              child: CategoriesList(),
             ),
           ],
         ),
