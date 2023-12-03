@@ -1,6 +1,6 @@
-import 'package:gp91/Home/components/barGraph/monthly_bar_graph.dart';
-import 'package:gp91/Home/components/barGraph/annual_bar_graph.dart';
-import 'package:gp91/Home/components/barGraph/get_expenses.dart';
+import 'package:gp91/Home/components/bar_graph/monthly_bar_graph.dart';
+import 'package:gp91/Home/components/bar_graph/annual_bar_graph.dart';
+import 'package:gp91/Home/components/bar_graph/get_expenses.dart';
 import 'package:gp91/Home/components/categories_list.dart';
 import 'package:gp91/Home/components/check_car.dart';
 import 'package:gp91/home/components/top_bar.dart';

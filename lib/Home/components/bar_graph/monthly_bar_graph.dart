@@ -1,32 +1,32 @@
-import 'package:gp91/Home/components/barGraph/bar_data.dart';
+import 'package:gp91/Home/components/bar_graph/bar_data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class AnnualBarGraph extends StatelessWidget {
-  final List<double> annualSummary;
+class MonthlyBarGraph extends StatelessWidget {
+  final List<double> monthlySummary;
 
-  const AnnualBarGraph({Key? key, required this.annualSummary})
+  const MonthlyBarGraph({Key? key, required this.monthlySummary})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //get the data
     // ignore: prefer_is_empty
-    double firstYearAmount = annualSummary.length > 0 ? annualSummary[3] : 0;
-    double secondYearAmount = annualSummary.length > 1 ? annualSummary[2] : 0;
-    double thirdYearAmount = annualSummary.length > 2 ? annualSummary[1] : 0;
-    double currentYearAmount = annualSummary.length > 3 ? annualSummary[0] : 0;
+    double firstAmount = monthlySummary.length > 0 ? monthlySummary[3] : 0;
+    double secondAmount = monthlySummary.length > 1 ? monthlySummary[2] : 0;
+    double thirdAmount = monthlySummary.length > 2 ? monthlySummary[1] : 0;
+    double currentAmount = monthlySummary.length > 3 ? monthlySummary[0] : 0;
     double highestValue = 1000; //just to intilize the highestValue
-    if (annualSummary.isNotEmpty) {
+    if (monthlySummary.isNotEmpty) {
       // calculate the highest value to make it the max of the Y axis
-      highestValue = annualSummary
+      highestValue = monthlySummary
           .reduce((value, element) => value > element ? value : element);
     }
     BarData myBarData = BarData(
-      firstAmount: firstYearAmount,
-      secondAmount: secondYearAmount,
-      thirdAmount: thirdYearAmount,
-      currentAmount: currentYearAmount,
+      firstAmount: firstAmount,
+      secondAmount: secondAmount,
+      thirdAmount: thirdAmount,
+      currentAmount: currentAmount,
     );
     myBarData.initializeBarData();
 
@@ -65,48 +65,70 @@ class AnnualBarGraph extends StatelessWidget {
   }
 }
 
-// this method puts YEARS IN THE FORM YYYY = 2023 AND NOT 2K
+// this method puts month names as the x axis bottom titles
 Widget getBottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(
     color: Color(0xFF6EA67C),
     fontSize: 14,
   );
-  String currentYear = '';
-  String firstYear = '';
-  String secondYear = '';
-  String thirdYear = '';
-  final currentDate = DateTime.now();
-  int nowYear = currentDate.year;
-// Assign current YEAR name
-  currentYear = nowYear.toString();
-// Assign previous YEARS names
-  thirdYear = (nowYear - 1).toString();
-  secondYear = (nowYear - 2).toString();
-  firstYear = (nowYear - 3).toString();
+  // intialize the strings
+  String currentMonth = '';
+  String firstMonth = '';
+  String secondMonth = '';
+  String thirdMonth = '';
+  DateTime now = DateTime.now();
+  int currentMonthIndex = now.month - 1;
+  // Define a list of month names
+  List<String> monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+// Assign current month name
+  currentMonth = monthNames[currentMonthIndex];
+// Calculate previous month indices (taking care of January)
+  int thirdMonthIndex = (currentMonthIndex - 1 + 12) % 12;
+  int secondMonthIndex = (currentMonthIndex - 2 + 12) % 12;
+  int firstMonthIndex = (currentMonthIndex - 3 + 12) % 12;
+
+// Assign previous month names
+  thirdMonth = monthNames[thirdMonthIndex];
+  secondMonth = monthNames[secondMonthIndex];
+  firstMonth = monthNames[firstMonthIndex];
 
   Widget text;
   switch (value.toInt()) {
     case 0:
       text = Text(
-        firstYear,
+        firstMonth,
         style: style,
       );
       break;
     case 1:
       text = Text(
-        secondYear,
+        secondMonth,
         style: style,
       );
       break;
     case 2:
       text = Text(
-        thirdYear,
+        thirdMonth,
         style: style,
       );
       break;
     case 3:
       text = Text(
-        currentYear,
+        currentMonth,
         style: style,
       );
       break;

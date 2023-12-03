@@ -1,4 +1,4 @@
-import 'package:gp91/Home/components/barGraph/bar.dart';
+import 'package:gp91/Home/components/bar_graph/bar.dart';
 
 class BarData {
   final double firstAmount;

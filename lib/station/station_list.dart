@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gp91/station/detailsStation/detailsStation.dart';
+import 'package:gp91/station/details_station/detailsStation.dart';
 
 //This Page Display The List Of Station In Station Page -----------------
 
