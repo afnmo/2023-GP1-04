@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/nextSprint.dart';
+import 'package:gp91/employee/next_sprint.dart';
 import 'package:gp91/welcome/welcome_screen.dart';
 
 class AuthRepository extends GetxController {

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/nextSprint.dart';
+import 'package:gp91/employee/next_sprint.dart';
 import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
 import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';

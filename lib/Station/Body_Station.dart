@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gp91/station/stationList.dart';
+import 'package:gp91/station/station_list.dart';
 
 // Body widget for the station screen
 class BodyStation extends StatelessWidget {
