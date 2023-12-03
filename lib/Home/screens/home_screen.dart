@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? userName;
   List<double> monthlySummary = [];
   List<double> annualSummary = [];
-  bool? showGraph; // DECIDES WHETHER TO SHOW THE GRAPH OR THE BLURRED PROMPT TO ADD A CAR
+  bool?
+      showGraph; // DECIDES WHETHER TO SHOW THE GRAPH OR THE BLURRED PROMPT TO ADD A CAR
   bool showMonthly = true; // THE DEFAULT IN THE MONTHLY GRAPH
   int _currentIndex = 2; // BOTTOM NAV INDEX SO THE DEFAULT IS HOME
 
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           0; // Set showGraph based on index (0: monthly costs, 1: annual costs)
     });
   }
+
 // BUILD THE GRAPH BASED ON THE SHOW GRAPH
   Widget _buildGraphWidget() {
     if (showGraph == null) {
@@ -148,7 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 10.0),
               child: _buildGraphWidget(),
             ),
-            if (showGraph == false) // IF THERE IS NO CAR PROMPT THE USER TO ADD A CAR TO START CALCULATING THEIR EXPENSES
+            if (showGraph ==
+                false) // IF THERE IS NO CAR PROMPT THE USER TO ADD A CAR TO START CALCULATING THEIR EXPENSES
               const Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: BlurredImageWithText(),

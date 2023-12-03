@@ -1,21 +1,24 @@
-import 'package:gp91/Home/components/annualGraph/aBar_data.dart';
+import 'package:gp91/Home/components/barGraph/bar_data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class annualBarGraph extends StatelessWidget {
+class AnnualBarGraph extends StatelessWidget {
   final List<double> annualSummary;
 
-  const annualBarGraph({Key? key, required this.annualSummary})
+  const AnnualBarGraph({Key? key, required this.annualSummary})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //get the data
+    // ignore: prefer_is_empty
     double firstYearAmount = annualSummary.length > 0 ? annualSummary[3] : 0;
     double secondYearAmount = annualSummary.length > 1 ? annualSummary[2] : 0;
     double thirdYearAmount = annualSummary.length > 2 ? annualSummary[1] : 0;
     double currentYearAmount = annualSummary.length > 3 ? annualSummary[0] : 0;
-    double highestValue = 1000;
-    if (!annualSummary.isEmpty) {
+    double highestValue = 1000; //just to intilize the highestValue
+    if (annualSummary.isNotEmpty) {
+      // calculate the highest value to make it the max of the Y axis
       highestValue = annualSummary
           .reduce((value, element) => value > element ? value : element);
     }
@@ -31,10 +34,10 @@ class annualBarGraph extends StatelessWidget {
       BarChartData(
         maxY: highestValue,
         minY: 0,
-        //backgroundColor: Color.fromRGBO(220, 220, 220, 100),
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(
+        gridData: const FlGridData(show: false),
+        titlesData: const FlTitlesData(
           show: true,
+          // remove top and right title and get special bottom titles from the getBottomTitles method
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
@@ -50,7 +53,7 @@ class annualBarGraph extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: data.y,
-                      color: Color.fromRGBO(254, 156, 2, 1),
+                      color: const Color.fromRGBO(254, 156, 2, 1),
                       width: 30,
                       borderRadius: BorderRadius.circular(2),
                     )
@@ -62,10 +65,10 @@ class annualBarGraph extends StatelessWidget {
   }
 }
 
+// this method puts YEARS IN THE FORM YYYY = 2023 AND NOT 2K
 Widget getBottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(
     color: Color(0xFF6EA67C),
-    //fontWeight: FontWeight.bold,
     fontSize: 14,
   );
   String currentYear = '';
@@ -74,9 +77,9 @@ Widget getBottomTitles(double value, TitleMeta meta) {
   String thirdYear = '';
   final currentDate = DateTime.now();
   int nowYear = currentDate.year;
-// Assign current month name
+// Assign current YEAR name
   currentYear = nowYear.toString();
-// Assign previous month names
+// Assign previous YEARS names
   thirdYear = (nowYear - 1).toString();
   secondYear = (nowYear - 2).toString();
   firstYear = (nowYear - 3).toString();
@@ -114,5 +117,5 @@ Widget getBottomTitles(double value, TitleMeta meta) {
       );
       break;
   }
-  return SideTitleWidget(child: text, axisSide: meta.axisSide);
+  return SideTitleWidget(axisSide: meta.axisSide, child: text);
 }

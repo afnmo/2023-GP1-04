@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-class GetUserId {
+class GetUserName {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late Rx<User?> firebaseUser;
 
-  GetUserId() {
+  GetUserName() {
     firebaseUser = Rx<User?>(_auth.currentUser);
   }
 
@@ -14,14 +14,13 @@ class GetUserId {
     return _auth.currentUser?.email;
   }
 
-  Future<String?> getUserId() async {
+  Future<String?> getUserName() async {
     try {
       String? email = getCurrentUserEmail();
       if (email == null) {
-        // Optionally, you can show a different snackbar or handle this case separately
         return null;
       }
-
+// get the user document with the same email as the current user
       var querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
           .where('email', isEqualTo: email)
@@ -29,15 +28,16 @@ class GetUserId {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.id;
+        // get the user's name and store it in name
+        String name = "";
+        name = querySnapshot.docs[0].data()['name'];
+        return name;
       } else {
         return null;
       }
     } catch (e) {
-      print('Error retrieving user ID: $e');
+      // print('Error retrieving user name: $e');
       return null;
     }
   }
-
-
 }

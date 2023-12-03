@@ -2,19 +2,23 @@ import 'package:gp91/Home/components/barGraph/bar_data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class MyBarGraph extends StatelessWidget {
+class MonthlyBarGraph extends StatelessWidget {
   final List<double> monthlySummary;
 
-  const MyBarGraph({Key? key, required this.monthlySummary}) : super(key: key);
+  const MonthlyBarGraph({Key? key, required this.monthlySummary})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //get the data
+    // ignore: prefer_is_empty
     double firstAmount = monthlySummary.length > 0 ? monthlySummary[3] : 0;
     double secondAmount = monthlySummary.length > 1 ? monthlySummary[2] : 0;
     double thirdAmount = monthlySummary.length > 2 ? monthlySummary[1] : 0;
     double currentAmount = monthlySummary.length > 3 ? monthlySummary[0] : 0;
-    double highestValue = 1000;
-    if (!monthlySummary.isEmpty) {
+    double highestValue = 1000; //just to intilize the highestValue
+    if (monthlySummary.isNotEmpty) {
+      // calculate the highest value to make it the max of the Y axis
       highestValue = monthlySummary
           .reduce((value, element) => value > element ? value : element);
     }
@@ -30,10 +34,10 @@ class MyBarGraph extends StatelessWidget {
       BarChartData(
         maxY: highestValue,
         minY: 0,
-        //backgroundColor: Color.fromRGBO(220, 220, 220, 100),
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(
+        gridData: const FlGridData(show: false),
+        titlesData: const FlTitlesData(
           show: true,
+          // remove top and right title and get special bottom titles from the getBottomTitles method
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
@@ -49,7 +53,7 @@ class MyBarGraph extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: data.y,
-                      color: Color.fromRGBO(254, 156, 2, 1),
+                      color: const Color.fromRGBO(254, 156, 2, 1),
                       width: 30,
                       borderRadius: BorderRadius.circular(2),
                     )
@@ -61,12 +65,13 @@ class MyBarGraph extends StatelessWidget {
   }
 }
 
+// this method puts month names as the x axis bottom titles
 Widget getBottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(
     color: Color(0xFF6EA67C),
-    //fontWeight: FontWeight.bold,
     fontSize: 14,
   );
+  // intialize the strings
   String currentMonth = '';
   String firstMonth = '';
   String secondMonth = '';
@@ -134,5 +139,5 @@ Widget getBottomTitles(double value, TitleMeta meta) {
       );
       break;
   }
-  return SideTitleWidget(child: text, axisSide: meta.axisSide);
+  return SideTitleWidget(axisSide: meta.axisSide, child: text);
 }
