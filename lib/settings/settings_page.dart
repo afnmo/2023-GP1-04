@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<StatefulWidget> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -13,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6EA67C),
+        backgroundColor: const Color(0xFF6EA67C),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
@@ -35,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -46,16 +47,17 @@ class _SettingsPageState extends State<SettingsPage> {
                         isArabicSelected = value;
                       });
                     },
-                    title: Text('Language'),
-                    subtitle:
-                        isArabicSelected ? Text('العربية') : Text('English'),
+                    title: const Text('Language'),
+                    subtitle: isArabicSelected
+                        ? const Text('العربية')
+                        : const Text('English'),
                   ),
                 ],
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -67,10 +69,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     AuthRepository().logoutAndNavigateToWelcomePage();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Color(0xFF6EA67C), // Set the button background color
+                    backgroundColor: const Color(
+                        0xFF6EA67C), // Set the button background color
                   ),
-                  child: Text('Log Out'),
+                  child: const Text('Log Out'),
                 ),
               ),
             ),
