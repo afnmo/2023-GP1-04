@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/home/screens/home_screen.dart';
-import 'package:gp91/on_boarding/on_boarding_screen.dart';
 import 'package:gp91/signup/components/signup_email_password_failure.dart';
 import 'package:gp91/firebase_auth/user_model.dart';
 import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
