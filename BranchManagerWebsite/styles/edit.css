@@ -111,7 +111,7 @@
     --bs-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.075);
     --bs-focus-ring-width: 0.25rem;
     --bs-focus-ring-opacity: 0.25;
-    --bs-focus-ring-color: rgba(78, 115, 223, 0.25);
+    --bs-focus-ring-color: #f8a51a;
     --bs-form-valid-color: #1cc88a;
     --bs-form-valid-border-color: #1cc88a;
     --bs-form-invalid-color: #e74a3b;
@@ -2948,9 +2948,9 @@
   }
   
   .form-select:focus {
-    border-color: #a7b9ef;
+    border-color: #f8a51a;
     outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(78,115,223,.25);
+    box-shadow: 0 0 0 .25rem #f8a51a;
   }
   
   .form-select[multiple], .form-select[size]:not([size="1"]) {
@@ -3043,14 +3043,14 @@
   }
   
   .form-check-input:focus {
-    border-color: #a7b9ef;
+    border-color: #f8a51a;
     outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(78,115,223,.25);
+    box-shadow: 0 0 0 .25rem #f8a51a;
   }
   
   .form-check-input:checked {
-    background-color: #4e73df;
-    border-color: #4e73df;
+    background-color: #f8a51a;
+    border-color: #f8a51a;
   }
   
   .form-check-input:checked[type=checkbox] {
@@ -3153,11 +3153,11 @@
   }
   
   .form-range:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 1px #fff,0 0 0 .25rem rgba(78,115,223,.25);
+    box-shadow: 0 0 0 1px #fff,0 0 0 .25rem #f8a51a;
   }
   
   .form-range:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 1px #fff,0 0 0 .25rem rgba(78,115,223,.25);
+    box-shadow: 0 0 0 1px #fff,0 0 0 .25rem #f8a51a;
   }
   
   .form-range::-moz-focus-outer {

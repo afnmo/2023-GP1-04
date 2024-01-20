@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, addDoc, query, where } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
@@ -63,7 +63,6 @@ async function addUserToFirestore(firstName, lastName, email, password) {
     }
 }
 
-
 document.getElementById("signup-form").addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -83,6 +82,23 @@ document.getElementById("signup-form").addEventListener("submit", async function
             const hashedPassword = await hashPassword(password);
             const user = await registerUser(email, password);
             console.log("user after register user: " + user);
+
+            // Check if the email already exists
+            const emailExists = await checkEmailExists(email);
+            if (emailExists) {
+                // If the email exists, show a confirmation dialog to change the email
+                
+                showAlert('Email is already in use do you want to change it?');
+                const changeEmail = true;
+                if (changeEmail) {
+                    document.getElementById("email").value = ' ';// Clear the email error message
+                    setError(email, ' ');
+                    // Allow the user to edit the email and proceed with the registration
+                } else {
+                    return; // Exit registration process if the user chooses not to change the email
+                }
+            }
+
             if (user != null) {
                 console.log("User registered:", user);
 
@@ -115,6 +131,18 @@ document.getElementById("signup-form").addEventListener("submit", async function
 
 });
 
+// Function to check if the email already exists
+async function checkEmailExists(email) {
+    const collectionRef = collection(db, collectionName);
+
+    try {
+        const querySnapshot = await getDocs(query(collectionRef, where("email", "==", email))); // Use query() function
+        return !querySnapshot.empty; // Returns true if email exists, false otherwise
+    } catch (error) {
+        console.error("Error checking email existence: ", error);
+        return false; // Return false by default in case of an error
+    }
+}
 
 async function hashPassword(password) {
     const encoder = new TextEncoder();

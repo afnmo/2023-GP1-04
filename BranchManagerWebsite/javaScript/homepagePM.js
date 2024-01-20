@@ -57,6 +57,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
             if(stationData.open_hour != null){
                 const openHour = convertTimeToAMPM(stationData.open_hour);
                 document.getElementById("OpenHour").textContent = openHour;
+                document.getElementById("buttonEditOpenHour").style.display = 'inline-block';
             }else{
                 document.getElementById("OpenHour").textContent = "No available data yet";
                 document.getElementById("OpenHour").style.fontSize = "smaller"; 
@@ -66,6 +67,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
             if(stationData.close_hour != null){
                 const closeHour = convertTimeToAMPM(stationData.close_hour);
                 document.getElementById("CloseHour").textContent = closeHour;
+                document.getElementById("buttonEditColseHour").style.display = 'inline-block';
             }else{
                 document.getElementById("CloseHour").textContent = "No available data yet";
                 document.getElementById("CloseHour").style.fontSize = "smaller"; 

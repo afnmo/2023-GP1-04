@@ -1,6 +1,8 @@
 // Import necessary Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, addDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
+
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,7 +16,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+//For Auth
+const auth = getAuth(app);
 // Access Firestore
 const db = getFirestore(app);
 
@@ -75,11 +78,18 @@ document.addEventListener('DOMContentLoaded', function () {
             // Hash the password
             const hashedPassword = await hashPassword(password);
 
+            //Add The Employee In Firebase Authntication:----
+            //----------
+
+
             // Check if the email is already in use
             if (await isEmailInUse(email)) {
                 displayErrorMessage("Email address is already in use. Please use a different email.");
                 return;
             }
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            // Get the UID of the newly created user
+            const uid = userCredential.user.uid;
 
             // Add employee to the Firestore collection
             const stationRequestRef = await addDoc(collection(db, "Station_Employee"), {
@@ -91,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 phone: phone,
                 years_experience: yearsExperience,
                 terminated: false,
+                uid: uid,
             });
 
             // Display success message and reset form
@@ -105,6 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("An error occurred during form submission:", error);
             displayErrorMessage("An error occurred. Please try again later.");
         }
+        // Check if the error is due to email-already-in-use
+        if (error.code === "auth/email-already-in-use") {
+             displayErrorMessage("Email address is already in use. Please use a different email.");
+                } else {
+                    displayErrorMessage("An error occurred. Please try again later.");
+                }
     }
 
     // Function to toggle password visibility
@@ -128,8 +145,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function isEmailInUse(email) {
-        const querySnapshot = await getDocs(query(collection(db, "Station_Employee"), where("email", "==", email)));
-        return !querySnapshot.empty;
+        const querySnapshot = await getDocs(query(
+            collection(db, "Station_Employee"),
+            where("email", "==", email),
+            where("terminated", "==", false)
+        ));
+    
+        return querySnapshot.docs.length > 0;
     }
 
     function isValidEmail(email) {
