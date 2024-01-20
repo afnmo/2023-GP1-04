@@ -44,30 +44,12 @@ class AuthRepository extends GetxController {
     Get.to(() => WelcomeScreen());
   }
 
-  Future<bool> validateEmployeeCredentials(
-      String email, String password) async {
+  Future<bool> validateEmployeeCredentials(String email) async {
     // Query the collection
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
         .collection('Station_Employee')
         .where('email', isEqualTo: email)
-        .where('password', isEqualTo: password)
-        .where('terminated', isEqualTo: false)
-        .get();
-
-    // Check if there is a matching record
-    return querySnapshot.docs.isNotEmpty;
-  }
-
-  //check if employee is del
-  Future<bool> isEmployeeTerminated(String email, String password) async {
-    // Query the Station_Employee_Deleted collection
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
-        .instance
-        .collection('Station_Employee')
-        .where('email', isEqualTo: email)
-        .where('password', isEqualTo: password)
-        .where('terminated', isEqualTo: true)
         .get();
 
     // Check if there is a matching record

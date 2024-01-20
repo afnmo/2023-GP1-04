@@ -58,7 +58,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                 const employeeData = employeeDoc.data();
 
                 // Check if the employee is not terminated
-                if (!employeeData.terminated) {
+                
                     const listItem = document.createElement("li");
 
                     // Create a container for the employee name
@@ -87,7 +87,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
 
                     // Append the list item to the employee list
                     employeeList.appendChild(listItem);
-                }
+                
             });
         }
     } catch (error) {

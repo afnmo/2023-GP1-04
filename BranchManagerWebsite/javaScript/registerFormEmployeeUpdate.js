@@ -21,8 +21,7 @@ const db = getFirestore(app);
 const employeeCollectionName = "Station_Employee";
 
 document.addEventListener("DOMContentLoaded", async function () {
-    var click_to_change_password = 0;
-    let hash_new_password; 
+
     // Retrieve query parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -42,15 +41,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("years_experience").value = years_experience;
 
 
-    // Add event listener to the link for changing the password
-    // document.getElementById("changePasswordLink").addEventListener("click", function (event) {
-    //     click_to_change_password = 1;//will change since click that want to change
-    //     event.preventDefault(); // Prevent the default behavior of the link
-
-    //     // Toggle the visibility of the password container
-    //     const passwordContainer = document.getElementById("passwordContainer");
-    //     passwordContainer.style.display = passwordContainer.style.display === "none" ? "block" : "none";
-    // });
 
     
 
@@ -126,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const employeeDoc = await getDoc(employeeDocRef);
 
     //
-    const currentPassword = employeeDoc.data().password;
+    //const currentPassword = employeeDoc.data().password;
     // const enteredPrevPasswordInput = document.getElementById("PrevPassword");
 
     // if (!enteredPrevPasswordInput) {
@@ -218,14 +208,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             firstName: document.getElementById("FirstName").value,
             lastName: document.getElementById("LastName").value,
             email: document.getElementById("Email").value,
-            password:currentPassword,
+            //password:currentPassword,
         };
 
-        // Add the password to updatedData only if the user is updating the password
-        // if (click_to_change_password === 1 && newPassword !== "") {
-        //     console.log(hash_new_password);
-        //     updatedData.password = hash_new_password;
-        // }
+
 
 
         // Use updateDoc from Firestore SDK to update the document
@@ -319,12 +305,6 @@ const setSuccess = element => {
 
 
 
-const isValidPassword = (password) => {
-    // Password must contain at least one digit, one special character, one uppercase letter, and one lowercase letter
-    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    return passwordRegex.test(password);
-};
-
 
 
 function isValidEmail(email) {
@@ -343,22 +323,13 @@ async function isEmailAlreadyUsed(email, currentEmployeeId) {
     // Check if there are any documents other than the current user with the same email
     return querySnapshot.docs.some(doc => doc.id !== currentEmployeeId);
 }
+
 // Function to get the current email of the employee
 async function getCurrentEmail(employeeId) {
     const employeeDocRef = doc(db, employeeCollectionName, employeeId);
     const employeeDoc = await getDoc(employeeDocRef);
     return employeeDoc.data().email;
 }
-     // Function to hash the password
-     const hashPassword = async (password) => {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-        return hashHex.toString();
-        // You can store 'hashHex' in your database
-    };
     function isValidPhone(phone) {
         // Phone number must contain exactly ten digits
         const phoneRegex = /^\d{10}$/;
@@ -379,19 +350,3 @@ async function getCurrentEmail(employeeId) {
         }
     };
 
-    // Function to update the password in Firebase Authentication
-async function updateFirebasePassword(email, enteredPrevPassword, newPassword) {
-    try {
-        // Reauthenticate the user before updating the password
-        const user = auth.currentUser;
-        const credential = emailAuthProvider.credential(email, enteredPrevPassword);
-        await reauthenticateWithCredential(user, credential);
-
-        // Update the password
-        await updatePassword(user, newPassword);
-
-        console.log('Password updated successfully.');
-    } catch (error) {
-        console.error('Error updating password:', error.message);
-    }
-}

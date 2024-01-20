@@ -36,11 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const employeeRegistrationForm = document.getElementById('registrationForm2');
     const errorMessageElement = document.getElementById('errorMessage');
     const successMessageElement = document.getElementById('successMessage');
-    const passwordInput = document.getElementById('password');
-    const showPasswordCheckbox = document.getElementById('showPassword');
+    //const passwordInput = document.getElementById('password');
+   // const showPasswordCheckbox = document.getElementById('showPassword');
 
     // Set the initial state of the password input
-    passwordInput.type = 'password';
+   // passwordInput.type = 'password';
 
     employeeRegistrationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
@@ -53,15 +53,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const firstName = document.getElementById("FirstName").value;
             const lastName = document.getElementById("LastName").value;
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            //const password = document.getElementById("password").value;
             const phone = document.getElementById("phone").value;
             const yearsExperience = document.getElementById("years_experience").value;
 
             // Validate password
-            if (!isValidPassword(password)) {
-                displayErrorMessage("Password must have at least 8 characters, one digit, one special character, one uppercase, and one lowercase letter.");
-                return;
-            }
+            // if (!isValidPassword(password)) {
+            //     displayErrorMessage("Password must have at least 8 characters, one digit, one special character, one uppercase, and one lowercase letter.");
+            //     return;
+            // }
 
             // Validate email format
             if (!isValidEmail(email)) {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Hash the password
-            const hashedPassword = await hashPassword(password);
+            //const hashedPassword = await hashPassword(password);
 
             //Add The Employee In Firebase Authntication:----
             //----------
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayErrorMessage("Email address is already in use. Please use a different email.");
                 return;
             }
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, '000000');
             // Get the UID of the newly created user
             const uid = userCredential.user.uid;
 
@@ -97,10 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 lastName: lastName,
                 email: email,
                 branch_manager_id: BMID,
-                password: hashedPassword,
+                //password: hashedPassword,
                 phone: phone,
                 years_experience: yearsExperience,
-                terminated: false,
+                //terminated: false,
                 uid: uid,
             });
 
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // Add an event listener to the showPasswordCheckbox
-    showPasswordCheckbox.addEventListener('change', togglePasswordVisibility);
+    //showPasswordCheckbox.addEventListener('change', togglePasswordVisibility);
 
     // Other utility functions
 
@@ -147,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
     async function isEmailInUse(email) {
         const querySnapshot = await getDocs(query(
             collection(db, "Station_Employee"),
-            where("email", "==", email),
-            where("terminated", "==", false)
+            where("email", "==", email)
+            
         ));
     
         return querySnapshot.docs.length > 0;
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('FirstName').value = '';
         document.getElementById('LastName').value = '';
         document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
+       // document.getElementById('password').value = '';
         document.getElementById('phone').value = '';
         document.getElementById('years_experience').value = '';
     }
