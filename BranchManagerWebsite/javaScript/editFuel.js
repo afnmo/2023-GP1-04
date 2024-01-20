@@ -97,14 +97,14 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     // Handle the heightBox and BKimage based on the number of checkboxes
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
-        document.getElementById("heightBox").style.height = 500;
-        document.getElementById("BKimage").height = 500;
+        document.getElementById("heightBox").style.height = 600;
+        document.getElementById("BKimage").height = 300;
     } else if (numCheckbox === 2) {
         document.getElementById("heightBox").style.height = 600;
-        document.getElementById("BKimage").height = 600;
+        document.getElementById("BKimage").height = 400;
     } else if (numCheckbox === 3) {
         document.getElementById("heightBox").style.height = 600;
-        document.getElementById("BKimage").height = 600;
+        document.getElementById("BKimage").height = 500;
     }
 }
 

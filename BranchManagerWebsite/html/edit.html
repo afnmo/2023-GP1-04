@@ -91,7 +91,7 @@
     <div class="card border-0 shadow-lg o-hidden my-5" style="border-radius:30px;" id="heightBox">
       <div class="card-body p-0" style="border-radius:0px;">
         <div class="row">
-          <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editPhoto.png" width="465" height="785"
+          <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editPhoto.png" width="465" height="900"
               id="BKimage"></div>
           <div class="col-lg-7" style="border-radius:0px;">
             <div class="p-5" style="border-style:none;border-radius:0px;">
@@ -117,23 +117,23 @@
                 </div>
                 <div>
                   <div class="row">
-                    <label class="label">Open hour</label>
+                    <label class="label"  style="color: gray; font-weight:660;">Open hour</label>
                     <div class="col"><input class="form-control form-control form-control-user" type="time"
                         id="OpenHour" style="margin: 5px; font-size: 18px;" name="open_hour" required></div>
                   </div>
                 </div>
                 <div>
                   <div class="row">
-                    <label class="label">Close hour</label>
+                    <label class="label" style="color: gray; font-weight:660;">Close hour</label>
                     <div class="col"><input class="form-control form-control form-control-user" type="time"
                         id="CloseHour" name="close_hour" style="margin: 5px; font-size: 18px;" required></div>
                   </div>
                 </div>
                 <div>
                   <div class="row">
-                    <label class="label">Station image</label>
+                    <label class="label" style="color: gray; font-weight:660;">Station image</label>
                     <div class="col">
-                        <input type="url" id="imageUpload" name="stationImage1" class="form-control form-control form-control-user" placeholder="Station Image in URL format" accept="image/jpg" required style="font-size: 18px;">
+                        <input type="url" id="imageUpload" name="stationImage1" class="form-control form-control form-control-user" placeholder="Station Image in URL format" accept="image/jpg" required style="margin: 5px; font-size: 18px;">
                     </div>
 <!-- 
                     <label for="imageUpload" class="custom-file-label" id="imageLabel">Choose file in JPG format</label>
@@ -141,11 +141,15 @@
 
                   </div> 
                 </div>
-<!--                 
-                <br> -->
+                <div>
+                  <div class="row">
+                    <label class="label" style="color: gray; font-weight:660;">Occupancy level</label>
+                    <div class="col"> <input type="number" id="occupancyLevel" name="MaximumOccupancyLevel" class="form-control form-control form-control-user" placeholder="Maximum occupancy level in your gas station" required style="margin: 5px; font-size: 18px;"></div>
+                  </div>
+                </div>         
                   <div>
                     <div class="row">
-                      <label class="label">Fuel type</label>
+                      <label class="label" style="color: gray; font-weight:660; margin: 5px;">Fuel type</label>
                       <div class="col" style="margin: 5px; font-size: 18px;">
                         <label class="form-check-label" for="fuelType91"
                           style="color: rgb(28, 200, 138); font-weight: 700;">
@@ -157,7 +161,7 @@
                     </div>
                     <div id="91State" style="display: none; position: relative; left: 30px;">
                       <div class="row">
-                        <label class="label">91 status</label>
+                        <label class="label" style="color: gray; font-weight:700;">91 status</label>
                         <div class="col" style="margin: 5px;" id="fuelState">
                           <label class="form-check-label" for="fuelStateAvailable91">
                             <input class="form-check-input" type="radio" id="91Available" name="fuelState91"
@@ -186,7 +190,7 @@
                     </div>
                     <div id="95State" style="display: none; position: relative; left: 30px;">
                       <div class="row">
-                        <label class="label">95 status</label>
+                        <label class="label" style="color: gray; font-weight:700;">95 status</label>
                         <div class="col" style="margin: 5px;" id="fuelState">
                           <label class="form-check-label" for="fuelStateAvailable95">
                             <input class="form-check-input" type="radio" id="95Available" name="fuelState95"
@@ -215,7 +219,7 @@
                     </div>
                     <div id="DieselState" style="display: none; position: relative; left: 30px;">
                       <div class="row">
-                        <label class="label">Diesel status</label>
+                        <label class="label" style="color: gray; font-weight:700;">Diesel status</label>
                         <div class="col" style="margin: 5px;" id="fuelState">
                           <label class="form-check-label" for="fuelStateAvailableDiesel">
                             <input class="form-check-input" type="radio" id="DieselAvailable"

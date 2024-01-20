@@ -74,6 +74,15 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 document.getElementById("CloseHour").style.fontWeight = "lighter";
             }
 
+            if(stationData.occupancy_level != null){
+                document.getElementById("occupancyLevel").textContent = stationData.occupancy_level;
+                document.getElementById("buttonEditOccupancyLevel").style.display = 'inline-block';
+            }else{
+                document.getElementById("occupancyLevel").textContent = "No available data yet";
+                document.getElementById("occupancyLevel").style.fontSize = "smaller"; 
+                document.getElementById("occupancyLevel").style.fontWeight = "lighter";
+            }
+
             const fuelStatus = stationData.fuel_status;
 
             // Loop through fuel status elements and set their display and width based on the data
