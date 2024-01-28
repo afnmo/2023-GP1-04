@@ -32,7 +32,7 @@ class MonthlyBarGraph extends StatelessWidget {
 
     return BarChart(
       BarChartData(
-        maxY: highestValue,
+        maxY: highestValue + 100,
         minY: 0,
         gridData: const FlGridData(show: false),
         titlesData: const FlTitlesData(

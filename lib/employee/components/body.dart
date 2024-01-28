@@ -131,25 +131,25 @@ class _FormScreenState extends State<Body> {
                 ),
               ),
               // Container for "Forgot Password?" link
-              Container(
-                margin: const EdgeInsets.only(right: 30),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      // Navigate to the forgot password screen
-                      Get.to(() => ForgotPasswordMailScreen());
-                    },
-                    child: const Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontFamily: 'NanumGothic',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(right: 30),
+              //   child: Align(
+              //     alignment: Alignment.centerRight,
+              //     child: TextButton(
+              //       onPressed: () {
+              //         // Navigate to the forgot password screen
+              //         Get.to(() => ForgotPasswordMailScreen());
+              //       },
+              //       child: const Text(
+              //         "Forgot Password?",
+              //         style: TextStyle(
+              //           color: primaryColor,
+              //           fontFamily: 'NanumGothic',
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               // Space between "Forgot Password?" link and login button
               SizedBox(height: size.height * 0.01),
               // Rounded login button

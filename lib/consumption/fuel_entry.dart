@@ -7,16 +7,42 @@ import 'package:gp91/consumption/instruction_card.dart';
 import 'package:gp91/consumption/rounded_button_small.dart';
 import 'package:intl/intl.dart';
 
-class FuelEntry extends StatelessWidget {
+class FuelEntry extends StatefulWidget {
   final String carDocumentId;
-  final _formKey = GlobalKey<FormState>(); // Add a GlobalKey for the form
 
   FuelEntry({super.key, required this.carDocumentId});
 
   @override
+  _FuelEntryState createState() => _FuelEntryState();
+}
+
+class _FuelEntryState extends State<FuelEntry> {
+  final TextEditingController _startMileageController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); // GlobalKey for the form
+
+  @override
+  void initState() {
+    super.initState();
+    _prefillStartMileage();
+  }
+
+  void _prefillStartMileage() async {
+    var finalMileage =
+        await FuelFirebase().getMostRecentFinalMileage(widget.carDocumentId);
+    print(
+        "finalMileage: ${finalMileage}"); // Replace with your function to fetch finalMileage
+    if (finalMileage != null) {
+      setState(() {
+        print("finalMileage: ${finalMileage}");
+        _startMileageController.text = finalMileage;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController _startMileageController =
-        TextEditingController();
+    // final TextEditingController _startMileageController =
+    //     TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +134,7 @@ class FuelEntry extends StatelessWidget {
                         'startDate':
                             DateFormat('yyyy-MM-dd').format(currentTimestamp),
                         'startTime': DateFormat.jms().format(currentTimestamp),
-                        'carId': carDocumentId,
+                        'carId': widget.carDocumentId,
                         'done': false,
                       });
 

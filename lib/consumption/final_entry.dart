@@ -23,6 +23,7 @@ class FinalEntry extends StatefulWidget {
 }
 
 class _FinalEntryState extends State<FinalEntry> {
+  final _formKey = GlobalKey<FormState>(); // GlobalKey for the form
   @override
   void initState() {
     super.initState();
@@ -120,180 +121,238 @@ class _FinalEntryState extends State<FinalEntry> {
 
               Map<String, dynamic> data = snapshot.data!;
 
-              return Column(
-                children: [
-                  // const Padding(
-                  //   padding: EdgeInsets.all(20.0),
-                  //   child: Text(
-                  //     "Note: you will not be able to enter the final odometer until the end of the month",
-                  //     style: TextStyle(
-                  //       fontSize: 18,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.redAccent,
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const InstructionCard(
-                        step: "Step 2",
-                        icon: Icons.local_gas_station,
-                        instruction: "Record the final odometer reading.",
-                        color: Colors.redAccent,
-                      ),
-                      const Row(
-                        children: [
-                          Text(
-                            "Expenses (optional): ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+              return Form(
+                // <-- Add the Form widget here
+                key: _formKey,
+                child: Column(
+                  children: [
+                    // const Padding(
+                    //   padding: EdgeInsets.all(20.0),
+                    //   child: Text(
+                    //     "Note: you will not be able to enter the final odometer until the end of the month",
+                    //     style: TextStyle(
+                    //       fontSize: 18,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.redAccent,
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const InstructionCard(
+                          step: "Step 2",
+                          icon: Icons.local_gas_station,
+                          instruction: "Record the final odometer reading.",
+                          color: Colors.redAccent,
+                        ),
+                        const Row(
+                          children: [
+                            Text(
+                              "Expenses (optional): ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          Tooltip(
-                            message:
-                                "You can skip this field if you don't want to enter expenses.",
-                            child: Icon(Icons.info_outline,
-                                size: 16, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      TextField(
-                        controller: expenseController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          hintText: 'Enter expense amount (optional)',
-                          prefixIcon: const Icon(Icons.monetization_on_outlined,
-                              color: Colors.blue),
+                            Tooltip(
+                              message:
+                                  "You can skip this field if you don't want to enter expenses.",
+                              child: Icon(Icons.info_outline,
+                                  size: 16, color: Colors.grey),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Final Odometer Reading (Km): ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      TextField(
-                        controller: endMileageController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 5),
+                        TextField(
+                          controller: expenseController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            hintText: 'Enter expense amount (optional)',
+                            prefixIcon: const Icon(
+                                Icons.monetization_on_outlined,
+                                color: Colors.blue),
                           ),
-                          hintText: 'Enter Final reading',
-                          prefixIcon: Icon(Icons.speed, color: Colors.blue),
                         ),
-                      ),
-                    ],
-                  ),
+                        // TextFormField(
+                        //   controller: expenseController,
+                        //   keyboardType: TextInputType.number,
+                        //   decoration: InputDecoration(
+                        //     filled: true,
+                        //     fillColor: Colors.white,
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide.none,
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //     hintText: 'Enter expense amount (optional)',
+                        //     prefixIcon: const Icon(
+                        //         Icons.monetization_on_outlined,
+                        //         color: Colors.blue),
+                        //   ),
+                        //   validator: (value) {
 
-                  const SizedBox(height: 20),
-                  RoundedButtonSmall(
-                    text: "Submit",
-                    press: () async {
-                      // UI feedback for loading
-                      // Implement any loading indicator or disable the button
-                      try {
-                        if (expenseController.text.isNotEmpty) {
-                          double expense = double.parse(expenseController.text);
-                          await FuelFirebase()
-                              .updateAmountField(widget.carDocumentId, expense);
-                        }
-                        double startMileage =
-                            double.tryParse(data['startMileage'] ?? '0') ?? 0.0;
-                        print(startMileage);
-                        double endMileage =
-                            double.tryParse(endMileageController.text ?? '0') ??
-                                0.0;
-                        print(endMileage);
-
-                        DateTime currentTimestamp = DateTime.now();
-                        String finalDate =
-                            DateFormat('yyyy-MM-dd').format(currentTimestamp);
-                        double litersConsumed = await FuelCalculation()
-                            .getLitersConsumed(widget.carDocumentId,
-                                data['startDate'], finalDate);
-                        print("litersConsumed: ${litersConsumed}");
-
-                        double calculatedFuelEconomy = FuelCalculation()
-                            .getCalculatedFuelEconomy(
-                                litersConsumed, startMileage, endMileage);
-                        print(
-                            "calculatedFuelEconomy: ${calculatedFuelEconomy}");
-                        String percentageDifference = await FuelCalculation()
-                            .getPercentageDifference(
-                                widget.carDocumentId, calculatedFuelEconomy);
-
-                        // bool oneMonthPassed = isOneMonthPast(data);
-                        // print(oneMonthPassed);
-                        // if (oneMonthPassed) {
-                        await FuelFirebase().addFinalInputs(
-                          {
-                            'endMileage': endMileageController.text,
-                            'finalDate': finalDate,
-                            'finalTime':
-                                DateFormat.jms().format(currentTimestamp),
-                            'done': true,
-                            'calculatedFuelEconomy': calculatedFuelEconomy,
-                            'percentageDifference': percentageDifference,
+                        //     if (double.tryParse(value!) == null) {
+                        //       return 'Enter a valid number';
+                        //     }
+                        //     return null; // means validation passed
+                        //   },
+                        // ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Final Odometer Reading (Km): ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        // TextField(
+                        //   controller: endMileageController,
+                        //   keyboardType: TextInputType.number,
+                        //   decoration: InputDecoration(
+                        //     filled: true,
+                        //     fillColor: Colors.white,
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide.none,
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //     hintText: 'Enter Final reading',
+                        //     prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                        //   ),
+                        // ),
+                        TextFormField(
+                          controller: endMileageController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            hintText: 'Enter Final reading',
+                            prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter the final odometer reading';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Enter a valid number';
+                            }
+                            return null; // means validation passed
                           },
-                          widget.consumptionId,
-                        );
+                        )
+                      ],
+                    ),
 
-                        // Handling navigation result
-                        var result = await Get.to(() => const FuelResult(
-                            // consumptionDocumentId: widget.consumptionId,
-                            // carDocumentId: widget.carDocumentId,
-                            ));
+                    const SizedBox(height: 20),
+                    RoundedButtonSmall(
+                      text: "Submit",
+                      press: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // UI feedback for loading
+                          // Implement any loading indicator or disable the button
 
-                        if (result != null) {
-                          // Handle result if needed
+                          try {
+                            if (expenseController.text.isNotEmpty) {
+                              double expense =
+                                  double.parse(expenseController.text);
+                              await FuelFirebase().updateAmountField(
+                                  widget.carDocumentId, expense);
+                            }
+                            double startMileage =
+                                double.tryParse(data['startMileage'] ?? '0') ??
+                                    0.0;
+                            print(startMileage);
+                            double endMileage = double.tryParse(
+                                    endMileageController.text ?? '0') ??
+                                0.0;
+                            print(endMileage);
+
+                            DateTime currentTimestamp = DateTime.now();
+                            String finalDate = DateFormat('yyyy-MM-dd')
+                                .format(currentTimestamp);
+                            double litersConsumed = await FuelCalculation()
+                                .getLitersConsumed(widget.carDocumentId,
+                                    data['startDate'], finalDate);
+                            print("litersConsumed: ${litersConsumed}");
+
+                            double calculatedFuelEconomy = FuelCalculation()
+                                .getCalculatedFuelEconomy(
+                                    litersConsumed, startMileage, endMileage);
+                            print(
+                                "calculatedFuelEconomy: ${calculatedFuelEconomy}");
+                            String percentageDifference =
+                                await FuelCalculation().getPercentageDifference(
+                                    widget.carDocumentId,
+                                    calculatedFuelEconomy);
+
+                            // bool oneMonthPassed = isOneMonthPast(data);
+                            // print(oneMonthPassed);
+                            // if (oneMonthPassed) {
+                            await FuelFirebase().addFinalInputs(
+                              {
+                                'endMileage': endMileageController.text,
+                                'finalDate': finalDate,
+                                'finalTime':
+                                    DateFormat.jms().format(currentTimestamp),
+                                'done': true,
+                                'calculatedFuelEconomy': calculatedFuelEconomy,
+                                'percentageDifference': percentageDifference,
+                              },
+                              widget.consumptionId,
+                            );
+
+                            // Handling navigation result
+                            var result = await Get.to(() => const FuelResult(
+                                // consumptionDocumentId: widget.consumptionId,
+                                // carDocumentId: widget.carDocumentId,
+                                ));
+
+                            if (result != null) {
+                              // Handle result if needed
+                            }
+                            // } else {
+                            //   setState(() {
+                            //     calculatedFuelEconomyResult = calculatedFuelEconomy;
+                            //     percentageDifferenceResult = percentageDifference;
+                            //     showResults = true;
+                            //   });
+                            // }
+                          } catch (error) {
+                            print("Error submitting data: ${error.toString()}");
+                            Get.snackbar(
+                              "Error",
+                              "Failed to submit data. Please try again.",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor:
+                                  Colors.redAccent.withOpacity(0.1),
+                              colorText: Colors.red,
+                            );
+                          }
                         }
-                        // } else {
-                        //   setState(() {
-                        //     calculatedFuelEconomyResult = calculatedFuelEconomy;
-                        //     percentageDifferenceResult = percentageDifference;
-                        //     showResults = true;
-                        //   });
-                        // }
-                      } catch (error) {
-                        print("Error submitting data: ${error.toString()}");
-                        Get.snackbar(
-                          "Error",
-                          "Failed to submit data. Please try again.",
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.redAccent.withOpacity(0.1),
-                          colorText: Colors.red,
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  if (showResults) _buildResultsWidget(),
-                  // BottomNav(
-                  //   currentIndex: 0, // Set the initial index as needed
-                  //   onIndexChanged: (index) {
-                  //     // Handle index changes if required
-                  //   },
-                  // ),
-                ],
+                      },
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    if (showResults) _buildResultsWidget(),
+                    // BottomNav(
+                    //   currentIndex: 0, // Set the initial index as needed
+                    //   onIndexChanged: (index) {
+                    //     // Handle index changes if required
+                    //   },
+                    // ),
+                  ],
+                ),
               );
             },
           ),

@@ -212,9 +212,6 @@ class FuelFirebase extends GetxController {
     }
   }
 
-
-
-
   Future<Map<String, dynamic>> fetchCarDoc(String documentId) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> querySnapshot =
@@ -391,7 +388,6 @@ class FuelFirebase extends GetxController {
     }
   }
 
-
   Future<Map<Car, List<ConsumptionRecord>>>
       fetchCarsWithConsumptionDoneFalseRecords() async {
     Map<Car, List<ConsumptionRecord>> carsWithRecords = {};
@@ -450,6 +446,49 @@ class FuelFirebase extends GetxController {
       print("Error fetching cars: $e");
       // Handle the error, for example by returning an empty map or re-throwing the exception
       return {};
+    }
+  }
+
+  Future<String?> getMostRecentFinalMileage(String carId) async {
+    try {
+      String? userId = await getUserDocumentIdByEmail();
+      print(userId);
+      if (userId == null) {
+        print("User ID is null");
+        return null;
+      }
+
+      // print(carId)
+      // Reference to the Firestore collection
+      var collection = _db.collection('Consumption');
+
+      // Query to get the document with the most recent final_date for the given user ID and car ID
+      var querySnapshot = await collection
+          .where('userId', isEqualTo: userId)
+          .where('carId', isEqualTo: carId)
+          .orderBy('finalDate', descending: true)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var data = querySnapshot.docs.first.data();
+        print(data);
+
+        // Check if 'finalMileage' exists and return it
+        if (data.containsKey('endMileage')) {
+          print('finalMileage found.');
+          return data['endMileage'];
+        } else {
+          print('finalMileage not found in the document.');
+          return null;
+        }
+      } else {
+        print('No documents found for the specified user and car.');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      return null;
     }
   }
 }
