@@ -1,14 +1,12 @@
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/next_sprint.dart';
 import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
+import 'package:gp91/employee/otp_screen.dart';
 import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
-import 'package:gp91/login/forgot_password/forgot_password_mail.dart';
+import 'package:email_otp/email_otp.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -22,6 +20,8 @@ class _FormScreenState extends State<Body> {
   final AuthRepository _auth = AuthRepository();
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+
+  EmailOTP myauth = EmailOTP();
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _FormScreenState extends State<Body> {
     super.dispose();
   }
 
-  bool _obscureText = true;
+  // bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -97,72 +97,50 @@ class _FormScreenState extends State<Body> {
                   ),
                 ),
               ),
-              // Container for the password input field
-              TextFieldContainer(
-                child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscureText,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    // Validate password presence
-                    if (value!.isEmpty) {
-                      return "Please enter your password";
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintStyle: const TextStyle(fontFamily: 'NanumGothic'),
-                    icon: const Icon(Icons.lock, color: primaryColor),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                      child: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: primaryColor,
-                      ),
-                    ),
-                    hintText: "Password",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              // Container for "Forgot Password?" link
-              // Container(
-              //   margin: const EdgeInsets.only(right: 30),
-              //   child: Align(
-              //     alignment: Alignment.centerRight,
-              //     child: TextButton(
-              //       onPressed: () {
-              //         // Navigate to the forgot password screen
-              //         Get.to(() => ForgotPasswordMailScreen());
-              //       },
-              //       child: const Text(
-              //         "Forgot Password?",
-              //         style: TextStyle(
-              //           color: primaryColor,
-              //           fontFamily: 'NanumGothic',
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+
               // Space between "Forgot Password?" link and login button
               SizedBox(height: size.height * 0.01),
               // Rounded login button
               RoundedButton(
-                text: "LOGIN",
-                press: () {
-                  // Validate form before attempting login
-                  if (_formKey.currentState?.validate() == true) {
-                    print("WOOOOORKED!!");
-                    // Attempt to sign in
-                    _signIn();
+                text: "Send Code",
+                press: () async {
+                  // Check if the employee is terminated
+                  var send_email = _emailController.text;
+                  bool isValid =
+                      await _auth.validateEmployeeCredentials(send_email);
+                  if (isValid) {
+                    myauth.setConfig(
+                        appEmail: "contact@hdevcoder.com",
+                        appName: "Email OTP",
+                        userEmail: _emailController.text,
+                        otpLength: 4,
+                        otpType: OTPType.digitsOnly);
+                    if (await myauth.sendOTP() == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("OTP has been sent"),
+                      ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpScreen(
+                                    myauth: myauth,
+                                  )));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Oops, OTP send failed"),
+                      ));
+                    }
                   } else {
-                    print("did not work");
+                    //Get.back(); // Close the loading dialog
+                    // Display terminated message
+                    Get.snackbar(
+                      "Incorrect Email!",
+                      "try again aor ask your manager ",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.redAccent.withOpacity(0.1),
+                      colorText: Colors.red,
+                    );
+                    return;
                   }
                 },
               ),
@@ -173,86 +151,5 @@ class _FormScreenState extends State<Body> {
         ),
       ),
     );
-  }
-
-  // Function to handle the sign-in process
-  void _signIn() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    // Show a loading dialog while signing in
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
-
-    try {
-      // Hash the entered password
-      String hashedPassword = hashPassword(password);
-
-      // Check if the employee is terminated
-      bool isTerminated =
-          await _auth.isEmployeeTerminated(email, hashedPassword);
-
-      // Check if the employee is terminated or not
-      if (isTerminated) {
-        Get.back(); // Close the loading dialog
-        // Display terminated message
-        Get.snackbar(
-          "Terminated!",
-          "You are terminated. Please contact the administrator.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.1),
-          colorText: Colors.red,
-        );
-        return;
-      } else {
-        // Check if the email and password match the data in the database
-        bool isValidEmployee =
-            await _auth.validateEmployeeCredentials(email, hashedPassword);
-
-        Get.back(); // Close the loading dialog
-
-        if (isValidEmployee) {
-          print("Employee is successfully logged in");
-          // Navigate to the next screen
-          Get.to(() => const NextSprint());
-
-          // Clear the input fields
-          _emailController.clear();
-          _passwordController.clear();
-        } else {
-          // Display incorrect credentials message
-          Get.snackbar(
-            "Incorrect Credentials",
-            "Incorrect email or password",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.redAccent.withOpacity(0.1),
-            colorText: Colors.red,
-          );
-        }
-      }
-    } catch (e) {
-      print("Error: $e");
-      Get.back(); // Close the loading dialog
-      // Show a generic error message if an exception occurs
-      Get.snackbar(
-        "Error",
-        "An error occurred. Please try again later.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-      );
-    }
-  }
-
-  // Function to hash the provided password using SHA-256 algorithm
-  String hashPassword(String password) {
-    var bytes = utf8.encode(password);
-    var digest = sha256.convert(bytes);
-
-    return digest.toString();
   }
 }

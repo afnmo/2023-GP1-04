@@ -21,8 +21,7 @@ const db = getFirestore(app);
 const employeeCollectionName = "Station_Employee";
 
 document.addEventListener("DOMContentLoaded", async function () {
-    var click_to_change_password = 0;
-    let hash_new_password; 
+
     // Retrieve query parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -42,15 +41,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("years_experience").value = years_experience;
 
 
-    // Add event listener to the link for changing the password
-    document.getElementById("changePasswordLink").addEventListener("click", function (event) {
-        click_to_change_password = 1;//will change since click that want to change
-        event.preventDefault(); // Prevent the default behavior of the link
-
-        // Toggle the visibility of the password container
-        const passwordContainer = document.getElementById("passwordContainer");
-        passwordContainer.style.display = passwordContainer.style.display === "none" ? "block" : "none";
-    });
 
     
 
@@ -125,90 +115,90 @@ document.addEventListener("DOMContentLoaded", async function () {
     const employeeDocRef = doc(db, employeeCollectionName, employeeId);
     const employeeDoc = await getDoc(employeeDocRef);
 
-    // Get the current password from the Firestore document
-    const currentPassword = employeeDoc.data().password;
-    const enteredPrevPasswordInput = document.getElementById("PrevPassword");
+    //
+    //const currentPassword = employeeDoc.data().password;
+    // const enteredPrevPasswordInput = document.getElementById("PrevPassword");
 
-    if (!enteredPrevPasswordInput) {
-        console.error("Password input not found.");
-        return;
-    }
+    // if (!enteredPrevPasswordInput) {
+    //     console.error("Password input not found.");
+    //     return;
+    // }
 
 
-    let enteredPrevPassword = "";  // Initialize as an empty string
+    // let enteredPrevPassword = "";  // Initialize as an empty string
 
-    // Check if the user is updating the password
-        if (click_to_change_password === 1) {
-            // User is updating the password, get the value from the input field
-            enteredPrevPassword = enteredPrevPasswordInput.value;
+    // // Check if the user is updating the password
+    //     if (click_to_change_password === 1) {
+    //         // User is updating the password, get the value from the input field
+    //         enteredPrevPassword = enteredPrevPasswordInput.value;
 
-            // Trim leading and trailing whitespaces, if any
-            enteredPrevPassword = enteredPrevPassword.trim();
-    }
+    //         // Trim leading and trailing whitespaces, if any
+    //         enteredPrevPassword = enteredPrevPassword.trim();
+    // }
 
-    // Validate the previous password if it's not empty
-    if (click_to_change_password === 1 && enteredPrevPassword !== "") {
-        // Hash the entered password using the same SHA-256 algorithm
-        const hashedEnteredPrevPassword = await hashPassword(enteredPrevPassword);
+    // // Validate the previous password if it's not empty
+    // if (click_to_change_password === 1 && enteredPrevPassword !== "") {
+    //     // Hash the entered password using the same SHA-256 algorithm
+    //     const hashedEnteredPrevPassword = await hashPassword(enteredPrevPassword);
 
-        // Validate the previous password
-        if (hashedEnteredPrevPassword !== currentPassword) {
-            const passwordError1 = document.getElementById("passwordError1");
-            if (passwordError1) {
-                passwordError1.innerText = 'Incorrect previous password';
-                passwordError1.style.color = 'red';
-                passwordError1.style.fontSize = '10px';
-            }
-            // Hide wait message when displaying an error
-            hidePleaseWaitMessage();
-            return;
-        } else {
-            setSuccess(enteredPrevPasswordInput);
-        }
-    }
+    //     // Validate the previous password
+    //     if (hashedEnteredPrevPassword !== currentPassword) {
+    //         const passwordError1 = document.getElementById("passwordError1");
+    //         if (passwordError1) {
+    //             passwordError1.innerText = 'Incorrect previous password';
+    //             passwordError1.style.color = 'red';
+    //             passwordError1.style.fontSize = '10px';
+    //         }
+    //         // Hide wait message when displaying an error
+    //         hidePleaseWaitMessage();
+    //         return;
+    //     } else {
+    //         setSuccess(enteredPrevPasswordInput);
+    //     }
+    // }
 
-        // Validate and get the new password
-        const newPasswordInput = document.getElementById("New_Password");
-        const newPassword = newPasswordInput.value.trim(); // Trim leading and trailing whitespaces
+    //     // Validate and get the new password
+    //     const newPasswordInput = document.getElementById("New_Password");
+    //     const newPassword = newPasswordInput.value.trim(); // Trim leading and trailing whitespaces
 
-        if (click_to_change_password === 1 && newPassword !== "") {
-            // User is updating the password, validate the new password
-            if (!isValidPassword(newPassword)) {
-                const passwordError2 = document.getElementById("passwordError2");
-                if (passwordError2) {
-                    passwordError2.innerText = 'Password must length 8 and contain at least one digit, one special character, one uppercase letter, and one lowercase letter.';
-                    passwordError2.style.color = 'red';
-                    passwordError2.style.fontSize = '10px';
-                }
-                 // Hide wait message when displaying an error
-        hidePleaseWaitMessage();
-                return;
-            } else {
-                setSuccess(newPasswordInput);
-            }
-              // Hash the new password before updating the data
-          hash_new_password = await hashPassword(newPassword); 
-        }
+    //     if (click_to_change_password === 1 && newPassword !== "") {
+    //         // User is updating the password, validate the new password
+    //         if (!isValidPassword(newPassword)) {
+    //             const passwordError2 = document.getElementById("passwordError2");
+    //             if (passwordError2) {
+    //                 passwordError2.innerText = 'Password must length 8 and contain at least one digit, one special character, one uppercase letter, and one lowercase letter.';
+    //                 passwordError2.style.color = 'red';
+    //                 passwordError2.style.fontSize = '10px';
+    //             }
+    //              // Hide wait message when displaying an error
+    //     hidePleaseWaitMessage();
+    //             return;
+    //         } else {
+    //             setSuccess(newPasswordInput);
+    //         }
+    //           // Hash the new password before updating the data
+    //       hash_new_password = await hashPassword(newPassword); 
+    //     }
 
-        // Validate and get the confirmation password
-        const confirmNewPasswordInput = document.getElementById("Re_Password");
-        const confirmNewPassword = confirmNewPasswordInput.value.trim(); // Trim leading and trailing whitespaces
+    //     // Validate and get the confirmation password
+    //     const confirmNewPasswordInput = document.getElementById("Re_Password");
+    //     const confirmNewPassword = confirmNewPasswordInput.value.trim(); // Trim leading and trailing whitespaces
 
-        if (click_to_change_password === 1 && confirmNewPassword !== newPassword) {
-            // User is updating the password, validate the confirmation password
-            const passwordError3 = document.getElementById("passwordError3");
-            if (passwordError3) {
-                passwordError3.innerText = 'Not match New Password';
-                passwordError3.style.color = 'red';
-                passwordError3.style.fontSize = '10px';
-            }
-         // Hide wait message when displaying an error
-        hidePleaseWaitMessage();
-            return;
-        } else {
-            setSuccess(confirmNewPasswordInput);
+    //     if (click_to_change_password === 1 && confirmNewPassword !== newPassword) {
+    //         // User is updating the password, validate the confirmation password
+    //         const passwordError3 = document.getElementById("passwordError3");
+    //         if (passwordError3) {
+    //             passwordError3.innerText = 'Not match New Password';
+    //             passwordError3.style.color = 'red';
+    //             passwordError3.style.fontSize = '10px';
+    //         }
+    //      // Hide wait message when displaying an error
+    //     hidePleaseWaitMessage();
+    //         return;
+    //     } else {
+    //         setSuccess(confirmNewPasswordInput);
  
-        }
+    //     }
         // Validate the email
 
    
@@ -218,13 +208,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             firstName: document.getElementById("FirstName").value,
             lastName: document.getElementById("LastName").value,
             email: document.getElementById("Email").value,
+            //password:currentPassword,
         };
 
-        // Add the password to updatedData only if the user is updating the password
-        if (click_to_change_password === 1 && newPassword !== "") {
-            console.log(hash_new_password);
-            updatedData.password = hash_new_password;
-        }
+
 
 
         // Use updateDoc from Firestore SDK to update the document
@@ -318,12 +305,6 @@ const setSuccess = element => {
 
 
 
-const isValidPassword = (password) => {
-    // Password must contain at least one digit, one special character, one uppercase letter, and one lowercase letter
-    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    return passwordRegex.test(password);
-};
-
 
 
 function isValidEmail(email) {
@@ -342,22 +323,13 @@ async function isEmailAlreadyUsed(email, currentEmployeeId) {
     // Check if there are any documents other than the current user with the same email
     return querySnapshot.docs.some(doc => doc.id !== currentEmployeeId);
 }
+
 // Function to get the current email of the employee
 async function getCurrentEmail(employeeId) {
     const employeeDocRef = doc(db, employeeCollectionName, employeeId);
     const employeeDoc = await getDoc(employeeDocRef);
     return employeeDoc.data().email;
 }
-     // Function to hash the password
-     const hashPassword = async (password) => {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-        return hashHex.toString();
-        // You can store 'hashHex' in your database
-    };
     function isValidPhone(phone) {
         // Phone number must contain exactly ten digits
         const phoneRegex = /^\d{10}$/;
@@ -377,3 +349,4 @@ async function getCurrentEmail(employeeId) {
             pleaseWaitMessage.innerText = '';
         }
     };
+

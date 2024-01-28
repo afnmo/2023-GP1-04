@@ -73,6 +73,9 @@ async function retrieveAndPopulateForm() {
             if(stationData.image_station != null)
             document.getElementById('imageUpload').value = stationData.image_station;
 
+            if(stationData.occupancy_level != null)
+            document.getElementById('occupancyLevel').value = stationData.occupancy_level;
+
             // Update the label text to the selected file's name
             // if(stationData.image_station != null){
             //     const imageLabel = document.getElementById('imageLabel');
@@ -119,14 +122,14 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     // Handle the heightBox and BKimage based on the number of checkboxes
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
-        document.getElementById("heightBox").style.height = 700;
-        document.getElementById("BKimage").height = 850;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 900;
     } else if (numCheckbox === 2) {
-        document.getElementById("heightBox").style.height = 800;
-        document.getElementById("BKimage").height = 910;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 1000;
     } else if (numCheckbox === 3) {
-        document.getElementById("heightBox").style.height = 900;
-        document.getElementById("BKimage").height = 970;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 1100;
     }
 }
 
@@ -148,8 +151,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 91 based on its checkbox state
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
-        document.getElementById("heightBox").style.height= 700;
-        document.getElementById("BKimage").height= 850;
+        document.getElementById("heightBox").style.height= 1500;
+        document.getElementById("BKimage").height= 1000;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -157,8 +160,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 95 based on its checkbox state
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
-        document.getElementById("heightBox").style.height= 800;
-        document.getElementById("BKimage").height= 910;
+        document.getElementById("heightBox").style.height= 1500;
+        document.getElementById("BKimage").height= 1100;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -166,8 +169,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for Diesel based on its checkbox state
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
-        document.getElementById("heightBox").style.height= 900;
-        document.getElementById("BKimage").height= 960;
+        document.getElementById("heightBox").style.height= 1500;
+        document.getElementById("BKimage").height= 1100;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -224,6 +227,7 @@ async function AddStation() {
     const stationImage = document.getElementById("imageUpload").value;
     const OpenHour = document.getElementById("OpenHour").value;
     const CloseHour = document.getElementById("CloseHour").value;
+    const occupancyLevel = document.getElementById("occupancyLevel").value;
     const fuelType = document.getElementsByName("fuelType");
     let fuelTypeArray = [];
     let fuelStatevalue = [];
@@ -257,6 +261,7 @@ async function AddStation() {
             image_station: stationImage,
             fuel_type: fuelTypeArray,
             fuel_status: fuelStatevalue,
+            occupancy_level: occupancyLevel,
         });
         console.log("Data successfully updated in Firestore.");
     } catch (error) {

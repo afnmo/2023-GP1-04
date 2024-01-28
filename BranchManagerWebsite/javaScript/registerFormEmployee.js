@@ -1,6 +1,8 @@
 // Import necessary Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, addDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
+
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,7 +16,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+//For Auth
+const auth = getAuth(app);
 // Access Firestore
 const db = getFirestore(app);
 
@@ -33,11 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const employeeRegistrationForm = document.getElementById('registrationForm2');
     const errorMessageElement = document.getElementById('errorMessage');
     const successMessageElement = document.getElementById('successMessage');
-    const passwordInput = document.getElementById('password');
-    const showPasswordCheckbox = document.getElementById('showPassword');
+    //const passwordInput = document.getElementById('password');
+   // const showPasswordCheckbox = document.getElementById('showPassword');
 
     // Set the initial state of the password input
-    passwordInput.type = 'password';
+   // passwordInput.type = 'password';
 
     employeeRegistrationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
@@ -50,15 +53,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const firstName = document.getElementById("FirstName").value;
             const lastName = document.getElementById("LastName").value;
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            //const password = document.getElementById("password").value;
             const phone = document.getElementById("phone").value;
             const yearsExperience = document.getElementById("years_experience").value;
 
             // Validate password
-            if (!isValidPassword(password)) {
-                displayErrorMessage("Password must have at least 8 characters, one digit, one special character, one uppercase, and one lowercase letter.");
-                return;
-            }
+            // if (!isValidPassword(password)) {
+            //     displayErrorMessage("Password must have at least 8 characters, one digit, one special character, one uppercase, and one lowercase letter.");
+            //     return;
+            // }
 
             // Validate email format
             if (!isValidEmail(email)) {
@@ -73,13 +76,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Hash the password
-            const hashedPassword = await hashPassword(password);
+            //const hashedPassword = await hashPassword(password);
+
+            //Add The Employee In Firebase Authntication:----
+            //----------
+
 
             // Check if the email is already in use
             if (await isEmailInUse(email)) {
                 displayErrorMessage("Email address is already in use. Please use a different email.");
                 return;
             }
+            const userCredential = await createUserWithEmailAndPassword(auth, email, '000000');
+            // Get the UID of the newly created user
+            const uid = userCredential.user.uid;
 
             // Add employee to the Firestore collection
             const stationRequestRef = await addDoc(collection(db, "Station_Employee"), {
@@ -87,10 +97,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 lastName: lastName,
                 email: email,
                 branch_manager_id: BMID,
-                password: hashedPassword,
+                //password: hashedPassword,
                 phone: phone,
                 years_experience: yearsExperience,
-                terminated: false,
+                //terminated: false,
+                uid: uid,
             });
 
             // Display success message and reset form
@@ -105,6 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("An error occurred during form submission:", error);
             displayErrorMessage("An error occurred. Please try again later.");
         }
+        // Check if the error is due to email-already-in-use
+        if (error.code === "auth/email-already-in-use") {
+             displayErrorMessage("Email address is already in use. Please use a different email.");
+                } else {
+                    displayErrorMessage("An error occurred. Please try again later.");
+                }
     }
 
     // Function to toggle password visibility
@@ -113,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // Add an event listener to the showPasswordCheckbox
-    showPasswordCheckbox.addEventListener('change', togglePasswordVisibility);
+    //showPasswordCheckbox.addEventListener('change', togglePasswordVisibility);
 
     // Other utility functions
 
@@ -128,8 +145,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function isEmailInUse(email) {
-        const querySnapshot = await getDocs(query(collection(db, "Station_Employee"), where("email", "==", email)));
-        return !querySnapshot.empty;
+        const querySnapshot = await getDocs(query(
+            collection(db, "Station_Employee"),
+            where("email", "==", email)
+            
+        ));
+    
+        return querySnapshot.docs.length > 0;
     }
 
     function isValidEmail(email) {
@@ -157,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('FirstName').value = '';
         document.getElementById('LastName').value = '';
         document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
+       // document.getElementById('password').value = '';
         document.getElementById('phone').value = '';
         document.getElementById('years_experience').value = '';
     }
