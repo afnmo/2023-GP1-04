@@ -123,7 +123,7 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 900;
+        document.getElementById("BKimage").height = 1000;
     } else if (numCheckbox === 2) {
         document.getElementById("heightBox").style.height = 1500;
         document.getElementById("BKimage").height = 1000;
