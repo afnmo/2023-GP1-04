@@ -106,6 +106,7 @@ async function checkRequests(email, password) {
                         const stationRef = await addDoc(collection(db, "Station"), {
                             name: stationName,
                             location: stationLocation,
+                            occupancy_level: 0,
                             branch_manager_id: docID, // Store the foreign key
                         });
 
