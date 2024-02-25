@@ -14,245 +14,265 @@
   <script type="module" src="..\javaScript\edit.js"></script>
   <script type="module" src="..\javaScript\logout.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<!-- Include Bootstrap JS bundle (popper.js included) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Include Bootstrap JS bundle (popper.js included) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 
 <body class="bg-gradient-primary" style="color:var(--bs-body-bg);background:rgba(255,255,255,0);">
   <div class="background-image"></div>
-  
-      <!-- start header -->
-      <header>
-        <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark" style="padding-top: 19px;border-color: #83c4a197;background-color: #83c4a197;padding-bottom: 19px;margin-bottom: 18px;">
-          <img src="..\images\Logo.png" style="margin-left: 20px;margin-right: 20px;border-radius: 20px;border-color: #dcfee3;width: 80px;height: 80px;color: var(--bs-success-border-subtle);padding-top: 0px;margin-bottom: 2px;padding-bottom: 0px;margin-top: 0px;padding-right: 8px;" width="92" height="100" />
-            <span style="color: rgb(0, 0, 0);margin-left: 20px;padding-left: 0px;margin-top: -99px;padding-right: 0px;margin-right: 337px;margin-bottom: -64px;padding-top: 27px;padding-bottom: 0px;font-size: 32px;"></span>
-          <div class="container">
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="nav ms-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="homepagePM.html">
-                    <span>
-                        <span style="color: rgba(251,247,247,0.65); font-size: 20px; font-weight: bold;">Home</span>
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" href="edit.html">
-                    <span>
-                        <span style="color: rgb(255, 255, 255); font-size: 20px; font-weight: bold;">Edit Station</span>
-                    </span>
-                </a>
-                </li>
-                                         
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span>
-                          <span style="color: rgba(251, 247, 247, 0.65); font-size: 20px; font-weight: bold;">Employee</span>
-                      </span>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="myEmployee.html">My Employee</a>
-                      <a class="dropdown-item" href="registerFormEmployee.html">Add New Employee</a>
-                      <a class="dropdown-item" href="updateEmployeePage.html">Upadate My Employee</a>
-                      
 
-                  </div>
-              </li>
-              
-                <li class="nav-item">
-                  <a class="nav-link" href="">
-                    <span>
-                        <span style="color: rgba(251,247,247,0.65); font-size: 20px; font-weight: bold;">Settings</span>
-                    </span>
-                </a>
-                </li>
-                <li class="nav-item">
-                  <a id="signOutLink" class="nav-link" href="#">
-                      <span>
-                          <span style="color: rgba(255, 0, 0, 0.65); font-size: 20px; font-weight: bold;">Log
-                              out</span>
-                      </span>
-                  </a>
-              </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
-      <!-- end header -->
+  <!-- start header -->
+  <header>
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark"
+      style="padding-top: 19px;border-color: #83c4a197;background-color: #83c4a197;padding-bottom: 19px;margin-bottom: 18px;">
+      <img src="..\images\Logo.png"
+        style="margin-left: 20px;margin-right: 20px;border-radius: 20px;border-color: #dcfee3;width: 80px;height: 80px;color: var(--bs-success-border-subtle);padding-top: 0px;margin-bottom: 2px;padding-bottom: 0px;margin-top: 0px;padding-right: 8px;"
+        width="92" height="100" />
+      <span
+        style="color: rgb(0, 0, 0);margin-left: 20px;padding-left: 0px;margin-top: -99px;padding-right: 0px;margin-right: 337px;margin-bottom: -64px;padding-top: 27px;padding-bottom: 0px;font-size: 32px;"></span>
+      <div class="container">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="homepagePM.html">
+                <span>
+                  <span style="color: rgba(251,247,247,0.65); font-size: 20px; font-weight: bold;">Home</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="edit.html">
+                <span>
+                  <span style="color: rgb(255, 255, 255); font-size: 20px; font-weight: bold;">Edit Station</span>
+                </span>
+              </a>
+            </li>
 
-<main class="page lanidng-page">
-  <section class="position-relative py-4 py-xl-5" style="margin-top: 150px">
-  <!-- start form -->
-  <div class="container" style="background:rgba(255,255,255,0); width: 1215px;">
-    <div class="card border-0 shadow-lg o-hidden my-5" style="border-radius:30px;" id="heightBox">
-      <div class="card-body p-0" style="border-radius:0px;">
-        <div class="row">
-          <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editPhoto.png" width="465" height="900"
-              id="BKimage"></div>
-          <div class="col-lg-7" style="border-radius:0px;">
-            <div class="p-5" style="border-style:none;border-radius:0px;">
-              <div class="text-center">
-                <h3 class="text-uppercase fw-semibold text-dark mb-4"
-                  style="font-family:Roboto, sans-serif;font-weight:bold;"><span style="color:rgb(248, 165, 26);"><span
-                      style="color: rgb(48, 180, 118);">Edit your gas station</span></span></h3>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span>
+                  <span style="color: rgba(251, 247, 247, 0.65); font-size: 20px; font-weight: bold;">Employee</span>
+                </span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="myEmployee.html">My Employee</a>
+                <a class="dropdown-item" href="registerFormEmployee.html">Add New Employee</a>
+                <a class="dropdown-item" href="updateEmployeePage.html">Upadate My Employee</a>
+
+
               </div>
-              <form class="user" id="editStation">
-                <div>
-                  <div class="row">
-                    <div class="col"><input class="form-control form-control form-control-user" type="text"
-                        id="StationName" name="station_name" placeholder="Station Name"
-                        style="margin: 5px; font-size: 18px;" readonly></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="col"><input class="form-control form-control form-control-user" type="url"
-                        id="StationLocation" name="station_location" placeholder="Station Location"
-                        style="margin: 5px; font-size: 18px;" readonly></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <label class="label"  style="color: gray; font-weight:660;">Open hour</label>
-                    <div class="col"><input class="form-control form-control form-control-user" type="time"
-                        id="OpenHour" style="margin: 5px; font-size: 18px;" name="open_hour" required></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <label class="label" style="color: gray; font-weight:660;">Close hour</label>
-                    <div class="col"><input class="form-control form-control form-control-user" type="time"
-                        id="CloseHour" name="close_hour" style="margin: 5px; font-size: 18px;" required></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <label class="label" style="color: gray; font-weight:660;">Station image</label>
-                    <div class="col">
-                        <input type="url" id="imageUpload" name="stationImage1" class="form-control form-control form-control-user" placeholder="Station Image in URL format" accept="image/jpg" required style="margin: 5px; font-size: 18px;">
-                    </div>
-<!-- 
-                    <label for="imageUpload" class="custom-file-label" id="imageLabel">Choose file in JPG format</label>
-                    <input type="file" id="imageUpload" name="stationImage1" class="custom-file-input" accept=".jpg, .jpeg, .png, .gif"> -->
+            </li>
 
-                  </div> 
-                </div>
-                <div>
-                  <div class="row">
-                    <label class="label" style="color: gray; font-weight:660;">Maximum occupancy level</label>
-                    <div class="col"> <input type="number" id="occupancyLevel" name="MaximumOccupancyLevel" class="form-control form-control form-control-user" placeholder="Maximum occupancy level in your gas station" required style="margin: 5px; font-size: 18px;"></div>
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <span>
+                  <span style="color: rgba(251,247,247,0.65); font-size: 20px; font-weight: bold;">Settings</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a id="signOutLink" class="nav-link" href="#">
+                <span>
+                  <span style="color: rgba(255, 0, 0, 0.65); font-size: 20px; font-weight: bold;">Log
+                    out</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- end header -->
+
+  <main class="page lanidng-page">
+    <section class="position-relative py-4 py-xl-5" style="margin-top: 150px">
+      <!-- start form -->
+      <div class="container" style="background:rgba(255,255,255,0); width: 1215px;">
+        <div class="card border-0 shadow-lg o-hidden my-5" style="border-radius:30px;" id="heightBox">
+          <div class="card-body p-0" style="border-radius:0px;">
+            <div class="row">
+              <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editPhoto.png" width="465" height="950"
+                  id="BKimage"></div>
+              <div class="col-lg-7" style="border-radius:0px;">
+                <div class="p-5" style="border-style:none;border-radius:0px;">
+                  <div class="text-center">
+                    <h3 class="text-uppercase fw-semibold text-dark mb-4"
+                      style="font-family:Roboto, sans-serif;font-weight:bold;"><span
+                        style="color:rgb(248, 165, 26);"><span style="color: rgb(48, 180, 118);">Edit your gas
+                          station</span></span></h3>
                   </div>
-                </div>         
-                  <div>
-                    <div class="row">
-                      <label class="label" style="color: gray; font-weight:660; margin: 5px;">Fuel type</label>
-                      <div class="col" style="margin: 5px; font-size: 18px;">
-                        <label class="form-check-label" for="fuelType91"
-                          style="color: rgb(28, 200, 138); font-weight: 700;">
-                          <input class="form-check-input" type="checkbox" id="fuelType91" name="fuelType" value="91"
-                            style="margin: 5px">
-                          91
-                        </label>
+                  <form class="user" id="editStation">
+                    <div>
+                      <div class="row">
+                        <div class="col"><input class="form-control form-control form-control-user" type="text"
+                            id="StationName" name="station_name" placeholder="Station Name"
+                            style="margin: 5px; font-size: 18px;" readonly></div>
                       </div>
                     </div>
-                    <div id="91State" style="display: none; position: relative; left: 30px;">
+                    <div>
                       <div class="row">
-                        <label class="label" style="color: gray; font-weight:700;">91 status</label>
-                        <div class="col" style="margin: 5px;" id="fuelState">
-                          <label class="form-check-label" for="fuelStateAvailable91">
-                            <input class="form-check-input" type="radio" id="91Available" name="fuelState91"
-                              value="91 Available">
-                            Available
-                          </label>
-
-                          <label class="form-check-label" for="fuelStateUnavailable91">
-                            <input class="form-check-input" type="radio" id="91Unavailable" name="fuelState91"
-                              value="91 Unavailable">
-                            Unavailable
-                          </label>
+                        <div class="col"><input class="form-control form-control form-control-user" type="url"
+                            id="StationLocation" name="station_location" placeholder="Station Location"
+                            style="margin: 5px; font-size: 18px;" readonly></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <label class="label" style="color: gray; font-weight:660;">Open hour</label>
+                        <div class="col"><input class="form-control form-control form-control-user" type="time"
+                            id="OpenHour" style="margin: 5px; font-size: 18px;" name="open_hour" required></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <label class="label" style="color: gray; font-weight:660;">Close hour</label>
+                        <div class="col"><input class="form-control form-control form-control-user" type="time"
+                            id="CloseHour" name="close_hour" style="margin: 5px; font-size: 18px;" required></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <label class="label" style="color: gray; font-weight:660;">Station image</label>
+                        <div class="col">
+                          <input type="url" id="imageUpload" name="stationImage1"
+                            class="form-control form-control form-control-user"
+                            placeholder="Station Image in URL format" accept="image/jpg" required
+                            style="margin: 5px; font-size: 18px;">
                         </div>
                       </div>
                     </div>
-
-                    <div class="row">
-                      <div class="col" style="margin: 5px; font-size: 18px;">
-                        <label class="form-check-label" for="fuelType95"
-                          style="color: rgb(231, 74, 59); font-weight: 700;">
-                          <input class="form-check-input" type="checkbox" id="fuelType95" name="fuelType" value="95"
-                            style="margin: 5px">
-                          95
-                        </label>
+                    <div>
+                      <div class="row">
+                        <label class="label" style="color: gray; font-weight:660;">Maximum occupancy level</label>
+                        <div class="col"> <input type="number" id="occupancyLevel" name="MaximumOccupancyLevel"
+                            class="form-control form-control form-control-user"
+                            placeholder="Maximum occupancy level in your gas station" required
+                            style="margin: 5px; font-size: 18px;"></div>
                       </div>
                     </div>
-                    <div id="95State" style="display: none; position: relative; left: 30px;">
-                      <div class="row">
-                        <label class="label" style="color: gray; font-weight:700;">95 status</label>
-                        <div class="col" style="margin: 5px;" id="fuelState">
-                          <label class="form-check-label" for="fuelStateAvailable95">
-                            <input class="form-check-input" type="radio" id="95Available" name="fuelState95"
-                              value="95 Available">
-                            Available
-                          </label>
+                    <div>
+                      <div>
+                        <div class="row">
+                          <label class="label" style="color: gray; font-weight:660; margin: 5px;">Fuel type</label>
+                          <div class="col" style="margin: 5px; font-size: 18px;">
+                            <label class="form-check-label" for="fuelType91"
+                              style="color: rgb(28, 200, 138); font-weight: 700;">
+                              <input class="form-check-input" type="checkbox" id="fuelType91" name="fuelType" value="91"
+                                style="margin: 5px">
+                              91
+                            </label>
+                          </div>
+                        </div>
+                        <div id="91State" style="display: none; position: relative; left: 30px;">
+                          <div class="row">
+                            <label class="label" style="color: gray; font-weight:700;">91 status</label>
+                            <div class="col" style="margin: 5px;" id="fuelState">
+                              <label class="form-check-label" for="fuelStateAvailable91">
+                                <input class="form-check-input" type="radio" id="91Available" name="fuelState91"
+                                  value="91 Available">
+                                Available
+                              </label>
 
-                          <label class="form-check-label" for="fuelStateUnavailable95">
-                            <input class="form-check-input" type="radio" id="95Unavailable" name="fuelState95"
-                              value="95 Unavailable">
-                            Unavailable
-                          </label>
+                              <label class="form-check-label" for="fuelStateUnavailable91">
+                                <input class="form-check-input" type="radio" id="91Unavailable" name="fuelState91"
+                                  value="91 Unavailable">
+                                Unavailable
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col" style="margin: 5px; font-size: 18px;">
+                            <label class="form-check-label" for="fuelType95"
+                              style="color: rgb(231, 74, 59); font-weight: 700;">
+                              <input class="form-check-input" type="checkbox" id="fuelType95" name="fuelType" value="95"
+                                style="margin: 5px">
+                              95
+                            </label>
+                          </div>
+                        </div>
+                        <div id="95State" style="display: none; position: relative; left: 30px;">
+                          <div class="row">
+                            <label class="label" style="color: gray; font-weight:700;">95 status</label>
+                            <div class="col" style="margin: 5px;" id="fuelState">
+                              <label class="form-check-label" for="fuelStateAvailable95">
+                                <input class="form-check-input" type="radio" id="95Available" name="fuelState95"
+                                  value="95 Available">
+                                Available
+                              </label>
+
+                              <label class="form-check-label" for="fuelStateUnavailable95">
+                                <input class="form-check-input" type="radio" id="95Unavailable" name="fuelState95"
+                                  value="95 Unavailable">
+                                Unavailable
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col" style="margin: 5px; font-size: 18px;">
+                            <label class="form-check-label" for="fuelTypeDiesel"
+                              style="color: rgb(133, 135, 150); font-weight: 700;">
+                              <input class="form-check-input" type="checkbox" id="fuelTypeDiesel" name="fuelType"
+                                value="Diesel" style="margin: 5px">
+                              Diesel
+                            </label>
+                          </div>
+                        </div>
+                        <div id="DieselState" style="display: none; position: relative; left: 30px;">
+                          <div class="row">
+                            <label class="label" style="color: gray; font-weight:700;">Diesel status</label>
+                            <div class="col" style="margin: 5px;" id="fuelState">
+                              <label class="form-check-label" for="fuelStateAvailableDiesel">
+                                <input class="form-check-input" type="radio" id="DieselAvailable" name="fuelStateDiesel"
+                                  value="Diesel Available">
+                                Available
+                              </label>
+
+                              <label class="form-check-label" for="fuelStateUnavailableDiesel">
+                                <input class="form-check-input" type="radio" id="DieselUnavailable"
+                                  name="fuelStateDiesel" value="Diesel Unavailable">
+                                Unavailable
+                              </label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div class="row">
-                      <div class="col" style="margin: 5px; font-size: 18px;">
-                        <label class="form-check-label" for="fuelTypeDiesel"
-                          style="color: rgb(133, 135, 150); font-weight: 700;">
-                          <input class="form-check-input" type="checkbox" id="fuelTypeDiesel" name="fuelType"
-                            value="Diesel" style="margin: 5px">
-                          Diesel
-                        </label>
+                    <div>
+                      <label class="label" style="color: gray; font-weight: 660; flex-grow: 1;">Services</label>
+                      <br>
+                      <span style="color: grey; margin: 5px;" id="stationServies">Add your station services</span>
+                      <button  id="stationServiesButton" type="button" class="add-button" 
+                        style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right;">
+                        <img src="../images/add.png" height="20px" width="20px" style="float: right;">
+                      </button>
+                      <div id="servicesContainer">
                       </div>
                     </div>
-                    <div id="DieselState" style="display: none; position: relative; left: 30px;">
-                      <div class="row">
-                        <label class="label" style="color: gray; font-weight:700;">Diesel status</label>
-                        <div class="col" style="margin: 5px;" id="fuelState">
-                          <label class="form-check-label" for="fuelStateAvailableDiesel">
-                            <input class="form-check-input" type="radio" id="DieselAvailable"
-                              name="fuelStateDiesel" value="Diesel Available">
-                            Available
-                          </label>
-
-                          <label class="form-check-label" for="fuelStateUnavailableDiesel">
-                            <input class="form-check-input" type="radio" id="DieselUnavailable"
-                              name="fuelStateDiesel" value="Diesel Unavailable">
-                            Unavailable
-                          </label>
-                        </div>
-                      </div>
+                    <div class="text-center" style="display: flex; justify-content: center;">
+                      <button class="btn btn-primary d-block btn-user w-100" type="submit"
+                        style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 15px; width: 100%; color: white; text-decoration: none;">
+                        SAVE
+                      </button>
                     </div>
-
-                  </div>
+                  </form>
                 </div>
-                <div class="text-center" style="display: flex; justify-content: center;">
-                  <button class="btn btn-primary d-block btn-user w-100" type="submit" style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 15px; width: 100%; color: white; text-decoration: none;">
-                   SAVE
-                  </button>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- end form -->
-</section>
-</main>
+      <!-- end form -->
+    </section>
+  </main>
 
   <!-- start footer -->
   <footer class="footer">

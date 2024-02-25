@@ -34,7 +34,7 @@ if (BMID) {
     if (docSnap.exists()) {
         const BMData = docSnap.data();
         stationID = BMData.station_id;
-    } 
+    }
 
 } else {
     window.location.href = "login.html";
@@ -64,24 +64,29 @@ async function retrieveAndPopulateForm() {
             document.getElementById("StationName").style.color = "#f8a71a98";
             document.getElementById("StationLocation").style.color = "#f8a71a98";
 
-            if(stationData.open_hour != null)
-            document.getElementById("OpenHour").value = stationData.open_hour;
+            if (stationData.open_hour != null)
+                document.getElementById("OpenHour").value = stationData.open_hour;
 
-            if(stationData.close_hour != null)
-            document.getElementById("CloseHour").value = stationData.close_hour;
-            
-            if(stationData.image_station != null)
-            document.getElementById('imageUpload').value = stationData.image_station;
+            if (stationData.close_hour != null)
+                document.getElementById("CloseHour").value = stationData.close_hour;
 
-            if(stationData.occupancy_level != null)
-            document.getElementById('occupancyLevel').value = stationData.occupancy_level;
+            if (stationData.image_station != null)
+                document.getElementById('imageUpload').value = stationData.image_station;
 
-            // Update the label text to the selected file's name
-            // if(stationData.image_station != null){
-            //     const imageLabel = document.getElementById('imageLabel');
-            //     imageLabel.textContent = stationData.image_station;
-            // }
-            
+            if (stationData.occupancy_level != null)
+                document.getElementById('occupancyLevel').value = stationData.occupancy_level;
+
+            if (stationData.services != null) {
+                // Iterate over each service in the array
+                for (let i = 0; i < stationData.services.length; i++) {
+                    const serviceName = stationData.services[i];
+                    retriveServices(serviceName, i); // Call your function to create input fields
+                }
+
+                document.getElementById("heightBox").style.height = 2000;
+                document.getElementById("BKimage").height = 1500;
+            }
+
             // Checkboxes and radio buttons can be populated here
             populateCheckBoxesAndRadioButtons(stationData);
 
@@ -151,8 +156,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 91 based on its checkbox state
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
-        document.getElementById("heightBox").style.height= 1500;
-        document.getElementById("BKimage").height= 1000;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 1050;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -160,8 +165,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 95 based on its checkbox state
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
-        document.getElementById("heightBox").style.height= 1500;
-        document.getElementById("BKimage").height= 1100;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 1100;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -169,8 +174,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for Diesel based on its checkbox state
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
-        document.getElementById("heightBox").style.height= 1500;
-        document.getElementById("BKimage").height= 1100;
+        document.getElementById("heightBox").style.height = 1500;
+        document.getElementById("BKimage").height = 1200;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -178,49 +183,48 @@ function toggleRadioGroup() {
 
 const form = document.getElementById("editStation");
 
-    form.addEventListener("submit", async function (event) {
-        // Prevent the form from submitting in the traditional way
-        event.preventDefault();
+form.addEventListener("submit", async function (event) {
+    // Prevent the form from submitting in the traditional way
+    event.preventDefault();
 
-        const fuelTypes = ["91", "95", "Diesel"];
-        let hasChecked = false; // Flag to track if at least one checkbox is checked for each fuel type
+    const fuelTypes = ["91", "95", "Diesel"];
+    let hasChecked = false; // Flag to track if at least one checkbox is checked for each fuel type
 
-        for (const fuelType of fuelTypes) {
-            const checkboxes = document.querySelectorAll(`input[name="fuelType"][value="${fuelType}"]`);
-            const radioButtons = document.querySelectorAll(`input[name^="fuelState${fuelType}"]`);
+    for (const fuelType of fuelTypes) {
+        const checkboxes = document.querySelectorAll(`input[name="fuelType"][value="${fuelType}"]`);
+        const radioButtons = document.querySelectorAll(`input[name^="fuelState${fuelType}"]`);
 
-            const checkedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+        const checkedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
 
-            if (checkedCheckboxes.length > 0) {
-                const checkedRadioButtons = Array.from(radioButtons).filter(radio => radio.checked);
-                if (checkedRadioButtons.length === 0) {
-                    showAlert(`Please select the status for Fuel Type ${fuelType}`);
-                    return; // Prevent form submission if a validation check fails
-                }
-
-                hasChecked = true;
+        if (checkedCheckboxes.length > 0) {
+            const checkedRadioButtons = Array.from(radioButtons).filter(radio => radio.checked);
+            if (checkedRadioButtons.length === 0) {
+                showAlert(`Please select the status for Fuel Type ${fuelType}`);
+                return; // Prevent form submission if a validation check fails
             }
+
+            hasChecked = true;
         }
+    }
 
-        // Check if an image has been selected
-        // const imageUpload = document.getElementById("imageUpload");
-        // if (imageUpload.files.length === 0) {
-        //     alert("Please select an image");
-        //     return; // Prevent form submission if a validation check fails
-        // }
+    // Check if formServiceArray is not empty
+    if (formServiceArray.length === 0) {
+        showAlert("Please add at least one service");
+        return; // Prevent form submission if formServiceArray is empty
+    }
 
-        // If all validation checks pass, you can proceed to update the Firestore document
-        if (hasChecked) {
-            await AddStation();
+    // If all validation checks pass, you can proceed to update the Firestore document
+    if (hasChecked) {
+        await AddStation();
 
-            window.location.href = "homepagePM.html";
-        } else {
-            showAlert("Please select at least one checkbox for each fuel type");
-        }
+        window.location.href = "homepagePM.html";
+    } else {
+        showAlert("Please select at least one checkbox for each fuel type");
+    }
 
-    });
+});
 
-    retrieveAndPopulateForm();
+retrieveAndPopulateForm();
 
 // set to station doc
 async function AddStation() {
@@ -262,6 +266,7 @@ async function AddStation() {
             fuel_type: fuelTypeArray,
             fuel_status: fuelStatevalue,
             occupancy_level: occupancyLevel,
+            services: formServiceArray,
         });
         console.log("Data successfully updated in Firestore.");
     } catch (error) {
@@ -269,15 +274,142 @@ async function AddStation() {
     }
 }
 
-// Add an event listener to the file input
-// document.getElementById('imageUpload').addEventListener('change', function () {
-//     const imageLabel = document.getElementById('imageLabel');
 
-//     // Update the label text to the selected file's name
-//     imageLabel.textContent = imageUpload.files[0].name;
- 
-// });
+const serviceButton = document.getElementById("stationServiesButton");
+serviceButton.addEventListener("click", async function (event) {
+    addServiceField();
+    document.getElementById("heightBox").style.height = 1500;
+    document.getElementById("BKimage").height = 1500;
+});
 
+
+const formServiceArray = [];
+
+// Get the container element
+const servicesContainer = document.getElementById('servicesContainer');
+
+// Function to create input fields based on services data
+function retriveServices(serviceName, index) {
+    const stationServicesSpan = document.getElementById('stationServies');
+    if (stationServicesSpan) {
+        stationServicesSpan.innerHTML = '';
+    }
+
+    // Create a new container div for each pair
+    const containerDiv = document.createElement('div');
+    containerDiv.style = 'display: flex; align-items: center;'; // Set display property to flex
+
+    // Create a new input element
+    const newInput = document.createElement('input');
+    newInput.className = 'form-control form-control-user';
+    newInput.type = 'text';
+    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.name = 'stationServies';
+    newInput.placeholder = 'Edit your station services';
+    newInput.value = serviceName; // Set the value from the Firebase data
+    newInput.required = true;
+
+    // Create a new button element
+    const newButton = document.createElement('button');
+    newButton.type = 'button';
+    newButton.className = 'add-button';
+    newButton.style = 'border: 2px solid #E74A3B; border-radius: 45%; background-color: white; height: 35px; width: 35px;';
+
+    // Create a new icon element
+    const newIcon = document.createElement('i');
+    newIcon.className = 'fas fa-trash-alt'; // Font Awesome delete icon
+    // Add a style to set the color to red
+    newIcon.style.color = '#E74A3B';
+
+    // Append the icon to the button
+    newButton.appendChild(newIcon);
+
+    // Append the input and button to the container div
+    containerDiv.appendChild(newInput);
+    containerDiv.appendChild(newButton);
+
+
+    // Store the initial value when the input field is created
+    formServiceArray[index] = newInput.value.trim();
+
+
+    // Add an event listener to the input field for changes
+    newInput.addEventListener('input', function () {
+        // Get the trimmed value of the input field
+        const updatedServiceName = newInput.value.trim();
+
+        // Update the array with the new value
+        formServiceArray[index] = updatedServiceName;
+    });
+
+    // Add an event listener to the delete button
+    newButton.addEventListener('click', function () {
+        showConfirm(
+            'Are you sure you want to delete this service?',
+            function () {
+                // Remove the corresponding entry from the array
+                formServiceArray.splice(index, 1);
+
+                // Remove the container div from the main container
+                servicesContainer.removeChild(containerDiv);
+
+                // Log the updated array (for testing purposes)
+                console.log('Updated Services Array:', formServiceArray);
+                console.log('User confirmed.');
+            },
+            function () {
+                // Code to execute on cancel
+                console.log('User canceled.');
+            }
+        );
+    });
+
+    // Append the container div to the main container
+    servicesContainer.appendChild(containerDiv);
+}
+
+
+async function addServiceField() {
+    const stationServicesSpan = document.getElementById('stationServies');
+    if (stationServicesSpan) {
+        stationServicesSpan.remove();
+    }
+
+    let index = formServiceArray.length;
+
+    // Create a new container div for each pair
+    const containerDiv = document.createElement('div');
+    containerDiv.style = 'display: flex; align-items: center;'; // Set display property to flex
+
+    // Create a new input element
+    const newInput = document.createElement('input');
+    newInput.className = 'form-control form-control-user';
+    newInput.type = 'text';
+    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.name = 'stationServies';
+    newInput.placeholder = 'Add your station services';
+    newInput.required = true;
+
+    document.getElementById("BKimage").height = 1050;
+
+    containerDiv.appendChild(newInput);
+
+    // Store the initial value when the input field is created
+    formServiceArray[index] = '';
+
+
+    // Add an event listener to the input field for changes
+    newInput.addEventListener('input', function () {
+        // Get the trimmed value of the input field
+        const updatedServiceName = newInput.value.trim();
+
+        // Update the array with the new value
+        formServiceArray[index] = updatedServiceName;
+    });
+
+    // Append the container div to the main container
+    servicesContainer.appendChild(containerDiv);
+}
 
 // change alert style
 function showAlert(message) {
@@ -292,7 +424,7 @@ function showAlert(message) {
     overlay.style.alignItems = 'center';
     overlay.style.justifyContent = 'center';
     overlay.style.zIndex = '9999';
-  
+
     var customAlert = document.createElement('div');
     customAlert.style.backgroundColor = '#fff';
     customAlert.style.padding = '20px';
@@ -301,25 +433,25 @@ function showAlert(message) {
     customAlert.style.textAlign = 'center';
     customAlert.style.display = 'flex';
     customAlert.style.flexDirection = 'column'; // Align items in a column
-  
+
     var header = document.createElement('div');
     header.style.display = 'flex';
     header.style.alignItems = 'center';
     header.style.marginBottom = '10px'; // Spacing between header and message
-  
+
     var imgElement = document.createElement('img');
     imgElement.src = '../images/logo_no_bkg.png'; // Add your image path here
     imgElement.style.width = '50px';
     imgElement.style.marginRight = '10px'; // Space between image and text
-  
+
     var headerText = document.createElement('span');
     headerText.textContent = '91 Website'; // Your header text
     headerText.style.color = '#000';
-  
+
     var messageElement = document.createElement('span');
     messageElement.textContent = message;
     messageElement.style.color = '#000';
-  
+
     var closeButton = document.createElement('button');
     closeButton.textContent = 'OK';
     closeButton.style.padding = '3px 8px'; // Adjust button size
@@ -329,11 +461,11 @@ function showAlert(message) {
     closeButton.style.color = '#fff';
     closeButton.style.marginTop = '10px';
     closeButton.style.alignSelf = 'flex-end'; // Align button to the right
-  
+
     closeButton.addEventListener('click', function () {
-      document.body.removeChild(overlay);
+        document.body.removeChild(overlay);
     });
-  
+
     header.appendChild(imgElement);
     header.appendChild(headerText);
     customAlert.appendChild(header);
@@ -341,4 +473,87 @@ function showAlert(message) {
     customAlert.appendChild(closeButton);
     overlay.appendChild(customAlert);
     document.body.appendChild(overlay);
-  }
+}
+
+function showConfirm(message, onConfirm, onCancel) {
+    var overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+
+    var customAlert = document.createElement('div');
+    customAlert.style.backgroundColor = '#fff';
+    customAlert.style.padding = '20px';
+    customAlert.style.border = '1px solid #ccc';
+    customAlert.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+    customAlert.style.textAlign = 'center';
+    customAlert.style.display = 'flex';
+    customAlert.style.flexDirection = 'column'; // Align items in a column
+
+    var header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.marginBottom = '10px'; // Spacing between header and message
+
+    var imgElement = document.createElement('img');
+    imgElement.src = '../images/logo_no_bkg.png'; // Add your image path here
+    imgElement.style.width = '50px';
+    imgElement.style.marginRight = '10px'; // Space between image and text
+
+    var headerText = document.createElement('span');
+    headerText.textContent = '91 Website'; // Your header text
+    headerText.style.color = '#000';
+
+    var messageElement = document.createElement('span');
+    messageElement.textContent = message;
+    messageElement.style.color = '#000';
+
+    var confirmButton = document.createElement('button');
+    confirmButton.textContent = 'OK';
+    confirmButton.style.padding = '3px 130px'; // Adjust button size
+    confirmButton.style.cursor = 'pointer';
+    confirmButton.style.border = 'none';
+    confirmButton.style.backgroundColor = 'red'; // Green color for confirm
+    confirmButton.style.color = '#fff';
+    confirmButton.style.marginTop = '10px';
+
+
+    confirmButton.addEventListener('click', function () {
+        document.body.removeChild(overlay);
+        if (typeof onConfirm === 'function') {
+            onConfirm();
+        }
+    });
+
+    var cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.style.padding = '3px 130px'; // Adjust button size
+    cancelButton.style.cursor = 'pointer';
+    cancelButton.style.border = 'none';
+    cancelButton.style.backgroundColor = '#ccc'; // Gray color for cancel
+    cancelButton.style.color = '#fff';
+    cancelButton.style.marginTop = '10px';
+
+    cancelButton.addEventListener('click', function () {
+        document.body.removeChild(overlay);
+        if (typeof onCancel === 'function') {
+            onCancel();
+        }
+    });
+
+    header.appendChild(imgElement);
+    header.appendChild(headerText);
+    customAlert.appendChild(header);
+    customAlert.appendChild(messageElement);
+    customAlert.appendChild(confirmButton);
+    customAlert.appendChild(cancelButton);
+    overlay.appendChild(customAlert);
+    document.body.appendChild(overlay);
+}

@@ -54,32 +54,53 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
         if (docSnap.exists()) {
             const stationData = docSnap.data();
 
-            if(stationData.open_hour != null){
+            if (stationData.open_hour != null) {
                 const openHour = convertTimeToAMPM(stationData.open_hour);
                 document.getElementById("OpenHour").textContent = openHour;
                 document.getElementById("buttonEditOpenHour").style.display = 'inline-block';
-            }else{
+            } else {
                 document.getElementById("OpenHour").textContent = "No available data yet";
-                document.getElementById("OpenHour").style.fontSize = "smaller"; 
+                document.getElementById("OpenHour").style.fontSize = "smaller";
                 document.getElementById("OpenHour").style.fontWeight = "lighter";
             }
 
-            if(stationData.close_hour != null){
+            const services = stationData.services;
+            const servicesList = document.getElementById('Services');
+
+            // Loop through services elements
+            if (services && services.length > 0) {
+
+                // Loop through services elements
+                services.forEach((service, index) => {
+                    const listItem = document.createElement('li');
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = service;
+                    listItem.appendChild(paragraph);
+                    servicesList.appendChild(listItem);
+                });
+
+                document.getElementById("buttonEditServices").style.display = 'inline-block';
+            } else {
+                servicesList.innerHTML = "No available data yet";
+                servicesList.style.color = "rgb(108, 110, 122)";
+            }
+
+            if (stationData.close_hour != null) {
                 const closeHour = convertTimeToAMPM(stationData.close_hour);
                 document.getElementById("CloseHour").textContent = closeHour;
                 document.getElementById("buttonEditColseHour").style.display = 'inline-block';
-            }else{
+            } else {
                 document.getElementById("CloseHour").textContent = "No available data yet";
-                document.getElementById("CloseHour").style.fontSize = "smaller"; 
+                document.getElementById("CloseHour").style.fontSize = "smaller";
                 document.getElementById("CloseHour").style.fontWeight = "lighter";
             }
 
-            if(stationData.occupancy_level != null){
+            if (stationData.occupancy_level != null) {
                 document.getElementById("occupancyLevel").textContent = stationData.occupancy_level;
                 document.getElementById("buttonEditOccupancyLevel").style.display = 'inline-block';
-            }else{
+            } else {
                 document.getElementById("occupancyLevel").textContent = "No available data yet";
-                document.getElementById("occupancyLevel").style.fontSize = "smaller"; 
+                document.getElementById("occupancyLevel").style.fontSize = "smaller";
                 document.getElementById("occupancyLevel").style.fontWeight = "lighter";
             }
 
@@ -101,13 +122,13 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     }
                 });
 
-            }else{
+            } else {
                 document.getElementById("fuelDisplay").textContent = "No available data yet";
                 document.getElementById("fuelDisplay").style.color = "rgb(108, 110, 122)";
             }
 
-             // Loop through fuel status elements and set their display and width based on the data
-             if (fuelStatus) {
+            // Loop through fuel status elements and set their display and width based on the data
+            if (fuelStatus) {
                 fuelStatus.forEach((status) => {
                     const [type, state] = status.split(" ");
 
@@ -147,7 +168,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     }
                 });
 
-            }else{
+            } else {
                 document.getElementById("fuelStatusDisplay").textContent = "No available data yet";
                 document.getElementById("fuelStatusDisplay").style.color = "rgb(108, 110, 122)";
             }
@@ -165,12 +186,12 @@ function convertTimeToAMPM(time24) {
     let hours = parseInt(splitTime[0], 10);
     let minutes = splitTime[1];
     let period = hours < 12 ? 'AM' : 'PM';
-  
+
     if (hours === 0) {
-      hours = 12; // 0 hours is 12 AM
+        hours = 12; // 0 hours is 12 AM
     } else if (hours > 12) {
-      hours -= 12; // Convert to 12-hour format
+        hours -= 12; // Convert to 12-hour format
     }
-  
+
     return `${hours}:${minutes} ${period}`;
-  }
+}
