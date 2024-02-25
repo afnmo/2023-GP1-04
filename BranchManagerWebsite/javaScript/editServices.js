@@ -173,6 +173,56 @@ function createInputFields(serviceName, index) {
     servicesContainer.appendChild(containerDiv);
 }
 
+const serviceButton = document.getElementById("stationServiesButton");
+serviceButton.addEventListener("click", async function (event) {
+    addServiceField();
+    document.getElementById("BKimage").height = 800;
+});
+
+
+async function addServiceField() {
+    const stationServicesSpan = document.getElementById('stationServies');
+    if (stationServicesSpan) {
+        stationServicesSpan.remove();
+    }
+
+    let index = formServiceArray.length;
+
+    // Create a new container div for each pair
+    const containerDiv = document.createElement('div');
+    containerDiv.style = 'display: flex; align-items: center;'; // Set display property to flex
+
+    // Create a new input element
+    const newInput = document.createElement('input');
+    newInput.className = 'form-control form-control-user';
+    newInput.type = 'text';
+    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.name = 'stationServies';
+    newInput.placeholder = 'Add your station services';
+    newInput.required = true;
+
+    document.getElementById("BKimage").height = 1050;
+
+    containerDiv.appendChild(newInput);
+
+    // Store the initial value when the input field is created
+    formServiceArray[index] = '';
+
+
+    // Add an event listener to the input field for changes
+    newInput.addEventListener('input', function () {
+        // Get the trimmed value of the input field
+        const updatedServiceName = newInput.value.trim();
+
+        // Update the array with the new value
+        formServiceArray[index] = updatedServiceName;
+    });
+
+    // Append the container div to the main container
+    servicesContainer.appendChild(containerDiv);
+}
+
+
 function showConfirm(message, onConfirm, onCancel) {
     var overlay = document.createElement('div');
     overlay.style.position = 'fixed';

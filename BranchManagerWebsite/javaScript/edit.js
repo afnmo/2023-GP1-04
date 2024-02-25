@@ -128,13 +128,13 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1000;
+        document.getElementById("BKimage").height = 1200;
     } else if (numCheckbox === 2) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1000;
+        document.getElementById("BKimage").height = 1300;
     } else if (numCheckbox === 3) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1100;
+        document.getElementById("BKimage").height = 1500;
     }
 }
 
@@ -278,7 +278,7 @@ async function AddStation() {
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
     addServiceField();
-    document.getElementById("heightBox").style.height = 1500;
+    document.getElementById("heightBox").style.height = 2000;
     document.getElementById("BKimage").height = 1500;
 });
 
