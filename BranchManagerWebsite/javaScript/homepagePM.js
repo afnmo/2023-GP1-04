@@ -77,12 +77,39 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                     paragraph.textContent = service;
                     listItem.appendChild(paragraph);
                     servicesList.appendChild(listItem);
+
+                    // Add margin after each list item
+                    listItem.style.marginBottom = '30px';
                 });
 
                 document.getElementById("buttonEditServices").style.display = 'inline-block';
             } else {
                 servicesList.innerHTML = "No available data yet";
                 servicesList.style.color = "rgb(108, 110, 122)";
+            }
+
+            const promotions = stationData.promotions;
+            const promotionsList = document.getElementById('Promotions');
+
+            // Loop through promotions elements
+            if (promotions && promotions.length > 0) {
+
+                // Loop through services elements
+                promotions.forEach((promotion, index) => {
+                    const listItem = document.createElement('li');
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = promotion.promotion;
+                    listItem.appendChild(paragraph);
+                    promotionsList.appendChild(listItem);
+
+                    // Add margin after each list item
+                    listItem.style.marginBottom = '30px';
+                });
+
+
+            } else {
+                promotionsList.innerHTML = "No available data yet";
+                promotionsList.style.color = "rgb(108, 110, 122)";
             }
 
             if (stationData.close_hour != null) {
