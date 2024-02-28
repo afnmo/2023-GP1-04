@@ -76,7 +76,7 @@ async function Addrequests() {
             name: stationName,
             location: stationLocation,
             branch_manager_id: SID, // Store the foreign key
-            accepted: true,
+            accepted: 'pending',
         });        
 
         // Get the ID of the newly created "Branch_Manager" document
