@@ -75,8 +75,8 @@ async function Addrequests() {
         const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
             name: stationName,
             location: stationLocation,
-            branch_manager_id: SID, // Store the foreign key
-            accepted: 'pending',
+            branch_manager_id: SID, 
+            accepted: true, //'pending',
         });        
 
         // Get the ID of the newly created "Branch_Manager" document

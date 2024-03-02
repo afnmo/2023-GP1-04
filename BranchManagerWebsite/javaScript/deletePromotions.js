@@ -61,7 +61,6 @@ async function deleteEndedPromotion() {
                 // Update the document with the filtered promotions
                 await updateDoc(documentPath, { promotions: validPromotions });
 
-                console.log('Invalid promotions deleted successfully.');
             } else {
                 console.log('No promotions found in the document.');
             }

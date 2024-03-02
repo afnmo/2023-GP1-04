@@ -347,6 +347,15 @@ async function addPromotionField() {
     const containerDivPromotions = document.createElement('div');
     containerDivPromotions.style = 'display: flex; flex-wrap: wrap;'; // Set display property to flex
 
+    // Create a label element
+    const labelElement = document.createElement('label');
+    labelElement.textContent = 'Promotion ' + (index + 1) + ':';
+    labelElement.style.display = 'block';
+    labelElement.style.marginRight = '400px';
+    labelElement.style.marginBottom = '5px';
+    labelElement.style.marginTop = '23px';
+    containerDivPromotions.appendChild(labelElement);
+
     // Create a new input element
     const containerDivStartDate = document.createElement('div');
     containerDivStartDate.className = 'col-sm-6 mb-3 mb-sm-0';
