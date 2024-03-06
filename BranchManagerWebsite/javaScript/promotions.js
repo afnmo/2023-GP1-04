@@ -117,7 +117,7 @@ function updateInputFields(promotionName, index) {
     const labelElement = document.createElement('label');
     labelElement.textContent = 'Promotion ' + (index + 1) + ':';
     labelElement.style.display = 'block';
-    labelElement.style.marginRight = '400px';
+    labelElement.style.marginRight = '380px';
     labelElement.style.marginBottom = '5px';
     labelElement.style.marginTop = '23px';
     containerDiv.appendChild(labelElement);
@@ -158,6 +158,7 @@ function updateInputFields(promotionName, index) {
     inputStartDate.name = 'start_name';
     inputStartDate.required = true;
     inputStartDate.style.fontSize = '16px';
+    inputStartDate.style.width = '230px';
 
     // Set the minimum date to today
     const today = new Date();
@@ -189,7 +190,7 @@ function updateInputFields(promotionName, index) {
     inputEndDate.name = 'end_name';
     inputEndDate.required = true;
     inputEndDate.style.fontSize = '16px';
-    inputEndDate.style.marginLeft = '3px';
+    inputEndDate.style.width = '230px';
 
     // Set the minimum date to today
     inputEndDate.min = todayFormatted;
@@ -218,7 +219,7 @@ function updateInputFields(promotionName, index) {
     inputPromotion.name = 'promotion';
     inputPromotion.required = true;
     inputPromotion.style.fontSize = '16px';
-    inputPromotion.style.width = '535px';
+    inputPromotion.style.width = '487px';
     inputPromotion.style.height = '60px';
 
     containerDivPromotion.appendChild(labelPromotion);
@@ -351,7 +352,7 @@ async function addPromotionField() {
     const labelElement = document.createElement('label');
     labelElement.textContent = 'Promotion ' + (index + 1) + ':';
     labelElement.style.display = 'block';
-    labelElement.style.marginRight = '400px';
+    labelElement.style.marginRight = '380px';
     labelElement.style.marginBottom = '5px';
     labelElement.style.marginTop = '23px';
     containerDivPromotions.appendChild(labelElement);
@@ -373,6 +374,7 @@ async function addPromotionField() {
     inputStartDate.name = 'start_name';
     inputStartDate.required = true;
     inputStartDate.style.fontSize = '16px';
+    inputStartDate.style.width = '230px';
 
     // Set the minimum date to today
     const today = new Date();
@@ -401,7 +403,7 @@ async function addPromotionField() {
     inputEndDate.name = 'end_name';
     inputEndDate.required = true;
     inputEndDate.style.fontSize = '16px';
-    inputEndDate.style.marginLeft = '3px';
+    inputEndDate.style.width = '230px';
 
     // Set the minimum date to today
     inputEndDate.min = todayFormatted;
@@ -429,7 +431,7 @@ async function addPromotionField() {
     inputPromotion.name = 'promotion';
     inputPromotion.required = true;
     inputPromotion.style.fontSize = '16px';
-    inputPromotion.style.width = '535px';
+    inputPromotion.style.width = '487px';
     inputPromotion.style.height = '60px';
 
     containerDivPromotion.appendChild(labelPromotion);

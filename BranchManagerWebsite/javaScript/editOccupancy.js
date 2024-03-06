@@ -54,8 +54,8 @@ async function retrieveAndPopulateForm() {
             // Access data for each document
             const stationData = docSnap.data();
 
-            if (stationData.occupancy_level != null)
-                document.getElementById("occupancyLevel").value = stationData.occupancy_level;
+            if (stationData.maximum != null)
+                document.getElementById("occupancyLevel").value = stationData.maximum;
 
         } else {
             console.log("Document does not exist.");
@@ -78,11 +78,12 @@ retrieveAndPopulateForm();
 // update to station doc
 async function updateStation() {
     const occupancyLevel = document.getElementById("occupancyLevel").value;
+    const occupancyLevelValue = parseInt(occupancyLevel, 10);
 
     // Update the station with more information
     try {
         await updateDoc(documentPath, {
-            occupancy_level: occupancyLevel,
+            maximum: occupancyLevelValue,
         });
         console.log("Data successfully updated in Firestore.");
     } catch (error) {

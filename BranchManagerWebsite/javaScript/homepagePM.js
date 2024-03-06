@@ -122,8 +122,9 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
                 document.getElementById("CloseHour").style.fontWeight = "lighter";
             }
 
-            if (stationData.occupancy_level != null) {
-                document.getElementById("occupancyLevel").textContent = stationData.occupancy_level;
+            if (stationData.maximum != null) {
+                document.getElementById("occupancyLevel").textContent = stationData.maximum;
+                document.getElementById("occupancyImage").style.display = 'block';
                 document.getElementById("buttonEditOccupancyLevel").style.display = 'inline-block';
             } else {
                 document.getElementById("occupancyLevel").textContent = "No available data yet";

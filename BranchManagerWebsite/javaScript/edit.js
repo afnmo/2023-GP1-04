@@ -73,8 +73,8 @@ async function retrieveAndPopulateForm() {
             if (stationData.image_station != null)
                 document.getElementById('imageUpload').value = stationData.image_station;
 
-            if (stationData.occupancy_level != null)
-                document.getElementById('occupancyLevel').value = stationData.occupancy_level;
+            if (stationData.maximum != null)
+                document.getElementById('occupancyLevel').value = stationData.maximum;
 
             if (stationData.services != null) {
                 // Iterate over each service in the array
@@ -232,6 +232,7 @@ async function AddStation() {
     const OpenHour = document.getElementById("OpenHour").value;
     const CloseHour = document.getElementById("CloseHour").value;
     const occupancyLevel = document.getElementById("occupancyLevel").value;
+    const occupancyLevelValue = parseInt(occupancyLevel, 10);
     const fuelType = document.getElementsByName("fuelType");
     let fuelTypeArray = [];
     let fuelStatevalue = [];
@@ -265,7 +266,7 @@ async function AddStation() {
             image_station: stationImage,
             fuel_type: fuelTypeArray,
             fuel_status: fuelStatevalue,
-            occupancy_level: occupancyLevel,
+            maximum: occupancyLevelValue,
             services: formServiceArray,
         });
         console.log("Data successfully updated in Firestore.");
@@ -303,7 +304,7 @@ function retriveServices(serviceName, index) {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.style = 'margin: 5px; font-size: 18px; width: 495px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Edit your station services';
     newInput.value = serviceName; // Set the value from the Firebase data
@@ -385,7 +386,7 @@ async function addServiceField() {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.style = 'margin: 5px; font-size: 18px; width: 495px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Add your station services';
     newInput.required = true;
