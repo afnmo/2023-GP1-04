@@ -55,11 +55,21 @@ async function retrieveAndPopulateForm() {
             const stationData = docSnap.data();
 
             if (stationData.services != null) {
+                // Retrieve the last stored height value from localStorage
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 700;
+
                 // Iterate over each service in the array
                 for (let i = 0; i < stationData.services.length; i++) {
                     const serviceName = stationData.services[i];
                     createInputFields(serviceName, i); // Call your function to create input fields
+                    heightRetrive = parseInt(heightRetrive) + 60;
                 }
+
+                // Set the final height after processing all services
+                document.getElementById("BKimage").height = heightRetrive;
+
+                // Store the updated height value in localStorage
+                localStorage.setItem("imageHeightRetrive", heightRetrive);
             }
 
         } else {
@@ -137,29 +147,41 @@ function createInputFields(serviceName, index) {
     // Store the initial value when the input field is created
     formServiceArray[index] = newInput.value.trim();
 
-
-    // Add an event listener to the input field for changes
-    newInput.addEventListener('input', function () {
+    let sheckIndex = true;
+    // Define the input event handler function
+    function handleServiceInput() {
         // Get the trimmed value of the input field
         const updatedServiceName = newInput.value.trim();
 
-        // Update the array with the new value
-        formServiceArray[index] = updatedServiceName;
-    });
+        // Update the array with the new value at the same index
+        if (index < formServiceArray.length) {
+            formServiceArray[index] = updatedServiceName;
+        } else {
+            if(sheckIndex){
+                index--;
+                sheckIndex = false;
+            }
+        }
+    }
+
+    // Add an event listener to the input field for changes
+    newInput.addEventListener('input', handleServiceInput);
 
     // Add an event listener to the delete button
-    newButton.addEventListener('click', function () {
+    newButton.addEventListener('click', async function () {
         showConfirm(
             'Are you sure you want to delete this service?',
-            function () {
+            async function () {
+                // Remove the input event listener
+                newInput.removeEventListener('input', handleServiceInput);
+
                 // Remove the corresponding entry from the array
                 formServiceArray.splice(index, 1);
 
                 // Remove the container div from the main container
                 servicesContainer.removeChild(containerDiv);
 
-                // Log the updated array (for testing purposes)
-                console.log('Updated Services Array:', formServiceArray);
+                await updateStation();
                 console.log('User confirmed.');
             },
             function () {
@@ -173,12 +195,20 @@ function createInputFields(serviceName, index) {
     servicesContainer.appendChild(containerDiv);
 }
 
+let height = localStorage.getItem("imageHeightRetrive") || 700;
+
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
     addServiceField();
-    document.getElementById("BKimage").height = 800;
-});
 
+    document.getElementById("BKimage").height = height;
+    height = parseInt(height) + 100;
+
+    // Store the updated height value in localStorage
+    localStorage.setItem("imageHeight", height);
+});
+localStorage.removeItem("imageHeight");
+localStorage.removeItem("imageHeightRetrive");
 
 async function addServiceField() {
     const stationServicesSpan = document.getElementById('stationServies');

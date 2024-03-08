@@ -51,6 +51,9 @@ async function retrieveAndPopulateForm() {
     try {
         const docSnap = await getDoc(documentPath);
         if (docSnap.exists()) {
+            // Retrieve the last stored height value from localStorage
+            let heightRetrive = localStorage.getItem("imageHeightRetrive") || 700;
+
             // Access data for each document
             const stationData = docSnap.data();
 
@@ -59,7 +62,15 @@ async function retrieveAndPopulateForm() {
                 for (let i = 0; i < stationData.promotions.length; i++) {
                     const serviceName = stationData.promotions[i];
                     updateInputFields(serviceName, i); // Call your function to create input fields
+                    heightRetrive = parseInt(heightRetrive) + 200;
                 }
+
+
+                // Set the final height after processing all services
+                document.getElementById("BKimage").height = heightRetrive;
+
+                // Store the updated height value in localStorage
+                localStorage.setItem("imageHeightRetrive", heightRetrive);
             }
 
         } else {
@@ -100,14 +111,11 @@ let formPromotionArray = [];
 
 // Function to update input fields based on services data
 function updateInputFields(promotionName, index) {
-    document.getElementById("BKimage").height = 1000;
 
     const stationServicesSpan = document.getElementById('promotionsText');
     if (stationServicesSpan) {
         stationServicesSpan.remove();
     }
-
-    console.log(promotionName);
 
     // Create a new container div for each pair
     const containerDiv = document.createElement('div');
@@ -301,20 +309,29 @@ function updateInputFields(promotionName, index) {
     const formContainer = document.getElementById('promotionsContainer');
     formContainer.addEventListener('input', handlePromotionInput);
 
+    // Function to remove event listeners from the promotion
+    function removePromotionListeners() {
+        formContainer.removeEventListener('input', handlePromotionInput);
+
+    }
 
     // Add an event listener to the delete button
-    newButton.addEventListener('click', function () {
+    newButton.addEventListener('click', async function () {
         showConfirm(
             'Are you sure you want to delete this promotion?',
-            function () {
-                // Remove the corresponding entry from the array
+            async function () {
+
+                // Remove event listeners before deletion
+                removePromotionListeners();
+
                 formPromotionArray.splice(index, 1);
 
                 // Remove the container div from the main container
                 promotionsContainer.removeChild(containerDiv);
 
-                // Log the updated array (for testing purposes)
-                console.log('Updated Services Array:', formPromotionArray);
+
+                await updateStation();
+
                 console.log('User confirmed.');
             },
             function () {
@@ -328,12 +345,19 @@ function updateInputFields(promotionName, index) {
     promotionsContainer.appendChild(containerDiv);
 }
 
+let height = localStorage.getItem("imageHeightRetrive") || 700;
+
 const PromotionsButton = document.getElementById("stationPromotionsButton");
 PromotionsButton.addEventListener("click", async function (event) {
     addPromotionField();
-    document.getElementById("BKimage").height = 870;
-});
+    document.getElementById("BKimage").height = height;
+    height = parseInt(height) + 250;
 
+    // Store the updated height value in localStorage
+    localStorage.setItem("imageHeight", height);
+});
+localStorage.removeItem("imageHeight");
+localStorage.removeItem("imageHeightRetrive");
 
 async function addPromotionField() {
     const stationServicesSpan = document.getElementById('promotionsText');

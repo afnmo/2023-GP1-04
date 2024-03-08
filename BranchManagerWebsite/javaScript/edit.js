@@ -76,19 +76,27 @@ async function retrieveAndPopulateForm() {
             if (stationData.maximum != null)
                 document.getElementById('occupancyLevel').value = stationData.maximum;
 
+            // Checkboxes and radio buttons can be populated here
+            populateCheckBoxesAndRadioButtons(stationData);
+
+
             if (stationData.services != null) {
+                // Retrieve the last stored height value from localStorage
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 1300;
+
                 // Iterate over each service in the array
                 for (let i = 0; i < stationData.services.length; i++) {
                     const serviceName = stationData.services[i];
                     retriveServices(serviceName, i); // Call your function to create input fields
+                    heightRetrive = parseInt(heightRetrive) + 100;
                 }
 
-                document.getElementById("heightBox").style.height = 2000;
-                document.getElementById("BKimage").height = 1500;
-            }
+                // Set the final height after processing all services
+                document.getElementById("BKimage").height = heightRetrive;
 
-            // Checkboxes and radio buttons can be populated here
-            populateCheckBoxesAndRadioButtons(stationData);
+                // Store the updated height value in localStorage
+                localStorage.setItem("imageHeightRetrive", heightRetrive);
+            }
 
         } else {
             console.log("Document does not exist.");
@@ -131,10 +139,10 @@ function populateCheckBoxesAndRadioButtons(stationData) {
         document.getElementById("BKimage").height = 1200;
     } else if (numCheckbox === 2) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1300;
+        document.getElementById("BKimage").height = 1200;
     } else if (numCheckbox === 3) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1500;
+        document.getElementById("BKimage").height = 1250;
     }
 }
 
@@ -157,7 +165,7 @@ function toggleRadioGroup() {
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1050;
+        document.getElementById("BKimage").height = 1090;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -166,7 +174,7 @@ function toggleRadioGroup() {
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1100;
+        document.getElementById("BKimage").height = 1200;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -175,7 +183,7 @@ function toggleRadioGroup() {
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1200;
+        document.getElementById("BKimage").height = 1250;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -275,14 +283,20 @@ async function AddStation() {
     }
 }
 
+let height = localStorage.getItem("imageHeightRetrive") || 1300;
 
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
     addServiceField();
-    document.getElementById("heightBox").style.height = 2000;
-    document.getElementById("BKimage").height = 1500;
-});
 
+    document.getElementById("BKimage").height = height;
+    height = parseInt(height) + 200;
+
+    // Store the updated height value in localStorage
+    localStorage.setItem("imageHeight", height);
+});
+localStorage.removeItem("imageHeight");
+localStorage.removeItem("imageHeightRetrive");
 
 const formServiceArray = [];
 
@@ -333,29 +347,41 @@ function retriveServices(serviceName, index) {
     // Store the initial value when the input field is created
     formServiceArray[index] = newInput.value.trim();
 
-
-    // Add an event listener to the input field for changes
-    newInput.addEventListener('input', function () {
+    let sheckIndex = true;
+    // Define the input event handler function
+    function handleServiceInput() {
         // Get the trimmed value of the input field
         const updatedServiceName = newInput.value.trim();
+        // Update the array with the new value at the same index
+        if (index < formServiceArray.length) {
+            formServiceArray[index] = updatedServiceName;
+        } else {
+            if (sheckIndex) {
+                index--;
+                sheckIndex = false;
+            }
+        }
+    }
 
-        // Update the array with the new value
-        formServiceArray[index] = updatedServiceName;
-    });
+    // Add an event listener to the input field for changes
+    newInput.addEventListener('input', handleServiceInput);
 
     // Add an event listener to the delete button
-    newButton.addEventListener('click', function () {
+    newButton.addEventListener('click', async function () {
         showConfirm(
             'Are you sure you want to delete this service?',
-            function () {
+            async function () {
+
+                // Remove the input event listener
+                newInput.removeEventListener('input', handleServiceInput);
+
                 // Remove the corresponding entry from the array
                 formServiceArray.splice(index, 1);
 
                 // Remove the container div from the main container
                 servicesContainer.removeChild(containerDiv);
 
-                // Log the updated array (for testing purposes)
-                console.log('Updated Services Array:', formServiceArray);
+                await AddStation();
                 console.log('User confirmed.');
             },
             function () {
@@ -391,7 +417,6 @@ async function addServiceField() {
     newInput.placeholder = 'Add your station services';
     newInput.required = true;
 
-    document.getElementById("BKimage").height = 1050;
 
     containerDiv.appendChild(newInput);
 
