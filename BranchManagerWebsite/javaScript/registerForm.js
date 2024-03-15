@@ -60,8 +60,6 @@ async function Addrequests() {
         const isValidURL = validateURL(stationLocation);
 
         if (!isValidURL || stationLocation.trim() === '') {
-            // URL is not valid or empty, handle accordingly
-            console.log('Invalid or empty URL');
             urlError.textContent = "Location must be in Google Maps URL format";
             urlInput.classList.add('error');
             return; // Stop further execution

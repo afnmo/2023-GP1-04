@@ -40,54 +40,54 @@ async function checkRequests(email, password) {
             return;
         }
     });
-    console.log("Entered check requests");
-    console.log("branchManagerQuerySnapshot.empty: " + branchManagerQuerySnapshot.empty);
+    // console.log("Entered check requests");
+    // console.log("branchManagerQuerySnapshot.empty: " + branchManagerQuerySnapshot.empty);
 
     if (!branchManagerQuerySnapshot.empty) {
         // The email exists in the "branchManager" collection
-        console.log("branchManagerQuerySnapshot not empty");
+        // console.log("branchManagerQuerySnapshot not empty");
 
         // retireve the branch manager id to check if he has a station request
         //const branchManagerId11 = branchManagerQuerySnapshot.data.id;
-        console.log("docID: " + docID);
+        // console.log("docID: " + docID);
 
 
         signInWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
 
                 // User is signed in.
-                console.log("signInWithEmailAndPassword");
+                // console.log("signInWithEmailAndPassword");
                 const user = userCredential.user;
-                console.log(user);
+                // console.log(user);
                 // Check if the email exists in the "Station_Requests" collection
                 const stationRequestsRef = collection(db, "Station_Requests");
                 // const stationRequestsQuery = query(stationRequestsRef, where("email", "==", email));
                 //console.log("branchManagerId11 inside then: " + docID);
                 const stationRequestsQuery = query(stationRequestsRef, where("branch_manager_id", "==", docID));
                 const stationRequestsQuerySnapshot = await getDocs(stationRequestsQuery);
-                console.log("stationRequestsQuerySnapshot");
-                console.log("stationRequestsQuerySnapshot.empty: " + stationRequestsQuerySnapshot.empty);
+                // console.log("stationRequestsQuerySnapshot");
+                // console.log("stationRequestsQuerySnapshot.empty: " + stationRequestsQuerySnapshot.empty);
 
                 stationRequestsQuerySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    console.log(data);
+                    // console.log(data);
                 });
 
                 if (!stationRequestsQuerySnapshot.empty) {
                     // The email exists in the "Station_Requests" collection
                     // the branch manager has a request
-                    console.log("stationRequestsQuerySnapshot");
+                    // console.log("stationRequestsQuerySnapshot");
 
                     // Check if the request is accepted
                     const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
-                    console.log("data.accepted: " + data.accepted);
+                    // console.log("data.accepted: " + data.accepted);
 
                     if (data.accepted === true) {
 
                         const stationName = data.name;
-                        console.log("Station name: " + stationName);
+                        // console.log("Station name: " + stationName);
                         const stationLocation = data.location;
-                        console.log("Station Location: " + stationLocation);
+                        // console.log("Station Location: " + stationLocation);
 
                         // Get the ID of the logined "Branch_Manager" document
                         // const branchManagerId = branchManagerRef.id;
@@ -129,7 +129,7 @@ async function checkRequests(email, password) {
                     }
                     // if pending
                 } else {
-                    console.log("ELSE if (!branchManagerQuerySnapshot.empty)");
+                    // console.log("ELSE if (!branchManagerQuerySnapshot.empty)");
                     // Email doesn't exist in "Station_Requests" collection
                     // alert("you have not applied yet");
                     window.location.href = "registerFormPM.html";
@@ -139,7 +139,7 @@ async function checkRequests(email, password) {
                 // Handle errors, such as incorrect password or non-existent user.
                 //alert(error);
                 console.log(error);
-                console.log("Handle errors, such as incorrect password or non-existent user.");
+                // console.log("Handle errors, such as incorrect password or non-existent user.");
             });
 
 

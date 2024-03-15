@@ -77,10 +77,8 @@ async function notification() {
                 }
             }
 
-            console.log(upcomingPromotions);
             // Check if there are any upcoming promotions
             if (upcomingPromotions.length > 0) {
-                console.log('in');
                 const bellIcon = document.querySelector('.notification-icon');
                 bellIcon.classList.add('new-notifications'); // Add the class to indicate new notifications
 

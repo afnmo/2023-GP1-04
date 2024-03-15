@@ -1,7 +1,7 @@
 function checkPassword(){
   let password = document.getElementById("password").value;
   let cnfrmPassword = document.getElementById("cnfrm-password").value;
-  console.log(" Password:", password,'\n',"Confirm Password:",cnfrmPassword);
+  // console.log(" Password:", password,'\n',"Confirm Password:",cnfrmPassword);
   let message = document.getElementById("message");
 
   if(password.length != 0){

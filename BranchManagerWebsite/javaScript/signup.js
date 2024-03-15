@@ -29,10 +29,10 @@ let emailExists = false;
 async function registerUser(email, password) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        console.log("userCredential: " + userCredential.user);
+        // console.log("userCredential: " + userCredential.user);
         return userCredential.user;
     } catch (error) {
-        console.log("error occured in async function registerUser(email, password)");
+        // console.log("error occured in async function registerUser(email, password)");
         console.log(error);
         return null;
         //throw error;
@@ -53,11 +53,11 @@ async function addUserToFirestore(firstName, lastName, email, password) {
     try {
         const doctRef = await addDoc(collectionRef, userData);
         const branchManagerId = doctRef.id;
-        console.log("Branch Manager ID: " + branchManagerId);
+        // console.log("Branch Manager ID: " + branchManagerId);
         sessionStorage.setItem("branchManagerID", branchManagerId);
 
     } catch (error) {
-        console.log("error occured in async function addUserToFirestore(firstName, lastName, email, password)");
+        // console.log("error occured in async function addUserToFirestore(firstName, lastName, email, password)");
         console.log(error.toString);
         throw error;
     }
@@ -81,7 +81,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
             // If the email doesn't exist, register the user with Firebase Authentication
             const hashedPassword = await hashPassword(password);
             const user = await registerUser(email, password);
-            console.log("user after register user: " + user);
+            // console.log("user after register user: " + user);
 
             // Check if the email already exists
             const emailExists = await checkEmailExists(email);
@@ -100,7 +100,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
             }
 
             if (user != null) {
-                console.log("User registered:", user);
+                // console.log("User registered:", user);
 
                 // Add user registration data to Firestore
                 await addUserToFirestore(firstName, lastName, email, hashedPassword);
@@ -117,7 +117,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
                 // await checkRequests(email);
             }
             else {
-                console.log("User is null, else entered");
+                // console.log("User is null, else entered");
                 setError(document.getElementById("email"), "Email is already in use, please log in");
                 emailExists = true;
             }
@@ -150,7 +150,7 @@ async function hashPassword(password) {
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    console.log('Hashed Password (SHA-256): ' + hashHex);
+    // console.log('Hashed Password (SHA-256): ' + hashHex);
     return hashHex.toString();
     // Store 'hashHex' in your database
 }
