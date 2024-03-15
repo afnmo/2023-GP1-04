@@ -83,7 +83,7 @@ async function notification() {
 
             // Check if there are any upcoming promotions
             if (upcomingPromotions.length > 0) {
-               
+
                 const branchManagerId = stationData.branch_manager_id;
                 if (branchManagerId) {
                     const branchManagerDocRef = doc(db, 'Branch_Manager', branchManagerId);
@@ -131,10 +131,15 @@ async function notification() {
                             Sincerely,<br><br>
                             91 website <img src="../images/Logo.png" width="30" height="30"> `;
 
+                            const newLine = document.createElement('br');
+                            promotionsList.appendChild(newLine);
+                            
                             listItem.appendChild(title);
                             listItem.appendChild(paragraph);
                             promotionsList.appendChild(listItem);
 
+                            const newLine1 = document.createElement('br');
+                            promotionsList.appendChild(newLine1);
 
                             displayUpcomingPromotions = false;
                         });
@@ -191,9 +196,15 @@ async function notification() {
                 Sincerely,<br><br>
                 91 website <img src="../images/Logo.png" width="30" height="30"> `;
 
+                            const newLine = document.createElement('br');
+                            promotionsList.appendChild(newLine);
+
                             listItem.appendChild(title);
                             listItem.appendChild(paragraph);
                             promotionsList.appendChild(listItem);
+
+                            const newLine1 = document.createElement('br');
+                            promotionsList.appendChild(newLine1);
 
 
                             displayNotifications = false;
