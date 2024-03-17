@@ -62,7 +62,7 @@ async function retrieveAndPopulateForm() {
                 for (let i = 0; i < stationData.promotions.length; i++) {
                     const serviceName = stationData.promotions[i];
                     updateInputFields(serviceName, i); // Call your function to create input fields
-                    heightRetrive = parseInt(heightRetrive) + 200;
+                    heightRetrive = parseInt(heightRetrive) + 300;
                 }
 
 
@@ -351,7 +351,7 @@ const PromotionsButton = document.getElementById("stationPromotionsButton");
 PromotionsButton.addEventListener("click", async function (event) {
     addPromotionField();
     document.getElementById("BKimage").height = height;
-    height = parseInt(height) + 250;
+    height = parseInt(height) + 400;
 
     // Store the updated height value in localStorage
     localStorage.setItem("imageHeight", height);

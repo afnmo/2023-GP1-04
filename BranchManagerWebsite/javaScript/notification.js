@@ -80,6 +80,7 @@ async function notification() {
             }
 
             const promotionsList = document.getElementById('promotions');
+            let heightBK =  500;
 
             // Check if there are any upcoming promotions
             if (upcomingPromotions.length > 0) {
@@ -94,6 +95,7 @@ async function notification() {
                         const managerFirstName = branchManagerDoc.data().firstName;
                         const managerLastName = branchManagerDoc.data().lastName;
 
+
                         upcomingPromotions.forEach((upcomingPromotion, index) => {
                             const listItem = document.createElement('li');
                             listItem.classList.add('text-uppercase', 'fw-semibold', 'text-dark', 'mb-4');
@@ -104,7 +106,7 @@ async function notification() {
                             listItem.style.borderRadius = '15px';
                             listItem.style.padding = '20px';
                             listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                            listItem.style.width = '100%';
+                            listItem.style.width = '90%';
                             listItem.style.margin = 'auto';
 
                             const title = document.createElement('h3');
@@ -133,7 +135,7 @@ async function notification() {
 
                             const newLine = document.createElement('br');
                             promotionsList.appendChild(newLine);
-                            
+
                             listItem.appendChild(title);
                             listItem.appendChild(paragraph);
                             promotionsList.appendChild(listItem);
@@ -142,6 +144,9 @@ async function notification() {
                             promotionsList.appendChild(newLine1);
 
                             displayUpcomingPromotions = false;
+
+                            heightBK = heightBK + 430;
+                            document.getElementById("BKimage").height = heightBK;
                         });
                     }
                 }
@@ -159,6 +164,8 @@ async function notification() {
                         const managerFirstName = branchManagerDoc.data().firstName;
                         const managerLastName = branchManagerDoc.data().lastName;
 
+                        let heightBK1 =  heightBK;
+
                         notifications.forEach((upcomingPromotion, index) => {
                             const listItem = document.createElement('li');
                             listItem.classList.add('text-uppercase', 'fw-semibold', 'text-dark', 'mb-4');
@@ -169,7 +176,7 @@ async function notification() {
                             listItem.style.borderRadius = '15px';
                             listItem.style.padding = '20px';
                             listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                            listItem.style.width = '100%';
+                            listItem.style.width = '90%';
                             listItem.style.margin = 'auto';
 
                             const title = document.createElement('h3');
@@ -208,6 +215,9 @@ async function notification() {
 
 
                             displayNotifications = false;
+
+                            heightBK1 = heightBK1 + 430;
+                            document.getElementById("BKimage").height = heightBK1;
                         });
                     }
                 }
@@ -224,7 +234,7 @@ async function notification() {
                 listItem.style.borderRadius = '15px';
                 listItem.style.padding = '20px';
                 listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                listItem.style.width = '100%';
+                listItem.style.width = '90%';
                 listItem.style.margin = 'auto';
 
                 const title = document.createElement('h3');

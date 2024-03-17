@@ -56,7 +56,7 @@ async function retrieveAndPopulateForm() {
 
             if (stationData.services != null) {
                 // Retrieve the last stored height value from localStorage
-                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 700;
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 500;
 
                 // Iterate over each service in the array
                 for (let i = 0; i < stationData.services.length; i++) {
@@ -195,7 +195,7 @@ function createInputFields(serviceName, index) {
     servicesContainer.appendChild(containerDiv);
 }
 
-let height = localStorage.getItem("imageHeightRetrive") || 700;
+let height = localStorage.getItem("imageHeightRetrive") || 500;
 
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
