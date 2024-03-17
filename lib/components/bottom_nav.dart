@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp91/bill/body.dart';
 import 'package:gp91/station/station.dart';
 import 'package:gp91/car/car.dart';
 import '../settings/settings_page.dart';
@@ -83,12 +84,12 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/account2.png',
+                'assets/images/bill2.png',
                 width: 25,
                 height: 25,
               ),
             ),
-            label: 'Account',
+            label: 'Bill',
           ),
         ],
       ),
@@ -122,11 +123,10 @@ class _BottomNavState extends State<BottomNav> {
         );
         break;
       case 4:
-        /*
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AccountPage()),
-        ); */
+          MaterialPageRoute(builder: (context) => ScreenBill()),
+        );
         break;
     }
   }

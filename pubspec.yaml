@@ -56,6 +56,12 @@ dependencies:
   fl_chart: ^0.64.0
   dcdg: ^4.1.0
   email_otp: ^2.1.1
+  barcode_scanner: ^3.6.2
+  flutter_barcode_scanner: ^2.0.0
+  video_player: ^2.8.2
+  qr_flutter: ^4.1.0
+  timeline_tile: ^2.0.0
+
 
 
 dev_dependencies:

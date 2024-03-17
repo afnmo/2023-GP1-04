@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gp91/employee/components/background.dart';
 import 'package:gp91/components/constants.dart';
-import 'package:gp91/employee/otp_screen.dart';
+import 'package:gp91/employee/components/otp_screen.dart';
 import 'package:gp91/firebase_auth/emp_repository/auth_repository.dart';
 import 'package:gp91/login/components/rounded_button.dart';
 import 'package:gp91/login/components/text_field_container.dart';
@@ -124,6 +124,7 @@ class _FormScreenState extends State<Body> {
                           MaterialPageRoute(
                               builder: (context) => OtpScreen(
                                     myauth: myauth,
+                                    userEmail: _emailController.text,
                                   )));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

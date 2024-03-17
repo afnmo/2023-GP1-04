@@ -46,15 +46,15 @@ class _CategoriesListState extends State<CategoriesList> {
             },
           ),
         ),
-        Expanded(
-          child: CategoryCard(
-            title: "Promotions",
-            image: "assets/images/promos2.png",
-            onTap: () {
-              // Add your navigation logic here
-            },
-          ),
-        ),
+        // Expanded(
+        //   child: CategoryCard(
+        //     title: "Promotions",
+        //     image: "assets/images/promos2.png",
+        //     onTap: () {
+        //       // Add your navigation logic here
+        //     },
+        //   ),
+        // ),
         Expanded(
           child: CategoryCard(
             title: "About Us",

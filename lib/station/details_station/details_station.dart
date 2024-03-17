@@ -81,12 +81,6 @@ class DetailsStation extends StatelessWidget {
 
   // Build the draggable scrollable sheet for additional station details
   scroll(Map<String, dynamic> data) {
-    List<String> service = [
-      'car wash',
-      'shop',
-      'coffee'
-    ]; // WILL BE REMOVED IN SPRINT 4 "DUMMY DATA"
-
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -94,11 +88,11 @@ class DetailsStation extends StatelessWidget {
         builder: (context, scrollController) {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: const BoxDecoration(
-              color: Color(0xFF6EA67C),
-              borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20)),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(
+                  255, 228, 242, 231), // Keep the same background color
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             ),
             child: SingleChildScrollView(
               controller: scrollController,
@@ -125,7 +119,7 @@ class DetailsStation extends StatelessWidget {
                           fontFamily: 'NanumGothic',
                         ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -136,7 +130,7 @@ class DetailsStation extends StatelessWidget {
                           'Open hour: ' +
                               data['open_hour'] +
                               getAmOrPmIndicator(data['open_hour']) +
-                              "     Close hour: " +
+                              "   \nClose hour: " +
                               data['close_hour'] +
                               getAmOrPmIndicator(data['close_hour']),
                           style:
@@ -145,7 +139,7 @@ class DetailsStation extends StatelessWidget {
                                   ),
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15),
                       GestureDetector(
                         onTap: () async {
                           var googleMapsUrl = data['location'];
@@ -155,21 +149,15 @@ class DetailsStation extends StatelessWidget {
                             throw 'Could not launch $googleMapsUrl';
                           }
                         },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 211, 166, 42),
-                          ),
-                          child: Icon(
-                            Icons.map,
-                            color: Colors.white,
-                          ),
+                        child: Image.asset(
+                          'assets/images/map.gif',
+                          width: 80,
+                          height: 80,
                         ),
                       ),
                     ],
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
                       height: 4,
@@ -193,7 +181,7 @@ class DetailsStation extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
                       height: 4,
@@ -206,20 +194,38 @@ class DetailsStation extends StatelessWidget {
                           fontFamily: 'NanumGothic',
                         ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 1,
-                    itemBuilder: (context, index) => Services(context, service),
+                    itemBuilder: (context, index) =>
+                        Services(context, data['services']),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
                       height: 4,
                     ),
+                  ),
+                  Text(
+                    "Promotion",
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          fontSize: 40.0,
+                          fontFamily: 'NanumGothic',
+                        ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 1,
+                    itemBuilder: (context, index) =>
+                        Promotion(context, data['promotions']),
                   ),
                 ],
               ),
@@ -229,76 +235,107 @@ class DetailsStation extends StatelessWidget {
   }
 
   // Function to display services
-  Services(BuildContext context, List<dynamic> services) {
+  Widget Services(BuildContext context, List<dynamic>? services) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (var service in services)
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: Color(0xFFE3FFF8),
-                  child: Icon(
-                    Icons.done,
-                    size: 15,
-                    color: Color(0xFF0C9869),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  service,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-
-  // Function to display promotion
-  Widget Promotion(BuildContext context, List<dynamic> promotion) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (promotion.isEmpty)
+          if (services == null || services.isEmpty)
             Text(
-              "No promotion in station",
+              "No services available",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Colors.black,
                   ),
             )
           else
-            for (var pro in promotion)
+            for (var service in services)
               Row(
                 children: [
                   const CircleAvatar(
                     radius: 10,
+                    backgroundColor: Color(0xFFE3FFF8),
                     child: Icon(
-                      Icons.auto_awesome,
-                      size: 15,
-                      color: Color.fromARGB(255, 214, 242, 143),
+                      Icons.done,
+                      size: 20,
+                      color: Color(0xFF0C9869),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    service.toString(), // Ensure service is converted to String
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  SizedBox(height: 25),
+                ],
+              ),
+        ],
+      ),
+    );
+  }
+
+  Widget Promotion(BuildContext context, List<dynamic>? promotion) {
+    bool hasValidPromotion = false;
+
+    // Check if there is at least one valid promotion
+    if (promotion != null) {
+      for (var pro in promotion) {
+        if (_isValidPromotion(pro)) {
+          hasValidPromotion = true;
+          break;
+        }
+      }
+    }
+
+    // Display "No promotion available" if no valid promotions found
+    if (!hasValidPromotion) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Text(
+          "No promotion available",
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Colors.black,
+              ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (var pro in promotion!)
+            if (_isValidPromotion(pro))
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Color.fromARGB(255, 248, 154, 150),
+                    child: Icon(
+                      Icons.percent,
+                      size: 20,
+                      color: Color.fromARGB(255, 251, 250, 250),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
                   ),
                   SizedBox(
                     width: 270,
                     child: Text(
-                      pro,
+                      pro['promotion'].toString(),
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Color.fromARGB(255, 250, 252, 254)),
+                          .copyWith(color: Color.fromARGB(255, 0, 4, 8)),
                     ),
                   ),
+                  SizedBox(height: 25),
                 ],
               ),
           const SizedBox(
@@ -359,4 +396,16 @@ class DetailsStation extends StatelessWidget {
     }
     return fuelIcons;
   }
+}
+
+// Function to validate a promotion
+bool _isValidPromotion(Map<String, dynamic> promotion) {
+  if (promotion['start'] == null || promotion['end'] == null) {
+    return false; // Promotion is invalid if start or end date is null
+  }
+  DateTime? startDate = DateTime.tryParse(promotion['start'] ?? '');
+  DateTime? endDate = DateTime.tryParse(promotion['end'] ?? '');
+  return endDate != null && startDate != null && endDate.isAfter(startDate) ||
+      endDate!.isAtSameMomentAs(
+          startDate!); // Promotion is valid if end date is after or equal to start date
 }

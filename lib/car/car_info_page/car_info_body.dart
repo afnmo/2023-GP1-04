@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:gp91/car/qr_car/QR.dart';
 import '../edit_car_info_page/edit_car_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'car_info_handler.dart';
@@ -21,6 +22,24 @@ class CarInfoBody extends StatelessWidget {
       },
       child: Icon(Icons.edit),
       backgroundColor: Color.fromARGB(255, 211, 166, 42),
+    );
+  }
+
+  // QR button
+  Widget QrButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        print("QR Button Clicked");
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => QR(carId: carId)));
+      },
+      child: Image.asset(
+        'assets/images/QR.gif',
+        width: 55,
+        height: 55,
+      ),
+      //backgroundColor: Color.fromARGB(255, 211, 166, 42),
     );
   }
 
@@ -192,6 +211,8 @@ class CarInfoBody extends StatelessWidget {
                                   color: Color(0xFF0C9869),
                                 ),
                               ),
+                              Spacer(), // Add Spacer to push QR button to the right
+                              QrButton(context),
                             ],
                           ),
                           SizedBox(

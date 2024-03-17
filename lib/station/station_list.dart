@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gp91/station/details_station/details_station.dart';
 
-//This Page Display The List Of Station In Station Page -----------------
-
-// Widget to display a list of stations
 class StationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,11 +26,11 @@ class StationList extends StatelessWidget {
 
               if (stationData['image_station'] != null) {
                 return StationCard(
-                  name: stationData['name'], //name station
-                  state: 'Busy', // it will be implemented in sprint 3
-                  fuelTypeState: stationData[
-                      'fuel_status'], // the state for each type of fuel
-                  imgStation: stationData['image_station'], //image of station
+                  name: stationData['name'],
+                  state: 'Busy',
+                  fuelTypeState: stationData['fuel_status'],
+                  imgStation: stationData['image_station'],
+                  promotion: stationData['promotions'],
                   onTap: () {
                     Navigator.push(
                       context,
@@ -46,8 +43,7 @@ class StationList extends StatelessWidget {
                   },
                 );
               } else {
-                // Handle the case when image_station is null
-                return Container(); // Empty container as a placeholder
+                return Container();
               }
             }).toList(),
           );
@@ -57,7 +53,6 @@ class StationList extends StatelessWidget {
   }
 }
 
-// Widget for displaying each station card
 class StationCard extends StatelessWidget {
   const StationCard({
     Key? key,
@@ -66,10 +61,12 @@ class StationCard extends StatelessWidget {
     required this.imgStation,
     this.onTap,
     required this.fuelTypeState,
+    required this.promotion,
   }) : super(key: key);
 
   final name, state, imgStation;
   final onTap;
+  final List<dynamic>? promotion;
   final List<dynamic> fuelTypeState;
 
   @override
@@ -109,12 +106,45 @@ class StationCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Align(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
+            if (_shouldDisplayPromotions())
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 238, 5, 5).withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.percent_outlined,
+                        color: Color.fromARGB(255, 248, 246, 246),
+                        size: 20,
+                      ),
+                      SizedBox(width: 7),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var pro in promotion!)
+                            if (_isValidPromotion(pro))
+                              Text(
+                                pro['promotion'].toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                        color:
+                                            Color.fromARGB(255, 250, 250, 250)),
+                              ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              alignment: Alignment.center,
-            ),
             Align(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,14 +173,12 @@ class StationCard extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 245, 243, 243)
-                          .withOpacity(0.4),
+                      color:
+                          Color.fromARGB(255, 243, 241, 241).withOpacity(0.4),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Row(
                       children: [
-                        // Insert the for loop here to display SVG icons based on fuelTypeState.
-
                         for (int i = 0; i < fuelTypeState.length; i++)
                           if (fuelTypeState[i].substring(0, 2) == '91' &&
                               fuelTypeState[i].substring(3, 12) == 'Available')
@@ -210,5 +238,29 @@ class StationCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+// Function to validate a promotion
+  bool _isValidPromotion(Map<String, dynamic> promotion) {
+    if (promotion['start'] == null || promotion['end'] == null) {
+      return false; // Promotion is invalid if start or end date is null
+    }
+    DateTime? startDate = DateTime.tryParse(promotion['start'] ?? '');
+    DateTime? endDate = DateTime.tryParse(promotion['end'] ?? '');
+    return endDate != null && startDate != null && endDate.isAfter(startDate) ||
+        endDate!.isAtSameMomentAs(
+            startDate!); // Promotion is valid if end date is after or equal to start date
+  }
+
+  bool _shouldDisplayPromotions() {
+    if (promotion == null || promotion!.isEmpty) {
+      return false; // No promotions available so no container will display
+    }
+    for (var promo in promotion!) {
+      if (_isValidPromotion(promo)) {
+        return true; // At least one promotion is valid
+      }
+    }
+    return false; // All promotions are invalid
   }
 }
