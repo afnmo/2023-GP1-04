@@ -80,49 +80,63 @@ class _HomeScreenState extends State<ScreenBill> {
               return Text('No bills found for the user.');
             } else {
               List<DocumentSnapshot> billDocs = snapshot.data!;
+              bool allStationsNull = true;
 
-              return ListView.builder(
-                itemCount: billDocs.length,
-                itemBuilder: (context, index) {
-                  var billData = billDocs[index].data() as Map<String, dynamic>;
+              for (var billDoc in billDocs) {
+                var billData = billDoc.data() as Map<String, dynamic>;
+                if (billData['station'] != null) {
+                  allStationsNull = false;
+                  break;
+                }
+              }
 
-                  return TimeLineTileUI(
-                    isFirst: index == 0,
-                    isLast: index == billDocs.length - 1,
-                    isPast:
-                        true, // You may need to determine this based on date
-                    eventChild: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
+              if (allStationsNull) {
+                return Text('No bills found for the user.');
+              } else {
+                return ListView.builder(
+                  itemCount: billDocs.length,
+                  itemBuilder: (context, index) {
+                    var billData =
+                        billDocs[index].data() as Map<String, dynamic>;
+                    if (billData['station'] != null)
+                      return TimeLineTileUI(
+                        isFirst: index == 0,
+                        isLast: index == billDocs.length - 1,
+                        isPast:
+                            true, // You may need to determine this based on date
+                        eventChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(Icons.date_range_outlined,
-                                color: Colors.white),
-                            SizedBox(width: 15.0),
-                            Text(
-                              ' ${billData['date']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                            Row(
+                              children: [
+                                Icon(Icons.date_range_outlined,
+                                    color: Colors.white),
+                                SizedBox(width: 15.0),
+                                Text(
+                                  ' ${billData['date']}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
+                            Text(
+                              'Amount: ${billData['amount']}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              'Station: ${billData['station']}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            // Display other fields as needed
                           ],
                         ),
-                        Text(
-                          'Amount: ${billData['amount']}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          'Station: ${billData['station']}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        // Display other fields as needed
-                      ],
-                    ),
-                  );
-                },
-              );
+                      );
+                  },
+                );
+              }
             }
           },
         ),

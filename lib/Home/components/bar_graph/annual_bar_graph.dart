@@ -10,18 +10,32 @@ class AnnualBarGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //get the data
-    // ignore: prefer_is_empty
-    double firstYearAmount = annualSummary.length > 0 ? annualSummary[3] : 0;
-    double secondYearAmount = annualSummary.length > 1 ? annualSummary[2] : 0;
-    double thirdYearAmount = annualSummary.length > 2 ? annualSummary[1] : 0;
-    double currentYearAmount = annualSummary.length > 3 ? annualSummary[0] : 0;
-    double highestValue = 1000; //just to intilize the highestValue
-    if (annualSummary.isNotEmpty) {
-      // calculate the highest value to make it the max of the Y axis
-      highestValue = annualSummary
-          .reduce((value, element) => value > element ? value : element);
+    // Initialize variables to store amounts
+    double firstYearAmount = 0;
+    double secondYearAmount = 0;
+    double thirdYearAmount = 0;
+    double currentYearAmount = 0;
+
+    // Check if the annualSummary list has enough elements before accessing them
+    if (annualSummary.length > 0) {
+      currentYearAmount = annualSummary[0];
     }
+    if (annualSummary.length > 1) {
+      thirdYearAmount = annualSummary[1];
+    }
+    if (annualSummary.length > 2) {
+      secondYearAmount = annualSummary[2];
+    }
+    if (annualSummary.length > 3) {
+      firstYearAmount = annualSummary[3];
+    }
+
+    // Calculate the highest value for Y-axis
+    double highestValue = annualSummary.isNotEmpty
+        ? annualSummary
+            .reduce((value, element) => value > element ? value : element)
+        : 1000; // Default value if annualSummary is empty
+
     BarData myBarData = BarData(
       firstAmount: firstYearAmount,
       secondAmount: secondYearAmount,
@@ -37,7 +51,7 @@ class AnnualBarGraph extends StatelessWidget {
         gridData: const FlGridData(show: false),
         titlesData: const FlTitlesData(
           show: true,
-          // remove top and right title and get special bottom titles from the getBottomTitles method
+          // Remove top and right title and get special bottom titles from the getBottomTitles method
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
@@ -65,7 +79,7 @@ class AnnualBarGraph extends StatelessWidget {
   }
 }
 
-// this method puts YEARS IN THE FORM YYYY = 2023 AND NOT 2K
+// This method puts YEARS IN THE FORM YYYY = 2023 AND NOT 2K
 Widget getBottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(
     color: Color(0xFF6EA67C),
@@ -77,9 +91,9 @@ Widget getBottomTitles(double value, TitleMeta meta) {
   String thirdYear = '';
   final currentDate = DateTime.now();
   int nowYear = currentDate.year;
-// Assign current YEAR name
+  // Assign current YEAR name
   currentYear = nowYear.toString();
-// Assign previous YEARS names
+  // Assign previous YEARS names
   thirdYear = (nowYear - 1).toString();
   secondYear = (nowYear - 2).toString();
   firstYear = (nowYear - 3).toString();

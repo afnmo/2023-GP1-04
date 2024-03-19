@@ -82,12 +82,12 @@ class DetailsStation extends StatelessWidget {
   // Build the draggable scrollable sheet for additional station details
   scroll(Map<String, dynamic> data) {
     return DraggableScrollableSheet(
-        initialChildSize: 0.6,
+        initialChildSize: 0.7,
         maxChildSize: 1.0,
-        minChildSize: 0.6,
+        minChildSize: 0.7,
         builder: (context, scrollController) {
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             decoration: BoxDecoration(
               color: Color.fromARGB(
                   255, 228, 242, 231), // Keep the same background color
@@ -115,8 +115,9 @@ class DetailsStation extends StatelessWidget {
                   Text(
                     data['name'],
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontSize: 40.0,
+                          fontSize: 35.0,
                           fontFamily: 'NanumGothic',
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
                   SizedBox(
@@ -140,19 +141,38 @@ class DetailsStation extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 15),
-                      GestureDetector(
-                        onTap: () async {
-                          var googleMapsUrl = data['location'];
-                          if (await canLaunch(googleMapsUrl)) {
-                            await launch(googleMapsUrl);
-                          } else {
-                            throw 'Could not launch $googleMapsUrl';
-                          }
-                        },
-                        child: Image.asset(
-                          'assets/images/map.gif',
-                          width: 80,
-                          height: 80,
+                      SizedBox(
+                        height: 40, // Adjust the height of the button here
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            var googleMapsUrl = data['location'];
+                            if (await canLaunch(googleMapsUrl)) {
+                              await launch(googleMapsUrl);
+                            } else {
+                              throw 'Could not launch $googleMapsUrl';
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(255, 114, 186, 126),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5,
+                                horizontal: 5), // Adjust the padding here
+                          ),
+                          icon: Icon(
+                            Icons.directions,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          label: Text(
+                            'Directions',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14, // Adjust the text size here
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -190,8 +210,9 @@ class DetailsStation extends StatelessWidget {
                   Text(
                     "Services",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontSize: 40.0,
+                          fontSize: 30.0,
                           fontFamily: 'NanumGothic',
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
                   SizedBox(
@@ -213,8 +234,9 @@ class DetailsStation extends StatelessWidget {
                   Text(
                     "Promotion",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontSize: 40.0,
+                          fontSize: 30.0,
                           fontFamily: 'NanumGothic',
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
                   SizedBox(

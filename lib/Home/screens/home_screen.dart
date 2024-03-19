@@ -17,22 +17,15 @@ class HomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
+//hi
 class _HomeScreenState extends State<HomeScreen> {
   GetUserName getUserName = GetUserName();
   String? userName;
   List<double> monthlySummary = [];
   List<double> annualSummary = [];
-  bool?
-      showGraph; // DECIDES WHETHER TO SHOW THE GRAPH OR THE BLURRED PROMPT TO ADD A CAR
-  bool showMonthly = true; // THE DEFAULT IN THE MONTHLY GRAPH
-  int _currentIndex = 2; // BOTTOM NAV INDEX SO THE DEFAULT IS HOME
-
-// WHEN BOTTOM NAV INDEX CHANGE THE PAGE WILL CHANGE
-  void _onIndexChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  bool? showGraph;
+  bool showMonthly = true;
+  int _currentIndex = 2;
 
   @override
   void initState() {
@@ -41,41 +34,35 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchSummary() async {
-    //GET THE BILLS
-    final QuerySnapshot billsStream =
-        await FirebaseFirestore.instance.collection('Bills').get();
-    //GET THE USER NAME
     userName = await getUserName.getUserName();
-    // CHECK IF A CAR EXISTS TO DECIDE IF YOU NEED TO SHOW GRAPH
     showGraph = await checkCarExists();
-    // if (kDebugMode) {
-    //   print('User Name: $UserName');
-    // } // this is to test
-    GetExpenses getExpenses = GetExpenses(billsDocuments: billsStream);
-    //GET THE MONTHLY EXPENSES
-    List<double> amounts = await getExpenses.getMontlhyAmounts();
-    //print(amounts);
-    // GET THE ANNUAL EXPENSES
-    List<double> amounts2 = await getExpenses.getAnnualAmounts();
-    if (mounted) {
-      setState(() {
-        monthlySummary = amounts;
-        annualSummary = amounts2;
-      });
+
+    if (showGraph == true) {
+      final QuerySnapshot billsStream =
+          await FirebaseFirestore.instance.collection('Bills').get();
+      GetExpenses getExpenses = GetExpenses(billsDocuments: billsStream);
+      List<double> amounts = await getExpenses.getMontlhyAmounts();
+      List<double> amounts2 = await getExpenses.getAnnualAmounts();
+
+      // Check if the widget is still mounted before updating the state
+      if (mounted) {
+        setState(() {
+          monthlySummary = amounts;
+          annualSummary = amounts2;
+        });
+      }
     }
   }
 
   void _toggleGraph(int index) {
     setState(() {
-      showMonthly = index ==
-          0; // Set showGraph based on index (0: monthly costs, 1: annual costs)
+      showMonthly = index == 0;
     });
   }
 
-// BUILD THE GRAPH BASED ON THE SHOW GRAPH
   Widget _buildGraphWidget() {
     if (showGraph == null) {
-      return const CircularProgressIndicator();
+      return CircularProgressIndicator();
     } else if (showGraph == true) {
       if (showMonthly) {
         return SizedBox(
@@ -91,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     }
-    return Container();
+    return Container(); // Render an empty container if showGraph is false
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
+      appBar: TopBar(),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentIndex,
         onIndexChanged: _onIndexChanged,
@@ -121,12 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            if (showGraph == true) //SHOW THE GRAPH
+            if (showGraph == true) // Display graph if showGraph is true
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 80.0),
-                  // SHOW THE TOGGLE BUTTONS THAT TOGGLE BETWEEN MONTHLY AND ANUALL GRAPHS
                   child: ToggleButtons(
                     isSelected: [showMonthly, !showMonthly],
                     onPressed: _toggleGraph,
@@ -151,18 +137,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: _buildGraphWidget(),
             ),
             if (showGraph ==
-                false) // IF THERE IS NO CAR PROMPT THE USER TO ADD A CAR TO START CALCULATING THEIR EXPENSES
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0),
+                false) // Display blurred image if showGraph is false
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
                 child: BlurredImageWithText(),
               ),
-            const Padding(
-              padding: EdgeInsets.only(top: 50.0),
+            Padding(
+              padding: const EdgeInsets.only(top: 50.0),
               child: CategoriesList(),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _onIndexChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }

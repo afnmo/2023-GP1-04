@@ -95,51 +95,55 @@ class GetExpenses {
 
   ////////////////////////////////////////////////////
   Future<List<double>> getAnnualAmounts() async {
-    //get the user id
+    // Get the user id
     final userId = await _getUserIdAsync();
     if (userId == null) {
       return [0.0, 0.0, 0.0, 0.0];
     }
 
-    // IF THE USER EXITS GET THE BILLS DOCUMENTS
+    // If the user exists, get the bills documents
     final bills = billsDocuments.docs;
-    //get current date
+
+    // Get the current date
     final currentDate = DateTime.now();
 
-    double currentYearAmount = 0; // variable for current year's amount
-    // variables for past 3 years
-    double firstYearAmount = 0;
-    double secondYearAmount = 0;
-    double thirdYearAmount = 0;
-// LOOP THROUGH THE BILLS DOCS
+    double currentYearAmount = 0; // Variable for current year's amount
+    double firstYearAmount = 0; // Variable for past year's amount
+    double secondYearAmount = 0; // Variable for second past year's amount
+    double thirdYearAmount = 0; // Variable for third past year's amount
+
+    // Loop through the bills documents
     for (var bill in bills) {
       var data = bill.data() as Map<String, dynamic>?;
       if (data != null) {
-        // if there are bills get the current bills userId, date and amount
+        // If there are bills, get the current bill's userId, date, and amount
         final billUserId = data['userId'] as String?;
         final billDate = data['date'] as String?;
-        final billAmount = data['amount'] as num?;
-        // if the bill belongs to this user parse its date to get the year
+        final billAmount = data['amount']; // No need to cast to num
+
+        // If the bill belongs to this user, parse its date to get the year
         if (billUserId == userId) {
           final parsedDate = DateTime.parse(billDate!);
-
           final billYear = parsedDate.year;
-          // get the current year
           final currentYear = currentDate.year;
-          // if the bill belongs to the current year add it to the variable
+
+          // Convert billAmount to double if it's not already
+          final doubleAmount = double.tryParse(billAmount.toString());
+
+          // Add the bill amount to the appropriate year's total
           if (billYear == currentYear) {
-            currentYearAmount += billAmount ?? 0;
-          } // the next if else's calculates the past 3 years
-          else if (billYear == currentYear - 1) {
-            firstYearAmount += billAmount ?? 0;
+            currentYearAmount += doubleAmount ?? 0;
+          } else if (billYear == currentYear - 1) {
+            firstYearAmount += doubleAmount ?? 0;
           } else if (billYear == currentYear - 2) {
-            secondYearAmount += billAmount ?? 0;
+            secondYearAmount += doubleAmount ?? 0;
           } else if (billYear == currentYear - 3) {
-            thirdYearAmount += billAmount ?? 0;
+            thirdYearAmount += doubleAmount ?? 0;
           }
         }
       }
     }
+
     return [
       currentYearAmount,
       firstYearAmount,

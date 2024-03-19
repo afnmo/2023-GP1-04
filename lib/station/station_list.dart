@@ -31,6 +31,8 @@ class StationList extends StatelessWidget {
                   fuelTypeState: stationData['fuel_status'],
                   imgStation: stationData['image_station'],
                   promotion: stationData['promotions'],
+                  current: stationData['current'],
+                  maximum: stationData['maximum'],
                   onTap: () {
                     Navigator.push(
                       context,
@@ -62,9 +64,11 @@ class StationCard extends StatelessWidget {
     this.onTap,
     required this.fuelTypeState,
     required this.promotion,
+    required this.maximum,
+    required this.current,
   }) : super(key: key);
 
-  final name, state, imgStation;
+  final name, state, imgStation, maximum, current;
   final onTap;
   final List<dynamic>? promotion;
   final List<dynamic> fuelTypeState;
@@ -114,7 +118,7 @@ class StationCard extends StatelessWidget {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 238, 5, 5).withOpacity(0.4),
+                    color: Color.fromARGB(255, 200, 78, 119).withOpacity(0.5),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Row(
@@ -122,7 +126,7 @@ class StationCard extends StatelessWidget {
                       Icon(
                         Icons.percent_outlined,
                         color: Color.fromARGB(255, 248, 246, 246),
-                        size: 20,
+                        size: 14,
                       ),
                       SizedBox(width: 7),
                       Column(
@@ -136,8 +140,9 @@ class StationCard extends StatelessWidget {
                                     .textTheme
                                     .bodyText1!
                                     .copyWith(
-                                        color:
-                                            Color.fromARGB(255, 250, 250, 250)),
+                                      color: Color.fromARGB(255, 250, 250, 250),
+                                      fontSize: 14,
+                                    ),
                               ),
                         ],
                       ),
@@ -153,19 +158,72 @@ class StationCard extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color:
-                          Color.fromARGB(255, 249, 245, 245).withOpacity(0.4),
+                      color: (maximum == current)
+                          ? Colors.red.withOpacity(
+                              0.5) // If busy, container color is red
+                          : ((maximum / 2) == current)
+                              ? Colors.orange.withOpacity(
+                                  0.5) // If little busy, container color is orange
+                              : Colors.green.withOpacity(
+                                  0.5), // Otherwise, container color is green
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.circle,
-                          color: Color.fromARGB(255, 232, 36, 6),
-                          size: 18,
-                        ),
-                        SizedBox(width: 7),
-                        Text(state),
+                        if (maximum == current)
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Color.fromARGB(255, 232, 36, 6),
+                                size: 20,
+                              ),
+                              Text(
+                                'Busy',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 252, 251, 251),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        else if ((maximum / 2) == current)
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Color.fromARGB(255, 228, 181, 11),
+                                size: 20,
+                              ),
+                              Text(
+                                'Little Busy',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 249, 249, 248),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        else
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: Color.fromARGB(255, 6, 233, 6),
+                                size: 20,
+                              ),
+                              Text(
+                                'Available',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 251, 252, 250),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),

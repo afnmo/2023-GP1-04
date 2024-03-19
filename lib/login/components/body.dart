@@ -207,98 +207,42 @@ class _FormScreenState extends State<Body> {
       },
     );
 
-    // try {
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
-    print("user: " + user.toString());
-    Get.back();
+    try {
+      User? user = await _auth.signInWithEmailAndPassword(email, password);
+      print("user: " + user.toString());
+      Get.back();
 
-    if (user != null) {
-      print("User is successfully logged in");
-      Get.to(() => HomeScreen());
+      if (user != null) {
+        print("User is successfully logged in");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
 
-      // Clear the input fields
-      _emailController.clear();
-      _passwordController.clear();
-    } else {
+        // Clear the input fields
+        _emailController.clear();
+        _passwordController.clear();
+      } else {
+        Get.snackbar(
+          "Oops!",
+          "Incorrect email or password",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent.withOpacity(0.1),
+          colorText: Colors.red,
+        );
+      }
+    } catch (e) {
+      print("Error during login: $e");
+      Get.back();
+
+      // Handle specific error cases here and display appropriate error messages
       Get.snackbar(
         "Oops!",
-        "Incorrect email or password",
+        "An error occurred during sign-in. Please try again later",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.redAccent.withOpacity(0.1),
         colorText: Colors.red,
       );
     }
-    //   } else {
-    //     print("User login failed");
-    //     Get.snackbar(
-    //       "Oops!",
-    //       "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //       snackPosition: SnackPosition.BOTTOM,
-    //       backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //       colorText: Colors.red,
-    //     );
-    //   }
-    // } catch (e) {
-    //   print("Error during login: $e");
-    //   Get.back();
-
-    //   if (e is FirebaseAuthException) {
-    //     if (e.code == 'user-not-found') {
-    //       // User not found - Display the appropriate error message
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else if (e.code == 'wrong-password') {
-    //       // Incorrect password - Display the incorrect password message
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "Incorrect Password. Please try again",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else {
-    //       // Handle other error codes as needed
-    //       // You can add more specific error handling for other cases if necessary
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "An error occurred during sign-in. Please try again later",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     }
-    //   }
-    // }
-
-    // } catch (e) {
-    //   print("Error during login: $e");
-    //   Get.back();
-
-    //   if (e is FirebaseAuthException) {
-    //     if (e.code == 'user-not-found') {
-    //       // User not found - Display the snack bar
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "It seems like there's no account associated with this email address. Please double-check your email or sign up to create a new account",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     } else {
-    //       Get.snackbar(
-    //         "Oops!",
-    //         "Incorrect Password. Please try again",
-    //         snackPosition: SnackPosition.BOTTOM,
-    //         backgroundColor: Colors.redAccent.withOpacity(0.1),
-    //         colorText: Colors.red,
-    //       );
-    //     }
-    //   }
-    // }
   }
 }
