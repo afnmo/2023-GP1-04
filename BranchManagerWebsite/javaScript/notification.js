@@ -80,7 +80,7 @@ async function notification() {
             }
 
             const promotionsList = document.getElementById('promotions');
-            let heightBK =  500;
+            let heightBK = 500;
 
             // Check if there are any upcoming promotions
             if (upcomingPromotions.length > 0) {
@@ -106,7 +106,7 @@ async function notification() {
                             listItem.style.borderRadius = '15px';
                             listItem.style.padding = '20px';
                             listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                            listItem.style.width = '90%';
+                            listItem.style.width = '100%';
                             listItem.style.margin = 'auto';
 
                             const title = document.createElement('h3');
@@ -115,7 +115,8 @@ async function notification() {
                             title.style.paddingBottom = '5px';
                             title.style.color = 'rgb(48, 180, 118)';
                             title.style.textTransform = 'none';
-                            title.textContent = subject;
+                            title.innerHTML = `<br><img src="../images/notification.png"><br><br> ${subject}`;
+                            // title.textContent = subject;
 
                             const paragraph = document.createElement('h4');
                             paragraph.id = 'notificationContent';
@@ -124,11 +125,11 @@ async function notification() {
                             paragraph.style.color = '#575656';
                             paragraph.style.textTransform = 'none';
                             const endDate = new Date(upcomingPromotion.end).toDateString();
-                            const content = `This is a reminder that the promotion "${upcomingPromotion.promotion}" is ending in two days on ${endDate}.<br><br>`;
+                            const content = `This is a reminder that the promotion "${upcomingPromotion.promotion}" is <span style="color: red;">ending in two days</span> on ${endDate}.<br><br>`;
                             paragraph.innerHTML = `Dear ${managerFirstName} ${managerLastName},<br><br>
                             ${content}
                             Please take necessary actions.<br><br>
-                            <a href="promotions.html" style="text-decoration: none; color: #28a745; font-weight: bold; font-size: 16px;">
+                            <a href="promotions.html" style="text-decoration: underline; color: #28a745; font-weight: bold; font-size: 16px;">
                             Click here to view promotions</a><br><br>
                             Sincerely,<br><br>
                             91 website <img src="../images/Logo.png" width="30" height="30"> `;
@@ -145,7 +146,7 @@ async function notification() {
 
                             displayUpcomingPromotions = false;
 
-                            heightBK = heightBK + 430;
+                            heightBK = heightBK + 590;
                             document.getElementById("BKimage").height = heightBK;
                         });
                     }
@@ -164,7 +165,7 @@ async function notification() {
                         const managerFirstName = branchManagerDoc.data().firstName;
                         const managerLastName = branchManagerDoc.data().lastName;
 
-                        let heightBK1 =  heightBK;
+                        let heightBK1 = heightBK;
 
                         notifications.forEach((upcomingPromotion, index) => {
                             const listItem = document.createElement('li');
@@ -176,7 +177,7 @@ async function notification() {
                             listItem.style.borderRadius = '15px';
                             listItem.style.padding = '20px';
                             listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                            listItem.style.width = '90%';
+                            listItem.style.width = '100%';
                             listItem.style.margin = 'auto';
 
                             const title = document.createElement('h3');
@@ -185,7 +186,8 @@ async function notification() {
                             title.style.paddingBottom = '5px';
                             title.style.color = 'rgb(48, 180, 118)';
                             title.style.textTransform = 'none';
-                            title.textContent = subject;
+                            title.innerHTML = `<br><img src="../images/notification.png"><br><br> ${subject}`;
+                            // title.textContent = subject;
 
                             const paragraph = document.createElement('h4');
                             paragraph.id = 'notificationContent';
@@ -194,11 +196,11 @@ async function notification() {
                             paragraph.style.color = '#575656';
                             paragraph.style.textTransform = 'none';
                             const endDate = new Date(upcomingPromotion.end).toDateString();
-                            const content = `This is a reminder that the promotion "${upcomingPromotion.promotion}" is ending in two days on ${endDate}.<br><br>`;
+                            const content = `This is a reminder that the promotion "${upcomingPromotion.promotion}" is <span style="color: red;">ending in two days</span> on ${endDate}.<br><br>`;
                             paragraph.innerHTML = `Dear ${managerFirstName} ${managerLastName},<br><br>
                 ${content}
                 Please take necessary actions.<br><br>
-                <a href="promotions.html" style="text-decoration: none; color: #28a745; font-weight: bold; font-size: 16px;">
+                <a href="promotions.html" style="text-decoration: underline; color: #28a745; font-weight: bold; font-size: 16px;">
                 Click here to view promotions</a><br><br>
                 Sincerely,<br><br>
                 91 website <img src="../images/Logo.png" width="30" height="30"> `;
@@ -216,7 +218,7 @@ async function notification() {
 
                             displayNotifications = false;
 
-                            heightBK1 = heightBK1 + 430;
+                            heightBK1 = heightBK1 + 590;
                             document.getElementById("BKimage").height = heightBK1;
                         });
                     }
@@ -234,7 +236,7 @@ async function notification() {
                 listItem.style.borderRadius = '15px';
                 listItem.style.padding = '20px';
                 listItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-                listItem.style.width = '90%';
+                listItem.style.width = '100%';
                 listItem.style.margin = 'auto';
 
                 const title = document.createElement('h3');
@@ -243,7 +245,7 @@ async function notification() {
                 title.style.paddingBottom = '5px';
                 title.style.color = 'rgb(48, 180, 118)';
                 title.style.textTransform = 'none';
-                title.innerHTML = '<br><img src="../images/notification.png"><br><br> No Available Notifications <br>';
+                title.innerHTML = '<br><img src="../images/noNotification.png"><br><br> No Available Notifications <br>';
 
                 const paragraph = document.createElement('h4');
                 paragraph.id = 'notificationContent';

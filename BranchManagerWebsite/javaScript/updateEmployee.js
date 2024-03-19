@@ -84,7 +84,7 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
                 // Display a custom confirmation dialog
                 var name = ` ${employeeData.firstName} ${employeeData.lastName}`;
             
-                showAlert_Critical(`Are you sure you want to delete ${name}?`);
+                showConfirm(`Are you sure you want to delete ${name}?`);
             
                 // Add event listener for the Yes, I'm Sure button in your custom alert
                 const confirmButton = document.querySelector('#customAlertConfirmButton');
@@ -206,14 +206,14 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
 }
 
 //alert for critical massage:
-function showAlert_Critical(message) {
+function showConfirm(message, onConfirm, onCancel) {
     var overlay = document.createElement('div');
     overlay.style.position = 'fixed';
     overlay.style.top = '0';
     overlay.style.left = '0';
     overlay.style.width = '100%';
     overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(255, 0, 0, 0.2)'; // Red background color
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     overlay.style.display = 'flex';
     overlay.style.alignItems = 'center';
     overlay.style.justifyContent = 'center';
@@ -247,37 +247,36 @@ function showAlert_Critical(message) {
     messageElement.style.color = '#000';
 
     var confirmButton = document.createElement('button');
-    confirmButton.textContent = "Yes, I'm Sure";
-    confirmButton.style.padding = '3px 8px'; // Adjust button size
+    confirmButton.textContent = 'OK';
+    confirmButton.style.padding = '3px 130px'; // Adjust button size
     confirmButton.style.cursor = 'pointer';
     confirmButton.style.border = 'none';
-    confirmButton.style.backgroundColor = 'rgba(255, 0, 0, 0.8)'; // Red color
+    confirmButton.style.backgroundColor = 'red'; // Green color for confirm
     confirmButton.style.color = '#fff';
     confirmButton.style.marginTop = '10px';
-    confirmButton.style.marginRight = '5px';
 
-    var cancelButton = document.createElement('button');
-    cancelButton.textContent = 'Cancel';
-    cancelButton.style.padding = '3px 8px'; // Adjust button size
-    cancelButton.style.cursor = 'pointer';
-    cancelButton.style.border = 'none';
-    cancelButton.style.backgroundColor = '#ccc';
-    cancelButton.style.color = '#000';
-    cancelButton.style.marginTop = '10px';
-    cancelButton.style.marginLeft = '5px';
-
-    confirmButton.id = 'customAlertConfirmButton'; // Add an ID to your confirm button
-    cancelButton.id = 'customAlertCancelButton'; // Add an ID to your cancel button
-    overlay.id = 'customAlertOverlay'; // Add an ID to your overlay
 
     confirmButton.addEventListener('click', function () {
         document.body.removeChild(overlay);
-        // Place the logic for "Yes, I'm Sure" action here
+        if (typeof onConfirm === 'function') {
+            onConfirm();
+        }
     });
+
+    var cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.style.padding = '3px 130px'; // Adjust button size
+    cancelButton.style.cursor = 'pointer';
+    cancelButton.style.border = 'none';
+    cancelButton.style.backgroundColor = '#ccc'; // Gray color for cancel
+    cancelButton.style.color = '#fff';
+    cancelButton.style.marginTop = '10px';
 
     cancelButton.addEventListener('click', function () {
         document.body.removeChild(overlay);
-        // Place the logic for "Cancel" action here
+        if (typeof onCancel === 'function') {
+            onCancel();
+        }
     });
 
     header.appendChild(imgElement);
@@ -288,6 +287,4 @@ function showAlert_Critical(message) {
     customAlert.appendChild(cancelButton);
     overlay.appendChild(customAlert);
     document.body.appendChild(overlay);
-
-
 }
