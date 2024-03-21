@@ -53,7 +53,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("date").value = `${year}-${month}-${day}`;
 
 console.log(`${year}-${month}-${day}`);
+document.getElementById("cancel").addEventListener("click", function () {
+    // Construct the URL with query parameters for the bill details page
+    const url = `billdetails.html?car_id=${carId}&date=${date}&amount=${amount}&employeename=${employeeName}&fuel_type=${fuelType}&billId=${billId}`;
 
+    // Redirect to the bill details page with query parameters
+    window.location.href = url;
+});
 
 document.getElementById("registrationForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -105,14 +111,75 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         hidePleaseWaitMessage();
         return;
     }
+     // Retrieve car ID from the form
+     const carIdInput = document.getElementById("carId");
+     const carId = carIdInput.value.trim(); // Trim whitespace
+     
+     // Check if car ID is empty
+     if (carId === '') {
+         // Display error message for empty car ID
+         const carError = document.getElementById("carError");
+         if (carError) {
+             carError.innerText = "Car ID cannot be empty";
+             carError.style.color = "red";
+             carError.style.fontSize = "12px";
+         }
+         
+         // Hide wait message when displaying an error
+         hidePleaseWaitMessage();
+         return;
+     }
+
+     // Check if carId exists in Cars collection
+     const carRef = collection(db, "Cars");
+     const carDoc = await getDoc(doc(carRef, carId));
+     
+     if (!carDoc.exists()) {
+         // Car not found in Cars collection
+         const carError = document.getElementById("carError");
+         if (carError) {
+             carError.innerText = "Car not found";
+             carError.style.color = "red";
+             carError.style.fontSize = "12px";
+         }
+         
+         // Hide wait message when displaying an error
+         hidePleaseWaitMessage();
+         return;
+     }
    // Retrieve the updated date value
    const updatedDateInput = document.getElementById("date");
    const updatedDateValue = updatedDateInput.value;
-   
+
+   // Get the current date
+   const currentDate = new Date();
+   const currentYear = currentDate.getFullYear();
+   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+   const currentDay = String(currentDate.getDate()).padStart(2, '0');
+
+   // Compare the selected date with the current date
+   if (updatedDateValue > `${currentYear}-${currentMonth}-${currentDay}`) {
+       // Display error message for date greater than current date
+       const dateError = document.getElementById("dateError");
+       if (dateError) {
+           dateError.innerText = "Date cannot be greater than current date";
+           dateError.style.color = "red";
+           dateError.style.fontSize = "12px";
+       }
+       
+       // Hide wait message when displaying an error
+       hidePleaseWaitMessage();
+       return;
+   }
+
    // Extract day, month, and year from the updated date value
    const updatedDay = updatedDateValue.substring(8, 10); // Day part
    const updatedMonth = updatedDateValue.substring(5, 7); // Month part
    const updatedYear = updatedDateValue.substring(0, 4); // Year part
+
+
+
+
     // Update the document in the Firestore collection
     const billDocRef = doc(db, billCollectionName, billId);
     const updatedData = {
@@ -152,13 +219,16 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 });
 
 });
-
 // Method For Validation And error message
 const resetErrorMessages = () => {
     const nameError6 = document.getElementById("nameError6");
     resetErrorMessage(nameError6);
     const fuelError6 = document.getElementById("fuelError6");
     resetErrorMessage(fuelError6);
+    const carError = document.getElementById("carError");
+    resetErrorMessage(carError);
+    const dateError = document.getElementById("dateError");
+    resetErrorMessage(dateError);
 };
 
 const resetErrorMessage = (element) => {
@@ -190,6 +260,7 @@ const hidePleaseWaitMessage = () => {
         pleaseWaitMessage.innerText = '';
     }
 };
+
 const setSuccess = element => {
     const inputControl = element.parentElement;
     if (inputControl) {

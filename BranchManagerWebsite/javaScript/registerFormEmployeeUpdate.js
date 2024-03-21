@@ -39,7 +39,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("Email").value = email;
     document.getElementById("phone").value = phone;
     document.getElementById("years_experience").value = years_experience;
-
+    document.getElementById("cancel").addEventListener("click", function () {
+        // Construct the URL with query parameters for the bill details page
+        const url = `myemployee.html`;
+    
+        // Redirect to the bill details page with query parameters
+        window.location.href = url;
+    });
 
 
     

@@ -109,7 +109,7 @@
                     <div class="card-body p-0" style="border-radius: 0px;">
                         <div class="row">
                             <div class="col-lg-5 d-none d-lg-flex">
-                                <img src="..\images\billupdate.png" width="452px" height="544px">
+                                <img src="..\images\billupdate.png" width="480px" height="575px">
                             </div>
                             <div class="col-lg-7" style="border-radius: 0px;">
                                 <div class="p-5" style="border-style: none;border-radius: 0px;">
@@ -133,6 +133,7 @@
                                             <input class="form-control form-control-user" type="text" id="carId"
                                               placeholder="carId" name="carId" 
                                               required style="font-size: 16px;">
+                                              <div class="error-message" id="carError"></div>
                                           </div>
                                         </div>
 
@@ -166,23 +167,31 @@
                                                        title="Please enter a valid positive number"  
                                                        style="font-size: 16px;">
                                             </div>
-                                        <div class="col-sm-6">
-                                            <label class="label" style="color: gray; font-weight:660; margin: 5px;">Date</label>
-                                            <input class="form-control form-control-user" type="date" id="date" 
-                                                placeholder="date" name="date" 
-                                                required style="font-size: 16px;" >
-                                        </div>
+                                            <div class="row mb-3">
+                                              <div class="col-sm-6">
+                                                  <label class="label" style="color: gray; font-weight:660; margin: 5px;">Date</label>
+                                                  <input class="form-control form-control-user" type="date" id="date" 
+                                                      placeholder="date" name="date" 
+                                                      required style="font-size: 16px;">
+                                                  <div class="error-message" id="dateError"></div>
+                                              </div>
+                                          </div>
+                                        <div class="error-message" id="dateError"></div>
                                        <!-- Success message -->
                                        <div id="successMessage" style="display:none; color:green; margin-bottom: 13px;">Bill Update successfully! Please wait to proceed.</div>
                                        <!-- Please wait message -->
                                        <div id="pleaseWaitMessage" style="display: none;">Please wait, checking input...</div>
-                                     
-                                       
-
-                                       
-                                        <button id="updateButton" class="btn btn-primary d-block btn-user w-100" type="submit"
-                                        style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 15px; width: 100%; color: white; text-decoration: none;">Update
+                                     <div></div>
+                                       <div>
+                                        <button id="cancel" class="btn btn-primary d-inline-block btn-user" type="button"
+                                            style="border-radius: 160px; background: rgba(174, 177, 176, 0.52); border-color: rgba(48,180,118,0.52); font-weight: bold; margin-right: 10px; width: 30%; color: white; text-decoration: none;">
+                                            Cancel
                                         </button>
+                                        <button id="updateButton" class="btn btn-primary d-inline-block btn-user" type="submit"
+                                            style="border-radius: 160px; background: rgba(48,180,118,0.52); border-color: rgba(48,180,118,0.52); font-weight: bold; margin-left: 10px; width: 65%; color: white; text-decoration: none;">
+                                            Update
+                                        </button>
+                                    </div>
                                       </form>
                                       
 
