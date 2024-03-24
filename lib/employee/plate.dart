@@ -2,16 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gp91/employee/report_bill.dart';
 
-class plantPage extends StatefulWidget {
+class PlantPage extends StatefulWidget {
   final String email;
 
-  const plantPage({Key? key, required this.email}) : super(key: key);
+  const PlantPage({Key? key, required this.email}) : super(key: key);
 
   @override
-  plantPageState createState() => plantPageState();
+  _PlantPageState createState() => _PlantPageState();
 }
 
-class plantPageState extends State<plantPage> {
+class _PlantPageState extends State<PlantPage> {
+  late TextEditingController _searchController;
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,19 +28,53 @@ class plantPageState extends State<plantPage> {
         backgroundColor: Color(0xFF6EA67C),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: _isSearching
+            ? IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = false;
+                    _searchController.clear();
+                  });
+                },
+              )
+            : IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
         centerTitle: true,
-        title: const Text(
-          'Plate Number',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Search Plate Number...',
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  setState(() {}); // Trigger rebuild to update filtered list
+                },
+              )
+            : Text(
+                'Plate Number',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearching = true;
+              });
+            },
           ),
-        ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('Cars').snapshots(),
@@ -43,15 +86,41 @@ class plantPageState extends State<plantPage> {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           final carDocs = snapshot.data!.docs;
+          List<DocumentSnapshot> filteredCars = [];
+          if (_isSearching) {
+            filteredCars = carDocs.where((car) {
+              var plateNumber = (car.data()
+                  as Map<String, dynamic>)['plateNumbers'] as String?;
+              var englishLetters = (car.data()
+                  as Map<String, dynamic>)['englishLetters'] as String?;
+              if (plateNumber != null && englishLetters != null) {
+                // Check if plate number contains the search query
+                if (plateNumber
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase())) {
+                  return true;
+                }
+                // Check if english letters contain the search query
+                if (englishLetters
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase())) {
+                  return true;
+                }
+              }
+              return false;
+            }).toList();
+          } else {
+            filteredCars = carDocs;
+          }
           return ListView.builder(
-            itemCount: carDocs.length,
+            itemCount: filteredCars.length,
             itemBuilder: (context, index) {
-              var carData = carDocs[index].data() as Map<String, dynamic>;
+              var carData = filteredCars[index].data() as Map<String, dynamic>;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    String carId = carDocs[index].id;
+                    String carId = filteredCars[index].id;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -63,10 +132,9 @@ class plantPageState extends State<plantPage> {
                     );
                   },
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        20), // Set the border radius to achieve oval shape
+                    borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.grey, // Set card color to gray
+                      color: Colors.grey,
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Row(

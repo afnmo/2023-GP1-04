@@ -108,7 +108,7 @@ class _QRorPlateState extends State<QRorPlate> {
                 SizedBox(width: 50),
                 InkWell(
                   onTap: () {
-                    Get.to(() => plantPage(
+                    Get.to(() => PlantPage(
                           email: widget.email,
                         ));
                   },
