@@ -123,7 +123,7 @@ async function fetchStationData(db, collectionName, stationID) { // Pass documen
             }
 
             if (stationData.maximum != null) {
-                document.getElementById("occupancyLevel").textContent = stationData.maximum;
+                document.getElementById("occupancyLevel").textContent = stationData.maximum +' Cars';
                 document.getElementById("occupancyImage").style.display = 'block';
                 document.getElementById("buttonEditOccupancyLevel").style.display = 'inline-block';
             } else {

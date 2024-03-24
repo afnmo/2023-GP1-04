@@ -125,14 +125,14 @@
                                             <label class="label" style="color: gray; font-weight:660; margin: 5px;">Employee Name</label>
                                             <input class="form-control form-control-user" type="text" id="employeeName"
                                               placeholder="employeeName" name="employeeName"
-                                              required pattern="^[^0-9].*" style="font-size: 16px;">
+                                               pattern="^[^0-9].*" style="font-size: 16px;" readonly>
                                               <div class="error-message" id="nameError6"></div>
                                           </div>
                                           <div class="col-sm-6">
                                             <label class="label" style="color: gray; font-weight:660; margin: 5px;">Car ID</label>
                                             <input class="form-control form-control-user" type="text" id="carId"
                                               placeholder="carId" name="carId" 
-                                              required style="font-size: 16px;">
+                                               style="font-size: 16px;" readonly>
                                               <div class="error-message" id="carError"></div>
                                           </div>
                                         </div>
@@ -156,16 +156,16 @@
                                  
                                 
                                             <div class="col-sm-6">
-                                                <label class="label" style="color: gray; font-weight:660; margin: 5px;">Amount</label>
-                                                <input class="form-control form-control-user" 
-                                                       type="text" 
-                                                       id="amount"
-                                                       placeholder="Amount" 
-                                                       name="amount"
-                                                       required 
-                                                       pattern="[0-9]+(\.[0-9]+)?"  
-                                                       title="Please enter a valid positive number"  
-                                                       style="font-size: 16px;">
+                                                <label class="label" style="color: gray; font-weight:660; margin: 5px;">Amount in SAR</label>
+                                                  <input class="form-control form-control-user" 
+                                                         type="text" 
+                                                         id="amount"
+                                                         placeholder="Amount" 
+                                                         name="amount"
+                                                         required 
+                                                         pattern="[0-9]+(\.[0-9]+)?"  
+                                                         title="Please enter a valid positive number"  
+                                                         style="font-size: 16px;">
                                             </div>
                                             <div class="row mb-3">
                                               <div class="col-sm-6">
@@ -184,7 +184,7 @@
                                      <div></div>
                                        <div>
                                         <button id="cancel" class="btn btn-primary d-inline-block btn-user" type="button"
-                                            style="border-radius: 160px; background: rgba(174, 177, 176, 0.52); border-color: rgba(48,180,118,0.52); font-weight: bold; margin-right: 10px; width: 30%; color: white; text-decoration: none;">
+                                            style="border-radius: 160px; background: rgba(174, 177, 176, 0.52); border-color: rgba(174, 177, 176, 0.52); font-weight: bold; margin-right: 10px; width: 30%; color: white; text-decoration: none;">
                                             Cancel
                                         </button>
                                         <button id="updateButton" class="btn btn-primary d-inline-block btn-user" type="submit"

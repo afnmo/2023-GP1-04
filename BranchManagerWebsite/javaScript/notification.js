@@ -91,7 +91,7 @@ async function notification() {
                     const branchManagerDoc = await getDoc(branchManagerDocRef);
 
                     if (branchManagerDoc.exists()) {
-                        const subject = 'Upcoming Promotion Reminder';
+                        const reminder = 'Upcoming Promotion Ending Soon';
                         const managerFirstName = branchManagerDoc.data().firstName;
                         const managerLastName = branchManagerDoc.data().lastName;
 
@@ -115,8 +115,13 @@ async function notification() {
                             title.style.paddingBottom = '5px';
                             title.style.color = 'rgb(48, 180, 118)';
                             title.style.textTransform = 'none';
-                            title.innerHTML = `<br><img src="../images/notification.png"><br><br> ${subject}`;
-                            // title.textContent = subject;
+
+                            // Creating the 'subject' variable with 'Warning' in red color
+                            const subject = document.createElement('span');
+                            subject.style.color = 'red';
+                            subject.textContent = 'Warning';
+                            title.innerHTML = `<br><img src="../images/warning.png"><br><br>${subject.outerHTML}<br><br>${reminder}`;
+
 
                             const paragraph = document.createElement('h4');
                             paragraph.id = 'notificationContent';
@@ -146,7 +151,7 @@ async function notification() {
 
                             displayUpcomingPromotions = false;
 
-                            heightBK = heightBK + 590;
+                            heightBK = heightBK + 700;
                             document.getElementById("BKimage").height = heightBK;
                         });
                     }
@@ -161,7 +166,7 @@ async function notification() {
                     const branchManagerDoc = await getDoc(branchManagerDocRef);
 
                     if (branchManagerDoc.exists()) {
-                        const subject = 'Upcoming Promotion Reminder';
+                        const reminder = 'Upcoming Promotion Ending Soon';
                         const managerFirstName = branchManagerDoc.data().firstName;
                         const managerLastName = branchManagerDoc.data().lastName;
 
@@ -186,8 +191,13 @@ async function notification() {
                             title.style.paddingBottom = '5px';
                             title.style.color = 'rgb(48, 180, 118)';
                             title.style.textTransform = 'none';
-                            title.innerHTML = `<br><img src="../images/notification.png"><br><br> ${subject}`;
-                            // title.textContent = subject;
+
+                            // Creating the 'subject' variable with 'Warning' in red color
+                            const subject = document.createElement('span');
+                            subject.style.color = 'red';
+                            subject.textContent = 'Warning';
+                            title.innerHTML = `<br><img src="../images/warning.png"><br><br>${subject.outerHTML}<br><br>${reminder}`;
+
 
                             const paragraph = document.createElement('h4');
                             paragraph.id = 'notificationContent';
@@ -218,7 +228,7 @@ async function notification() {
 
                             displayNotifications = false;
 
-                            heightBK1 = heightBK1 + 590;
+                            heightBK1 = heightBK1 + 700;
                             document.getElementById("BKimage").height = heightBK1;
                         });
                     }

@@ -44,6 +44,21 @@ async function deleteEndedPromotion() {
             
         });
 
+        snapshot.forEach(async (stationDoc) => {
+            const notifications = stationDoc.data().notifications;
+
+            // Filter promotions to keep only those with end date greater than today
+            const validNotifications = notifications.filter(notification => {
+                const endDate = new Date(notification.end);
+                const today = new Date();
+                return endDate >= today;
+            });
+
+            // Update the document with the filtered promotions
+            await updateDoc(stationDoc.ref, { notifications: validNotifications });
+            
+        });
+
         console.log('Promotions deleted successfully.');
     } catch (error) {
         console.error('Error deleting promotions:', error);
