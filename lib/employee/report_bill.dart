@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:gp91/employee/home.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'home.dart'; // Assuming home.dart contains the Home widget
 
 class ReportBill extends StatefulWidget {
   final String documentId;
@@ -20,8 +21,9 @@ class _ReportBillState extends State<ReportBill> {
   String? _selectedFuelType;
 
   void _saveReport(BuildContext context) async {
-    String amount = _amountController.text;
-    if (amount.isNotEmpty && _selectedFuelType != null) {
+    String amountText = _amountController.text;
+    if (amountText.isNotEmpty && _selectedFuelType != null) {
+      int amount = int.tryParse(amountText) ?? 0;
       try {
         DocumentSnapshot carDoc = await FirebaseFirestore.instance
             .collection('Cars')
@@ -32,12 +34,9 @@ class _ReportBillState extends State<ReportBill> {
           String userid = carDoc['userId'];
           DateTime currentDate = DateTime.now();
           String formattedDate = DateFormat('yyyy-MM-dd').format(currentDate);
-          String day = DateFormat('dd')
-              .format(currentDate); // Format day with leading zero
-          String month = DateFormat('MM')
-              .format(currentDate); // Format month with leading zero
-          String year = DateFormat('yyyy')
-              .format(currentDate); // Format year with leading zero
+          String day = DateFormat('dd').format(currentDate);
+          String month = DateFormat('MM').format(currentDate);
+          String year = DateFormat('yyyy').format(currentDate);
           String name = await getEmployeeNameByEmail(widget.email);
           String station = await getStationName(widget.email);
           String manager_id = await getBranchId(widget.email);
@@ -150,7 +149,14 @@ class _ReportBillState extends State<ReportBill> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
-                          suffixIcon: Icon(Icons.monetization_on),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: SvgPicture.asset(
+                              'assets/icons/SR.svg',
+                              width: 10, // Adjust size as needed
+                              height: 10,
+                            ),
+                          ),
                         ),
                       ),
                     ),
