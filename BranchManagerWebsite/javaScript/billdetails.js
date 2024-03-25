@@ -37,7 +37,8 @@ async function fetchBillDetails() {
         const employeename = urlParams.get("employeename");
         const fuel_type = urlParams.get("fuel_type");
         const bill_Id = urlParams.get("billId");
-
+ 
+        
         // Populate the table with bill details
         document.getElementById("employee").textContent = employeename;
         document.getElementById("fuel_type").textContent = fuel_type;
