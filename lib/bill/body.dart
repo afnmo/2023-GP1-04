@@ -147,7 +147,7 @@ class _HomeScreenState extends State<ScreenBill> {
                                     ],
                                   ),
                                   Text(
-                                    'Amount: ${billData['amount']}',
+                                    'Amount: ${billData['amount']} SAR',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   Text(

@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 console.log(`${year}-${month}-${day}`);
 document.getElementById("cancel").addEventListener("click", function () {
-    // Construct the URL with query parameters for the bill details page
+    
     const url = `billdetails.html?car_id=${carId}&date=${date}&amount=${amount}&employeename=${employeeName}&fuel_type=${fuelType}&billId=${billId}`;
 
-    // Redirect to the bill details page with query parameters
+
     window.location.href = url;
 });
 
