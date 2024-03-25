@@ -63,6 +63,9 @@ async function retrieveAndPopulateForm() {
                     const serviceName = stationData.promotions[i];
                     updateInputFields(serviceName, i); // Call your function to create input fields
                     heightRetrive = parseInt(heightRetrive) + 300;
+
+                    // Store the updated height value in localStorage
+                    localStorage.setItem("imageHeightRetrive", heightRetrive);
                 }
 
 

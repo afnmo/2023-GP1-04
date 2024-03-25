@@ -47,159 +47,206 @@ async function fetchEmployeeList(db, employeeCollectionName, BMID) {
         employeeList.innerHTML = '';
         if (employeeQuerySnapshot.empty) {
             // If the employee list is empty, display a bold statement with a margin
-     const emptyListItem = document.createElement("p");
-     emptyListItem.textContent = "You don't have any employee yet";
-     //emptyListItem.style.fontWeight = "bold"; // Make the text bold
-     emptyListItem.style.marginRight = "50px"; // Add margin to the top
-     emptyListItem.style.marginLeft = "50px"; // Add margin to the top
-     emptyListItem.style.marginTop = "100px"; 
-     employeeList.appendChild(emptyListItem);
-             }else{
-        // Populate the employee list
-        employeeQuerySnapshot.forEach((employeeDoc) => {
-            const employeeData = employeeDoc.data();
-            
-            const listItem = document.createElement("li");
+            const emptyListItem = document.createElement("p");
+            emptyListItem.textContent = "You don't have any employee yet";
+            //emptyListItem.style.fontWeight = "bold"; // Make the text bold
+            emptyListItem.style.marginRight = "50px"; // Add margin to the top
+            emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+            emptyListItem.style.marginTop = "100px";
+            employeeList.appendChild(emptyListItem);
+        } else {
+            // Populate the employee list
+            employeeQuerySnapshot.forEach((employeeDoc) => {
+                const employeeData = employeeDoc.data();
 
-            // Create a container for the delete icon and employee name
-            const containerDiv = document.createElement("div");
-            containerDiv.style.display = "flex";
-            containerDiv.style.justifyContent = "space-between"; // Align items to the right
+                const listItem = document.createElement("li");
 
-            // Create a span for the employee name
-            const employeeNameSpan = document.createElement("span");
-            employeeNameSpan.textContent = ` ${employeeData.firstName} ${employeeData.lastName}`;
+                // Create a container for the delete icon and employee name
+                const containerDiv = document.createElement("div");
+                containerDiv.style.display = "flex";
+                containerDiv.style.justifyContent = "space-between"; // Align items to the right
 
-   
+                // Create a span for the employee name
+                const employeeNameSpan = document.createElement("span");
+                employeeNameSpan.textContent = ` ${employeeData.firstName} ${employeeData.lastName}`;
 
-            // Create the delete icon
-            const deleteIcon = document.createElement("img");
-            deleteIcon.src = "../images/delete.png";
-            deleteIcon.alt = "Delete Icon";
-            deleteIcon.width = 35;
-            deleteIcon.height = 35;
-            deleteIcon.style.cursor = "pointer";
 
-            deleteIcon.addEventListener("click", async () => {
-                // Display a custom confirmation dialog
-                var name = ` ${employeeData.firstName} ${employeeData.lastName}`;
-            
-                showConfirm(`Are you sure you want to delete ${name}?`);
-            
-                // Add event listener for the Yes, I'm Sure button in your custom alert
-                const confirmButton = document.querySelector('#customAlertConfirmButton');
-                const cancelButton = document.querySelector('#customAlertCancelButton');
-            
-                const confirmHandler = async () => {
-                    try {
-                        // Create a reference to the employee document
-                        const employeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
-            
-                        // Delete the employee document from Firebase
-                        await deleteDoc(employeeDocRef);
-            
-                        // Check if there are any remaining employees
-                        const remainingEmployeesQuerySnapshot = await getDocs(employeeQuery);
-                        if (remainingEmployeesQuerySnapshot.empty) {
-                            // If no remaining employees, display the statement
-                            const employeeList = document.getElementById("EmployeeList");
-                            employeeList.innerHTML = '';
-                            const emptyListItem = document.createElement("p");
-                            emptyListItem.textContent = "You don't have any employee yet";
-                            emptyListItem.style.marginRight = "50px"; // Add margin to the top
-                            emptyListItem.style.marginLeft = "50px"; // Add margin to the top
-                            emptyListItem.style.marginTop = "100px";
-                            employeeList.appendChild(emptyListItem);
+
+                // Create the delete icon
+                const deleteIcon = document.createElement("img");
+                deleteIcon.src = "../images/delete.png";
+                deleteIcon.alt = "Delete Icon";
+                deleteIcon.width = 35;
+                deleteIcon.height = 35;
+                deleteIcon.style.cursor = "pointer";
+
+                deleteIcon.addEventListener('click', async function () {
+                    // Display a custom confirmation dialog
+                    var name = ` ${employeeData.firstName} ${employeeData.lastName}`;
+                    showConfirm(
+                        `Are you sure you want to delete ${name}?`,
+                        async function () {
+                            const employeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
+
+                            // Delete the employee document from Firebase
+                            await deleteDoc(employeeDocRef);
+
+                            // Check if there are any remaining employees
+                            const remainingEmployeesQuerySnapshot = await getDocs(employeeQuery);
+                            if (remainingEmployeesQuerySnapshot.empty) {
+                                // If no remaining employees, display the statement
+                                const employeeList = document.getElementById("EmployeeList");
+                                employeeList.innerHTML = '';
+                                const emptyListItem = document.createElement("p");
+                                emptyListItem.textContent = "You don't have any employee yet";
+                                emptyListItem.style.marginRight = "50px"; // Add margin to the top
+                                emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+                                emptyListItem.style.marginTop = "100px";
+                                employeeList.appendChild(emptyListItem);
+                            }
+
+                            // Remove the corresponding list item from the UI
+                            listItem.remove();
+
+                            // Remove the custom alert overlay
+                            const overlay = document.querySelector('#customAlertOverlay');
+                            document.body.removeChild(overlay);
+                            console.log('User confirmed.');
+                        },
+                        function () {
+                            // Remove the custom alert overlay
+                            const overlay = document.querySelector('#customAlertOverlay');
+                            document.body.removeChild(overlay);
+
+                            // Remove the event listener to avoid multiple executions
+                            confirmButton.removeEventListener('click', confirmHandler);
+                            cancelButton.removeEventListener('click', cancelHandler);
+                            console.log('User canceled.');
                         }
-            
-                        // Remove the corresponding list item from the UI
-                        listItem.remove();
-            
-                        // Remove the custom alert overlay
-                        const overlay = document.querySelector('#customAlertOverlay');
-                        document.body.removeChild(overlay);
-                    } catch (error) {
-                        console.error("Error deleting document: ", error);
-                    }
-            
-                    // Remove the event listener to avoid multiple executions
-                    confirmButton.removeEventListener('click', confirmHandler);
-                    cancelButton.removeEventListener('click', cancelHandler);
-                };
-            
-                const cancelHandler = () => {
-                    // Remove the custom alert overlay
-                    const overlay = document.querySelector('#customAlertOverlay');
-                    document.body.removeChild(overlay);
-            
-                    // Remove the event listener to avoid multiple executions
-                    confirmButton.removeEventListener('click', confirmHandler);
-                    cancelButton.removeEventListener('click', cancelHandler);
-                };
-            
-                confirmButton.addEventListener('click', confirmHandler);
-                cancelButton.addEventListener('click', cancelHandler);
+                    );
+                });
+
+                // deleteIcon.addEventListener("click", async () => {
+                //     // Display a custom confirmation dialog
+                //     var name = ` ${employeeData.firstName} ${employeeData.lastName}`;
+
+                //     showConfirm(`Are you sure you want to delete ${name}?`);
+
+                //     // Add event listener for the Yes, I'm Sure button in your custom alert
+                //     const confirmButton = document.querySelector('#customAlertConfirmButton');
+                //     const cancelButton = document.querySelector('#customAlertCancelButton');
+
+                //     const confirmHandler = async () => {
+                //         try {
+                //             // Create a reference to the employee document
+                //             const employeeDocRef = doc(db, `${employeeCollectionName}/${employeeDoc.id}`);
+
+                //             // Delete the employee document from Firebase
+                //             await deleteDoc(employeeDocRef);
+
+                //             // Check if there are any remaining employees
+                //             const remainingEmployeesQuerySnapshot = await getDocs(employeeQuery);
+                //             if (remainingEmployeesQuerySnapshot.empty) {
+                //                 // If no remaining employees, display the statement
+                //                 const employeeList = document.getElementById("EmployeeList");
+                //                 employeeList.innerHTML = '';
+                //                 const emptyListItem = document.createElement("p");
+                //                 emptyListItem.textContent = "You don't have any employee yet";
+                //                 emptyListItem.style.marginRight = "50px"; // Add margin to the top
+                //                 emptyListItem.style.marginLeft = "50px"; // Add margin to the top
+                //                 emptyListItem.style.marginTop = "100px";
+                //                 employeeList.appendChild(emptyListItem);
+                //             }
+
+                //             // Remove the corresponding list item from the UI
+                //             listItem.remove();
+
+                //             // Remove the custom alert overlay
+                //             const overlay = document.querySelector('#customAlertOverlay');
+                //             document.body.removeChild(overlay);
+                //         } catch (error) {
+                //             console.error("Error deleting document: ", error);
+                //         }
+
+                //         // Remove the event listener to avoid multiple executions
+                //         confirmButton.removeEventListener('click', confirmHandler);
+                //         cancelButton.removeEventListener('click', cancelHandler);
+                //     };
+
+                //     const cancelHandler = () => {
+                //         // Remove the custom alert overlay
+                //         const overlay = document.querySelector('#customAlertOverlay');
+                //         document.body.removeChild(overlay);
+
+                //         // Remove the event listener to avoid multiple executions
+                //         confirmButton.removeEventListener('click', confirmHandler);
+                //         cancelButton.removeEventListener('click', cancelHandler);
+                //     };
+
+                //     confirmButton.addEventListener('click', confirmHandler);
+                //     cancelButton.addEventListener('click', cancelHandler);
+                // });
+
+                // Create the additional icon
+                const additionalIcon = document.createElement("img");
+                additionalIcon.src = "../images/editIcon.png"; // Replace with the correct path
+                additionalIcon.alt = "Additional Icon";
+                additionalIcon.width = 20; // Adjust the width and height accordingly
+                additionalIcon.height = 20;
+                additionalIcon.style.cursor = "pointer";
+                additionalIcon.addEventListener("click", () => {
+                    // Get the employee data
+                    const employeeFirstName = employeeData.firstName;
+                    const employeeLastName = employeeData.lastName;
+                    const employeeEmail = employeeData.email;
+                    //const employeePassword = employeeData.password; // Assuming password is a property of employeeData
+                    const employeePhone = employeeData.phone;
+                    const employeeYearExperines = employeeData.years_experience;
+                    const employeeId = employeeDoc.id; // Access id directly from employeeDoc
+
+                    // Log the employeeId to the console for debugging
+                    console.log("Employee ID:", employeeId);
+
+                    // Construct the URL with query parameters
+                    const url = `registerFormEmployeeUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&phone=${employeePhone}&years_experience=${employeeYearExperines}&employeeId=${employeeId}`;
+
+                    // Redirect to the registerFormEPUpdate page with query parameters
+                    window.location.href = url;
+                });
+
+
+
+                // Create a horizontal line
+                const horizontalLine = document.createElement("hr");
+
+
+
+                // Create a div to wrap the icons and control their spacing
+                const iconsWrapper = document.createElement("div");
+                iconsWrapper.style.display = "flex";
+                iconsWrapper.style.alignItems = "center";
+
+                // Apply margin to the delete icon
+                deleteIcon.style.marginRight = "5px"; // Adjust the value as needed
+
+                // Append the delete icon and additional icon to the wrapper
+                iconsWrapper.appendChild(deleteIcon);
+                iconsWrapper.appendChild(additionalIcon);
+
+                // Append the icons wrapper and employee name to the container
+                containerDiv.appendChild(employeeNameSpan);
+
+                containerDiv.appendChild(iconsWrapper);
+
+                // Add the container to the list item
+                listItem.appendChild(containerDiv);
+                listItem.appendChild(horizontalLine);
+
+                // Add the list item to the employee list
+                employeeList.appendChild(listItem);
+
             });
-
-            // Create the additional icon
-            const additionalIcon = document.createElement("img");
-            additionalIcon.src = "../images/editIcon.png"; // Replace with the correct path
-            additionalIcon.alt = "Additional Icon";
-            additionalIcon.width = 20; // Adjust the width and height accordingly
-            additionalIcon.height = 20;
-            additionalIcon.style.cursor = "pointer";
-            additionalIcon.addEventListener("click", () => {
-                // Get the employee data
-                const employeeFirstName = employeeData.firstName;
-                const employeeLastName = employeeData.lastName;
-                const employeeEmail = employeeData.email;
-                //const employeePassword = employeeData.password; // Assuming password is a property of employeeData
-                const employeePhone= employeeData.phone;
-                const employeeYearExperines= employeeData.years_experience;
-                const employeeId = employeeDoc.id; // Access id directly from employeeDoc
-            
-                // Log the employeeId to the console for debugging
-                console.log("Employee ID:", employeeId);
-            
-                // Construct the URL with query parameters
-                const url = `registerFormEmployeeUpdate.html?FirstName=${employeeFirstName}&LastName=${employeeLastName}&email=${employeeEmail}&phone=${employeePhone}&years_experience=${employeeYearExperines}&employeeId=${employeeId}`;
-            
-                // Redirect to the registerFormEPUpdate page with query parameters
-                window.location.href = url;
-            });
-            
-            
-            
-             // Create a horizontal line
-    const horizontalLine = document.createElement("hr");
-
-
-
-            // Create a div to wrap the icons and control their spacing
-            const iconsWrapper = document.createElement("div");
-            iconsWrapper.style.display = "flex";
-            iconsWrapper.style.alignItems = "center";
-
-            // Apply margin to the delete icon
-            deleteIcon.style.marginRight = "5px"; // Adjust the value as needed
-
-            // Append the delete icon and additional icon to the wrapper
-            iconsWrapper.appendChild(deleteIcon);
-            iconsWrapper.appendChild(additionalIcon);
-
-            // Append the icons wrapper and employee name to the container
-            containerDiv.appendChild(employeeNameSpan);
-            
-            containerDiv.appendChild(iconsWrapper);
-
-            // Add the container to the list item
-            listItem.appendChild(containerDiv);
-            listItem.appendChild(horizontalLine);
-
-            // Add the list item to the employee list
-            employeeList.appendChild(listItem);
-            
-        });};
+        };
     } catch (error) {
         console.error("Error accessing Firestore for employees:", error);
     }

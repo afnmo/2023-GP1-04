@@ -28,7 +28,7 @@ async function fetchBillDetails() {
     try {
         // Retrieve query parameters from the URL
         const urlParams = new URLSearchParams(window.location.search);
-//--------------show the details:
+        //--------------show the details:
 
         // Get values from query parameters
         const car_id = urlParams.get("car_id");
@@ -46,102 +46,124 @@ async function fetchBillDetails() {
         document.getElementById("car").textContent = car_id;
         document.getElementById("cost").textContent = amount;
 
-//-------------------------------------delete icon:
+        //-------------------------------------delete icon:
         // Get the bill document from Firestore
         const billDocRef = doc(db, billCollectionName, bill_Id);
         const billDataSnapshot = await getDoc(billDocRef);
-if (billDataSnapshot.exists()) {
-    const billData = billDataSnapshot.data();
+        if (billDataSnapshot.exists()) {
+            const billData = billDataSnapshot.data();
 
-    // Find the <h3> element containing the "Bill Details" title
-    const billDetailsTitle = document.getElementById('billDetailsTitle');
+            // Find the <h3> element containing the "Bill Details" title
+            const billDetailsTitle = document.getElementById('billDetailsTitle');
 
-    // Create the delete icon
-    const deleteIcon = document.createElement("img");
-    deleteIcon.src = "../images/delete.png";
-    deleteIcon.alt = "Delete Icon";
-    deleteIcon.width = 70;
-    deleteIcon.height = 70;
-    deleteIcon.style.cursor = "pointer";
-    deleteIcon.style.marginLeft = "300px"; // Add some margin to separate it from the title
+            // Create the delete icon
+            const deleteIcon = document.createElement("img");
+            deleteIcon.src = "../images/delete.png";
+            deleteIcon.alt = "Delete Icon";
+            deleteIcon.width = 70;
+            deleteIcon.height = 70;
+            deleteIcon.style.cursor = "pointer";
+            deleteIcon.style.marginLeft = "300px"; // Add some margin to separate it from the title
 
-    // Append the delete icon next to the "Bill Details" title
-    billDetailsTitle.appendChild(deleteIcon);
+            // Append the delete icon next to the "Bill Details" title
+            billDetailsTitle.appendChild(deleteIcon);
 
-    deleteIcon.addEventListener("click", async () => {
-        showConfirm(`Are you sure you want to delete this bill?`);
-        // Add event listener for the Yes, I'm Sure button in your custom alert
-        const confirmButton = document.querySelector('#customAlertConfirmButton');
-        const cancelButton = document.querySelector('#customAlertCancelButton');
+            deleteIcon.addEventListener('click', async function () {
+                showConfirm(
+                    'Are you sure you want to delete this bill?',
+                    async function () {
+                        // Create a reference to the bill document
+                        const billDocRef = doc(db, `${billCollectionName}/${bill_Id}`);
+                        // Delete the bill document from Firebase
+                        await deleteDoc(billDocRef);
+                        // Redirect to the bill page after deletion
+                        window.location.href = "bill.html";
+                        // Remove the custom alert overlay
+                        const overlay = document.querySelector('#customAlertOverlay');
+                        document.body.removeChild(overlay);
+                        console.log('User confirmed.');
+                    },
+                    function () {
+                        // Code to execute on cancel
+                        console.log('User canceled.');
+                    }
+                );
+            });
 
-        const confirmHandler = async () => {
-            try {
-                // Create a reference to the bill document
-                const billDocRef = doc(db, `${billCollectionName}/${bill_Id}`);
-                // Delete the bill document from Firebase
-                await deleteDoc(billDocRef);
-                // Redirect to the bill page after deletion
-                window.location.href = "bill.html";
-                // Remove the custom alert overlay
-                const overlay = document.querySelector('#customAlertOverlay');
-                document.body.removeChild(overlay);
-            } catch (error) {
-                console.error("Error deleting document: ", error);
-            }
-        };
+            // deleteIcon.addEventListener("click", async () => {
+            //     showConfirm(`Are you sure you want to delete this bill?`);
+            //     // Add event listener for the Yes, I'm Sure button in your custom alert
+            //     const confirmButton = document.querySelector('#customAlertConfirmButton');
+            //     const cancelButton = document.querySelector('#customAlertCancelButton');
 
-        const cancelHandler = () => {
-            // Remove the custom alert overlay
-            const overlay = document.querySelector('#customAlertOverlay');
-            document.body.removeChild(overlay);
-        };
+            //     const confirmHandler = async () => {
+            //         try {
+            //             // Create a reference to the bill document
+            //             const billDocRef = doc(db, `${billCollectionName}/${bill_Id}`);
+            //             // Delete the bill document from Firebase
+            //             await deleteDoc(billDocRef);
+            //             // Redirect to the bill page after deletion
+            //             window.location.href = "bill.html";
+            //             // Remove the custom alert overlay
+            //             const overlay = document.querySelector('#customAlertOverlay');
+            //             document.body.removeChild(overlay);
+            //         } catch (error) {
+            //             console.error("Error deleting document: ", error);
+            //         }
+            //     };
 
-        confirmButton.addEventListener('click', confirmHandler);
-        cancelButton.addEventListener('click', cancelHandler);
-    });
+            //     const cancelHandler = () => {
+            //         // Remove the custom alert overlay
+            //         const overlay = document.querySelector('#customAlertOverlay');
+            //         document.body.removeChild(overlay);
+            //     };
 
-    // Find the <h3> element containing the "Bill Details" title
-    const billDetailsTitle2 = document.getElementById('billDetailsTitle2');
+            //     confirmButton.addEventListener('click', confirmHandler);
+            //     cancelButton.addEventListener('click', cancelHandler);
+            // });
 
-    // Create the edit icon
-    const editIcon = document.createElement("img");
-    editIcon.src = "../images/editIcon.png"; // Replace with the correct path
-    editIcon.alt = "Edit Icon";
-    editIcon.width = 40; // Adjust the width and height accordingly
-    editIcon.height = 40;
+            // Find the <h3> element containing the "Bill Details" title
+            const billDetailsTitle2 = document.getElementById('billDetailsTitle2');
 
-    editIcon.style.cursor = "pointer";
-    // Append the edit icon next to the "Bill Details" title
-    billDetailsTitle.appendChild(editIcon);
+            // Create the edit icon
+            const editIcon = document.createElement("img");
+            editIcon.src = "../images/editIcon.png"; // Replace with the correct path
+            editIcon.alt = "Edit Icon";
+            editIcon.width = 40; // Adjust the width and height accordingly
+            editIcon.height = 40;
 
-    editIcon.addEventListener("click", () => {
-        const car_id = billData.carId;
-        const amount = billData.amount;
-        const date = billData.date;
-        const employeename = billData.employeeName;
-        const fuel_type = billData.fuelType;
-        const day=billData.day;
-        const month=billData.month;
-        const year=billData.year;
+            editIcon.style.cursor = "pointer";
+            // Append the edit icon next to the "Bill Details" title
+            billDetailsTitle.appendChild(editIcon);
 
-        // Use the previously defined bill_Id variable
-        console.log("ID:", bill_Id);
+            editIcon.addEventListener("click", () => {
+                const car_id = billData.carId;
+                const amount = billData.amount;
+                const date = billData.date;
+                const employeename = billData.employeeName;
+                const fuel_type = billData.fuelType;
+                const day = billData.day;
+                const month = billData.month;
+                const year = billData.year;
 
-        // Construct the URL with query parameters for the update page
-        const url = `billUpdate.html?car_id=${car_id}&amount=${amount}&day=${day}&month=${month}&year=${year}&employeename=${employeename}&fuel_type=${fuel_type}&billId=${bill_Id}`;
+                // Use the previously defined bill_Id variable
+                console.log("ID:", bill_Id);
 
-        // Redirect to the bill update page with query parameters
-        window.location.href = url;
-    });
+                // Construct the URL with query parameters for the update page
+                const url = `billUpdate.html?car_id=${car_id}&amount=${amount}&day=${day}&month=${month}&year=${year}&employeename=${employeename}&fuel_type=${fuel_type}&billId=${bill_Id}`;
 
-    // Append the edit icon inside the card-body div
-    cardBody.appendChild(editIcon);
-} else {
-    console.error("Bill document does not exist");
-}
-} catch (error) {
-console.error("Error fetching bill details:", error);
-}
+                // Redirect to the bill update page with query parameters
+                window.location.href = url;
+            });
+
+            // Append the edit icon inside the card-body div
+            cardBody.appendChild(editIcon);
+        } else {
+            console.error("Bill document does not exist");
+        }
+    } catch (error) {
+        console.error("Error fetching bill details:", error);
+    }
 }
 
 // Call the function to fetch and display bill details

@@ -174,7 +174,6 @@ function createInputFields(serviceName, index) {
             async function () {
                 // Remove the input event listener
                 newInput.removeEventListener('input', handleServiceInput);
-
                 // Remove the corresponding entry from the array
                 formServiceArray.splice(index, 1);
 
