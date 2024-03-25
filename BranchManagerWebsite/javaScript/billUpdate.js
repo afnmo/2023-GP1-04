@@ -54,10 +54,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 console.log(`${year}-${month}-${day}`);
 document.getElementById("cancel").addEventListener("click", function () {
+    // Retrieve the current value of the date input field
+    const currentDate = document.getElementById("date").value;
     
-    const url = `billdetails.html?car_id=${carId}&date=${date}&amount=${amount}&employeename=${employeeName}&fuel_type=${fuelType}&billId=${billId}`;
+    // Construct the URL with the updated date value
+    const url = `billdetails.html?car_id=${carId}&date=${currentDate}&amount=${amount}&employeename=${employeeName}&fuel_type=${fuelType}&billId=${billId}`;
 
-
+    // Redirect to the new URL
     window.location.href = url;
 });
 
