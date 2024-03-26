@@ -171,10 +171,10 @@ function updateInputFields(promotionName, index) {
     inputStartDate.style.fontSize = '16px';
     inputStartDate.style.width = '230px';
 
-    // Set the minimum date to today
-    const today = new Date();
-    const todayFormatted = today.toISOString().split('T')[0];
-    inputStartDate.min = todayFormatted;
+    // Get the start date from Firebase
+    const startDateFromFirebase = new Date(promotionName.start);
+    const startDateFormatted = startDateFromFirebase.toISOString().split('T')[0];
+    inputStartDate.min = startDateFormatted;
 
     containerDivStartDate.appendChild(labelStartDate);
     containerDivStartDate.appendChild(inputStartDate);
@@ -204,7 +204,7 @@ function updateInputFields(promotionName, index) {
     inputEndDate.style.width = '230px';
 
     // Set the minimum date to today
-    inputEndDate.min = todayFormatted;
+    inputEndDate.min = startDateFormatted;
 
     containerDivEndDate.appendChild(labelEndDate);
     containerDivEndDate.appendChild(inputEndDate);
@@ -348,7 +348,8 @@ function updateInputFields(promotionName, index) {
     promotionsContainer.appendChild(containerDiv);
 }
 
-let height = localStorage.getItem("imageHeightRetrive") || 700;
+let height = 800 || localStorage.getItem("imageHeightRetrive");
+
 
 const PromotionsButton = document.getElementById("stationPromotionsButton");
 PromotionsButton.addEventListener("click", async function (event) {

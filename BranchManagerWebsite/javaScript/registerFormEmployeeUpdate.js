@@ -214,6 +214,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             firstName: document.getElementById("FirstName").value,
             lastName: document.getElementById("LastName").value,
             email: document.getElementById("Email").value,
+            phone: document.getElementById("phone").value,
+            years_experience: document.getElementById("years_experience").value,
             //password:currentPassword,
         };
 

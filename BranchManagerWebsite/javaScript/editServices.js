@@ -157,7 +157,7 @@ function createInputFields(serviceName, index) {
         if (index < formServiceArray.length) {
             formServiceArray[index] = updatedServiceName;
         } else {
-            if(sheckIndex){
+            if (sheckIndex) {
                 index--;
                 sheckIndex = false;
             }
@@ -169,6 +169,12 @@ function createInputFields(serviceName, index) {
 
     // Add an event listener to the delete button
     newButton.addEventListener('click', async function () {
+        // Check if there's only one service left
+        if (formServiceArray.length === 1) {
+            // Display a message indicating that at least one service must be present
+            showAlert("At least one service must be present");
+            return; // Exit the function, preventing deletion
+        }
         showConfirm(
             'Are you sure you want to delete this service?',
             async function () {
@@ -331,6 +337,70 @@ function showConfirm(message, onConfirm, onCancel) {
     customAlert.appendChild(messageElement);
     customAlert.appendChild(confirmButton);
     customAlert.appendChild(cancelButton);
+    overlay.appendChild(customAlert);
+    document.body.appendChild(overlay);
+}
+
+// change alert style
+function showAlert(message) {
+    var overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+
+    var customAlert = document.createElement('div');
+    customAlert.style.backgroundColor = '#fff';
+    customAlert.style.padding = '20px';
+    customAlert.style.border = '1px solid #ccc';
+    customAlert.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+    customAlert.style.textAlign = 'center';
+    customAlert.style.display = 'flex';
+    customAlert.style.flexDirection = 'column'; // Align items in a column
+
+    var header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.marginBottom = '10px'; // Spacing between header and message
+
+    var imgElement = document.createElement('img');
+    imgElement.src = '../images/logo_no_bkg.png'; // Add your image path here
+    imgElement.style.width = '50px';
+    imgElement.style.marginRight = '10px'; // Space between image and text
+
+    var headerText = document.createElement('span');
+    headerText.textContent = '91 Website'; // Your header text
+    headerText.style.color = '#000';
+
+    var messageElement = document.createElement('span');
+    messageElement.textContent = message;
+    messageElement.style.color = '#000';
+
+    var closeButton = document.createElement('button');
+    closeButton.textContent = 'OK';
+    closeButton.style.padding = '3px 8px'; // Adjust button size
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.border = 'none';
+    closeButton.style.backgroundColor = 'rgba(248, 167, 26)';
+    closeButton.style.color = '#fff';
+    closeButton.style.marginTop = '10px';
+    closeButton.style.alignSelf = 'flex-end'; // Align button to the right
+
+    closeButton.addEventListener('click', function () {
+        document.body.removeChild(overlay);
+    });
+
+    header.appendChild(imgElement);
+    header.appendChild(headerText);
+    customAlert.appendChild(header);
+    customAlert.appendChild(messageElement);
+    customAlert.appendChild(closeButton);
     overlay.appendChild(customAlert);
     document.body.appendChild(overlay);
 }
