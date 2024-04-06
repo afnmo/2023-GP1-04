@@ -86,8 +86,8 @@ class _ReportBillState extends State<ReportBill> {
         "Please enter the amount and select fuel type",
         "   ",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color.fromARGB(255, 236, 50, 13).withOpacity(0.1),
-        colorText: const Color.fromARGB(255, 246, 244, 243),
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 233, 109, 105),
       );
     }
   }
