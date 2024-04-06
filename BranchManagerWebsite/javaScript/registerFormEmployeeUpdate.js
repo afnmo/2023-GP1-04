@@ -1,3 +1,4 @@
+// Firebase configuration...
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, doc, updateDoc, query, where, getDoc, getDocs, collection } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
 
@@ -21,6 +22,9 @@ const db = getFirestore(app);
 const employeeCollectionName = "Station_Employee";
 
 document.addEventListener("DOMContentLoaded", async function () {
+    const pleaseWaitMessage = document.getElementById('pleaseWaitMessage');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
 
     // Retrieve query parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -47,168 +51,45 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.location.href = url;
     });
 
-
-    
-
     document.getElementById("registrationForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
-         // Display wait message
-    displayPleaseWaitMessage();
+
         // Reset all error messages
         resetErrorMessages();
 
         // Validate and get the phone number
-    const phoneInput = document.getElementById("phone");
-    const phone = phoneInput.value.trim(); // Trim leading and trailing whitespaces
+        const phoneInput = document.getElementById("phone");
+        const phone = phoneInput.value.trim(); // Trim leading and trailing whitespaces
 
-    if (!isValidPhone(phone)) {
-        const phoneError6 = document.getElementById("PhoneError6");
-        if (phoneError6) {
-
-            phoneError6.innerText = 'Phone number must have exactly ten digits';
-            phoneError6.style.color = 'red';
-            phoneError6.style.fontSize = '10px';
-        }
-             // Hide wait message when displaying an error
-            hidePleaseWaitMessage();
-        return;
-    } else {
-        // Phone number is valid, display a success message
-        setSuccess(phoneInput);
-    }
-
-         // Validate and get the email
-    const emailInput = document.getElementById("Email");
-    const email = emailInput.value.trim(); // Trim leading and trailing whitespaces
-
-    if (!isValidEmail(email)) {
-        const EmailError4 = document.getElementById("EmailError4");
-        if (EmailError4) {
-            EmailError4.innerText = 'Incorrect Email';
-            EmailError4.style.color = 'red';
-            EmailError4.style.fontSize = '10px';
-        }
-            // Hide wait message when displaying an error
-            hidePleaseWaitMessage();
-        return;
-    } else {
-        // Email is valid, display a success message
-        setSuccess(emailInput);
-    }
-        // Check if the provided email is already in use by another user
-
-    // Check if the email is different from the current email
-    const currentEmail = await getCurrentEmail(employeeId);
-    if (currentEmail !== email) {
-        // Check if the provided email is already in use by another user
-        const isEmailUsed = await isEmailAlreadyUsed(email, employeeId);
-
-        if (isEmailUsed) {
-            const EmailError5 = document.getElementById("EmailError5");
-            if (EmailError5) {
-                EmailError5.innerText = 'Email is already in use';
-                EmailError5.style.color = 'red';
-                EmailError5.style.fontSize = '10px';
-            }
-        // Hide wait message when displaying an error
-        hidePleaseWaitMessage();
+        if (!isValidPhone(phone)) {
+            displayErrorMessage('Phone number must have exactly ten digits');
             return;
         }
-    }
 
+        // Validate and get the email
+        const emailInput = document.getElementById("Email");
+        const email = emailInput.value.trim(); // Trim leading and trailing whitespaces
 
-        // Retrieve the current employee document from Firestore
-    const employeeDocRef = doc(db, employeeCollectionName, employeeId);
-    const employeeDoc = await getDoc(employeeDocRef);
+        if (!isValidEmail(email)) {
+            displayErrorMessage('Incorrect Email');
+            return;
+        }
 
-    //
-    //const currentPassword = employeeDoc.data().password;
-    // const enteredPrevPasswordInput = document.getElementById("PrevPassword");
+        // Check if the provided email is already in use by another user
+        const currentEmail = await getCurrentEmail(employeeId);
+        if (currentEmail !== email) {
+            const isEmailUsed = await isEmailAlreadyUsed(email, employeeId);
+            if (isEmailUsed) {
+                displayErrorMessage('Email is already in use');
+                return;
+            }
+        }
 
-    // if (!enteredPrevPasswordInput) {
-    //     console.error("Password input not found.");
-    //     return;
-    // }
+        // Display "please wait" message only if there are no error messages
+        if (!errorMessage.textContent) {
+            pleaseWaitMessage.style.display = 'block';
+        }
 
-
-    // let enteredPrevPassword = "";  // Initialize as an empty string
-
-    // // Check if the user is updating the password
-    //     if (click_to_change_password === 1) {
-    //         // User is updating the password, get the value from the input field
-    //         enteredPrevPassword = enteredPrevPasswordInput.value;
-
-    //         // Trim leading and trailing whitespaces, if any
-    //         enteredPrevPassword = enteredPrevPassword.trim();
-    // }
-
-    // // Validate the previous password if it's not empty
-    // if (click_to_change_password === 1 && enteredPrevPassword !== "") {
-    //     // Hash the entered password using the same SHA-256 algorithm
-    //     const hashedEnteredPrevPassword = await hashPassword(enteredPrevPassword);
-
-    //     // Validate the previous password
-    //     if (hashedEnteredPrevPassword !== currentPassword) {
-    //         const passwordError1 = document.getElementById("passwordError1");
-    //         if (passwordError1) {
-    //             passwordError1.innerText = 'Incorrect previous password';
-    //             passwordError1.style.color = 'red';
-    //             passwordError1.style.fontSize = '10px';
-    //         }
-    //         // Hide wait message when displaying an error
-    //         hidePleaseWaitMessage();
-    //         return;
-    //     } else {
-    //         setSuccess(enteredPrevPasswordInput);
-    //     }
-    // }
-
-    //     // Validate and get the new password
-    //     const newPasswordInput = document.getElementById("New_Password");
-    //     const newPassword = newPasswordInput.value.trim(); // Trim leading and trailing whitespaces
-
-    //     if (click_to_change_password === 1 && newPassword !== "") {
-    //         // User is updating the password, validate the new password
-    //         if (!isValidPassword(newPassword)) {
-    //             const passwordError2 = document.getElementById("passwordError2");
-    //             if (passwordError2) {
-    //                 passwordError2.innerText = 'Password must length 8 and contain at least one digit, one special character, one uppercase letter, and one lowercase letter.';
-    //                 passwordError2.style.color = 'red';
-    //                 passwordError2.style.fontSize = '10px';
-    //             }
-    //              // Hide wait message when displaying an error
-    //     hidePleaseWaitMessage();
-    //             return;
-    //         } else {
-    //             setSuccess(newPasswordInput);
-    //         }
-    //           // Hash the new password before updating the data
-    //       hash_new_password = await hashPassword(newPassword); 
-    //     }
-
-    //     // Validate and get the confirmation password
-    //     const confirmNewPasswordInput = document.getElementById("Re_Password");
-    //     const confirmNewPassword = confirmNewPasswordInput.value.trim(); // Trim leading and trailing whitespaces
-
-    //     if (click_to_change_password === 1 && confirmNewPassword !== newPassword) {
-    //         // User is updating the password, validate the confirmation password
-    //         const passwordError3 = document.getElementById("passwordError3");
-    //         if (passwordError3) {
-    //             passwordError3.innerText = 'Not match New Password';
-    //             passwordError3.style.color = 'red';
-    //             passwordError3.style.fontSize = '10px';
-    //         }
-    //      // Hide wait message when displaying an error
-    //     hidePleaseWaitMessage();
-    //         return;
-    //     } else {
-    //         setSuccess(confirmNewPasswordInput);
- 
-    //     }
-        // Validate the email
-
-   
-        
         // Update the document in the Firestore collection using the employeeId
         const updatedData = {
             firstName: document.getElementById("FirstName").value,
@@ -216,39 +97,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             email: document.getElementById("Email").value,
             phone: document.getElementById("phone").value,
             years_experience: document.getElementById("years_experience").value,
-            //password:currentPassword,
         };
 
-
-
-
-        // Use updateDoc from Firestore SDK to update the document
+        const employeeDocRef = doc(db, employeeCollectionName, employeeId);
         updateDoc(employeeDocRef, updatedData)
-        .then(() => {
-              // Hide wait message
-            hidePleaseWaitMessage();
-            // Display success message at the end of the form
-            const successMessage = document.getElementById("successMessage");
-            if (successMessage) {
-                successMessage.style.display = "block";
-        
-                // Wait for 1.5 seconds
+            .then(() => {
+                // Display success message
+                successMessage.style.display = 'block';
+
+                // Redirect to myEmployee.html after 1.5 seconds
                 setTimeout(() => {
-                    // Redirect to employee.html after 1.5 seconds
                     window.location.href = "myEmployee.html";
                 }, 1500);
-            }
-        })
+            })
             .catch((error) => {
-                hidePleaseWaitMessage();
                 console.error("Error updating document: ", error);
+            })
+            .finally(() => {
+                // Hide "please wait" message
+                pleaseWaitMessage.style.display = 'none';
             });
-
-            
     });
 });
-
-
 
 
 

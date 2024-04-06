@@ -1,8 +1,7 @@
-// Import necessary Firebase modules
+// Firebase configuration...
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getFirestore, addDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
 import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
-
 
 // Firebase configuration
 const firebaseConfig = {
@@ -50,8 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     async function Add() {
-        pleaseWaitMessage.style.display = "block"; // Display "please wait" message
-
         try {
             // Extract form data
             const firstName = document.getElementById("FirstName").value;
@@ -107,12 +104,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 displayErrorMessage("An error occurred. Please try again later.");
             }
-            // Hide "please wait" message after error
-            pleaseWaitMessage.style.display = "none";
+            // Show "please wait" message after displaying error message
+            pleaseWaitMessage.style.display = "block";
         }
     }
-
-    // Other utility functions...
 
     function displayErrorMessage(message) {
         errorMessageElement.textContent = message;
