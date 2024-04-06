@@ -14,32 +14,37 @@ class CarInfoBody extends StatelessWidget {
 // edit car button
   Widget editCarButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        print("Edit Car Button Clicked");
-
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => EditCarInfo(carId: carId)));
-      },
-      child: Icon(Icons.edit),
-      backgroundColor: Color.fromARGB(255, 211, 166, 42),
-    );
+        onPressed: () {
+          print("Edit Car Button Clicked");
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => EditCarInfo(carId: carId)));
+        },
+        child: Icon(Icons.edit),
+        backgroundColor: Color.fromARGB(255, 2, 84, 2));
   }
 
   // QR button
   Widget QrButton(BuildContext context) {
-    return FloatingActionButton(
+    return RawMaterialButton(
       onPressed: () {
         print("QR Button Clicked");
-
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => QR(carId: carId)));
       },
-      child: Image.asset(
-        'assets/images/QR.gif',
+      elevation: 0, // No elevation
+      fillColor: Colors.transparent, // Transparent background color
+      padding: EdgeInsets.zero, // No padding
+      shape: CircleBorder(), // Circular shape
+      child: Container(
         width: 55,
         height: 55,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/QR.gif'),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
-      //backgroundColor: Color.fromARGB(255, 211, 166, 42),
     );
   }
 
