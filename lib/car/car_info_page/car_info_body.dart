@@ -347,7 +347,8 @@ class CarInfoBody extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                carData['fuelEconomy'] as String? ?? '',
+                                carData['fuelEconomy'] + ' MPG' as String? ??
+                                    '',
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
