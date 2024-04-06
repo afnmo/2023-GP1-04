@@ -17,10 +17,11 @@ class HomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
-//hi
 class _HomeScreenState extends State<HomeScreen> {
   GetUserName getUserName = GetUserName();
   String? userName;
+  bool userNameFetched = false; // Flag to track if user name is fetched
+  bool amountFetched = false;
   List<double> monthlySummary = [];
   List<double> annualSummary = [];
   bool? showGraph;
@@ -30,11 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchUserName(); // Fetch user name
     _fetchSummary();
   }
 
-  Future<void> _fetchSummary() async {
+  Future<void> _fetchUserName() async {
     userName = await getUserName.getUserName();
+    setState(() {
+      userNameFetched = true; // Update flag when user name is fetched
+    });
+  }
+
+  Future<void> _fetchSummary() async {
     showGraph = await checkCarExists();
 
     if (showGraph == true) {
@@ -44,26 +52,19 @@ class _HomeScreenState extends State<HomeScreen> {
       List<double> amounts = await getExpenses.getMontlhyAmounts();
       List<double> amounts2 = await getExpenses.getAnnualAmounts();
 
-      // Check if the widget is still mounted before updating the state
-      if (mounted) {
-        setState(() {
-          monthlySummary = amounts;
-          annualSummary = amounts2;
-        });
-      }
+      setState(() {
+        amountFetched = true;
+        monthlySummary = amounts;
+        annualSummary = amounts2;
+      });
     }
   }
 
-  void _toggleGraph(int index) {
-    setState(() {
-      showMonthly = index == 0;
-    });
-  }
-
   Widget _buildGraphWidget() {
-    if (showGraph == null) {
+    if (!userNameFetched && showGraph == null && showGraph == false) {
+      // Show CircularProgressIndicator if user name is not fetched or showGraph is false
       return CircularProgressIndicator();
-    } else if (showGraph == true) {
+    } else if (amountFetched && showGraph == true) {
       if (showMonthly) {
         return SizedBox(
           height: 250,
@@ -136,12 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 10.0),
               child: _buildGraphWidget(),
             ),
-            if (showGraph ==
-                false) // Display blurred image if showGraph is false
+            if (amountFetched == false)
               Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: BlurredImageWithText(),
-              ),
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: BlurredImageWithText()),
             Padding(
               padding: const EdgeInsets.only(top: 50.0),
               child: CategoriesList(),
@@ -150,6 +149,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _toggleGraph(int index) {
+    setState(() {
+      showMonthly = index == 0;
+    });
   }
 
   void _onIndexChanged(int index) {

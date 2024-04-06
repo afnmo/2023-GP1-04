@@ -25,52 +25,52 @@ class FinalEntry extends StatefulWidget {
 class _FinalEntryState extends State<FinalEntry> {
   final _formKey = GlobalKey<FormState>(); // GlobalKey for the form
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showAlertDialog(context);
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     showAlertDialog(context);
+  //   });
+  // }
 
-  void showAlertDialog(BuildContext context) {
-    // Set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: const Text("Fuel Expense Notification",
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-      content: const SingleChildScrollView(
-        // Ensures content fits in smaller screens
-        child: ListBody(
-          children: <Widget>[
-            Text(
-                "Your car's initial fuel expense is set at 500 SR for this journey. "
-                "This amount is a key factor in our fuel consumption calculation. "
-                "If this estimate aligns with your expectations, you can proceed. "
-                "However, if you have a different amount in mind based on the expected mileage traveled, "
-                "please enter the new figure. This ensures that our calculations are tailored to your specific needs.",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-      actions: [
-        ElevatedButton(
-          child: Text("Ok", style: TextStyle(color: Colors.white)),
-          style: ElevatedButton.styleFrom(primary: Colors.green),
-          onPressed: () {
-            // Code to proceed
-            Navigator.of(context).pop(); // Close the dialog
-          },
-        ),
-      ],
-    );
+  // void showAlertDialog(BuildContext context) {
+  //   // Set up the AlertDialog
+  //   AlertDialog alert = AlertDialog(
+  //     title: const Text("Fuel Expense Notification",
+  //         style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+  //     content: const SingleChildScrollView(
+  //       // Ensures content fits in smaller screens
+  //       child: ListBody(
+  //         children: <Widget>[
+  //           Text(
+  //               "Your car's initial fuel expense is set at 500 SR for this journey. "
+  //               "This amount is a key factor in our fuel consumption calculation. "
+  //               "If this estimate aligns with your expectations, you can proceed. "
+  //               "However, if you have a different amount in mind based on the expected mileage traveled, "
+  //               "please enter the new figure. This ensures that our calculations are tailored to your specific needs.",
+  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+  //         ],
+  //       ),
+  //     ),
+  //     actions: [
+  //       ElevatedButton(
+  //         child: Text("Ok", style: TextStyle(color: Colors.white)),
+  //         style: ElevatedButton.styleFrom(primary: Colors.green),
+  //         onPressed: () {
+  //           // Code to proceed
+  //           Navigator.of(context).pop(); // Close the dialog
+  //         },
+  //       ),
+  //     ],
+  //   );
 
-    // Show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+  //   // Show the dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
 
   // Define the controller for end mileage
   final TextEditingController endMileageController = TextEditingController();
@@ -331,7 +331,7 @@ class _FinalEntryState extends State<FinalEntry> {
                             print("Error submitting data: ${error.toString()}");
                             Get.snackbar(
                               "Error",
-                              "Failed to submit data. Please try again.",
+                              "No bills found for this car.",
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor:
                                   Colors.redAccent.withOpacity(0.1),
