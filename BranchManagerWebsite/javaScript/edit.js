@@ -84,11 +84,41 @@ async function retrieveAndPopulateForm() {
                 // Retrieve the last stored height value from localStorage
                 let heightRetrive = localStorage.getItem("imageHeightRetrive") || 1300;
 
+                const requiredServices = ["Convenience store", "ATM", "Car wash", "Car mechanic"];
+
+                let oneFixedService = false;
+                let oneService = false;
+
                 // Iterate over each service in the array
                 for (let i = 0; i < stationData.services.length; i++) {
                     const serviceName = stationData.services[i];
-                    retriveServices(serviceName, i); // Call your function to create input fields
-                    heightRetrive = parseInt(heightRetrive) + 100;
+
+                    if (requiredServices.includes(serviceName)) {
+                        const checkbox = document.getElementById(`service${serviceName}`);
+                        if (checkbox) {
+                            document.getElementById("fixedServices").style.display = 'block';
+                            checkbox.checked = true;
+                            oneFixedService = true;
+                        }
+                    } else {
+                        retriveServices(serviceName, i); // Call your function to create input fields
+                        oneService = true;
+                    }
+                    heightRetrive = parseInt(heightRetrive) + 200;
+                }
+
+                if (oneFixedService) {
+                    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
+                    if (fixedStationServicesSpan) {
+                        fixedStationServicesSpan.remove();
+                    }
+                }
+
+                if (oneService) {
+                    const servicesSpan = document.getElementById('serviceText');
+                    if (servicesSpan) {
+                        servicesSpan.remove();
+                    }
                 }
 
                 // Set the final height after processing all services
@@ -135,14 +165,14 @@ function populateCheckBoxesAndRadioButtons(stationData) {
     // Handle the heightBox and BKimage based on the number of checkboxes
     const numCheckbox = fuelTypes.length;
     if (numCheckbox === 1) {
-        document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1200;
+        document.getElementById("heightBox").style.height = 1400;
+        document.getElementById("BKimage").height = 1400;
     } else if (numCheckbox === 2) {
-        document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1200;
+        document.getElementById("heightBox").style.height = 1400;
+        document.getElementById("BKimage").height = 1400;
     } else if (numCheckbox === 3) {
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1250;
+        document.getElementById("BKimage").height = 1500;
     }
 }
 
@@ -164,8 +194,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 91 based on its checkbox state
     if (checkbox1.checked) {
         radioGroup1.style.display = 'block';
-        document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1090;
+        document.getElementById("heightBox").style.height = 1400;
+        document.getElementById("BKimage").height = 1400;
     } else {
         radioGroup1.style.display = 'none';
     }
@@ -173,8 +203,8 @@ function toggleRadioGroup() {
     // Show/hide the radio button group for 95 based on its checkbox state
     if (checkbox2.checked) {
         radioGroup2.style.display = 'block';
-        document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1200;
+        document.getElementById("heightBox").style.height = 1400;
+        document.getElementById("BKimage").height = 1400;
     } else {
         radioGroup2.style.display = 'none';
     }
@@ -183,7 +213,7 @@ function toggleRadioGroup() {
     if (checkbox3.checked) {
         radioGroup3.style.display = 'block';
         document.getElementById("heightBox").style.height = 1500;
-        document.getElementById("BKimage").height = 1250;
+        document.getElementById("BKimage").height = 1500;
     } else {
         radioGroup3.style.display = 'none';
     }
@@ -215,8 +245,19 @@ form.addEventListener("submit", async function (event) {
         }
     }
 
-    // Check if formServiceArray is not empty
-    if (formServiceArray.length === 0) {
+    const serviceChecked = document.getElementsByName("service");
+
+    for (let i = 0; i < serviceChecked.length; i++) {
+        if (serviceChecked[i].checked) {
+            formServiceArray.push(serviceChecked[i].value);
+        }
+    }
+    
+    // Check if at least one checkbox is checked or if at least one service is added in the input field
+    const checkboxesChecked = document.querySelectorAll('input[name="service"]:checked');
+    const inputFields = document.querySelectorAll('input[name="stationServies"]');
+
+    if (checkboxesChecked.length === 0 && inputFields.length === 0) {
         showAlert("Please add at least one service");
         return; // Prevent form submission if formServiceArray is empty
     }
@@ -283,14 +324,34 @@ async function AddStation() {
     }
 }
 
-let height = localStorage.getItem("imageHeightRetrive") || 1300;
+let height = 1500 || localStorage.getItem("imageHeightRetrive");
+
+const fixedServiceButton = document.getElementById("fixedStationServiesButton");
+fixedServiceButton.addEventListener("click", async function (event) {
+    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
+    if (fixedStationServicesSpan) {
+        fixedStationServicesSpan.remove();
+    }
+
+    document.getElementById("fixedServices").style.display = 'block';
+
+    document.getElementById("BKimage").height = height;
+    height = parseInt(height) + 500;
+
+    // Store the updated height value in localStorage
+    localStorage.setItem("imageHeight", height);
+});
 
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
+    const servicesSpan = document.getElementById('serviceText');
+    if (servicesSpan) {
+        servicesSpan.remove();
+    }
     addServiceField();
 
     document.getElementById("BKimage").height = height;
-    height = parseInt(height) + 200;
+    height = parseInt(height) + 100;
 
     // Store the updated height value in localStorage
     localStorage.setItem("imageHeight", height);
@@ -305,11 +366,6 @@ const servicesContainer = document.getElementById('servicesContainer');
 
 // Function to create input fields based on services data
 function retriveServices(serviceName, index) {
-    const stationServicesSpan = document.getElementById('stationServies');
-    if (stationServicesSpan) {
-        stationServicesSpan.innerHTML = '';
-    }
-
     // Create a new container div for each pair
     const containerDiv = document.createElement('div');
     containerDiv.style = 'display: flex; align-items: center;'; // Set display property to flex
@@ -318,7 +374,7 @@ function retriveServices(serviceName, index) {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 495px;';
+    newInput.style = 'color: #4F4F4F; font-weight: 500; margin: 5px; font-size: 18px; width: 495px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Edit your station services';
     newInput.value = serviceName; // Set the value from the Firebase data
@@ -412,7 +468,7 @@ async function addServiceField() {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 495px;';
+    newInput.style = 'color: #4F4F4F; font-weight: 500; margin: 5px; font-size: 18px; width: 495px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Add your station services';
     newInput.required = true;

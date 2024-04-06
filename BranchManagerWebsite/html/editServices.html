@@ -125,12 +125,11 @@
                           Services</span></span></h3>
                   </div>
                   <form class="user" id="editServices">
-                    <div>
-                      <label class="label"
-                        style="color: gray; font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Services</label>
-                      <br>
+                    <label class="label"
+                      style="color: gray; font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Services</label>
+                    <br>
 
-                      <div id="fixedServiceText">
+                    <div id="fixedServiceText">
                       <button id="fixedStationServiesButton" type="button" class="add-button"
                         style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right; margin-top: 1.5%;">
                         <img src="../images/add.png" height="20px" width="20px" style="float: right;">
@@ -142,94 +141,91 @@
                     </div>
 
 
-                      <div id="fixedServices" style="display: none;">
-                        <div class="row">
-                          <div class="col"
-                            style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
-                            <label class="form-check-label"
-                              style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                              <input class="form-check-input" type="checkbox" id="serviceConvenience store" name="service"
-                                value="Convenience store" style="margin: 5px">
-                              <span class="custom-checkbox"
-                                style="position: relative; width: 30px; height: 30px; background-image: url('../images/convenienceStore.png'); background-size: cover; margin-right: 5px;"></span>
-                              Convenience store
-                            </label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col"
-                            style="margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
-                            <label class="form-check-label"
-                              style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                              <input class="form-check-input" type="checkbox" id="serviceATM" name="service" value="ATM"
-                                style="margin: 5px;">
-                              <span class="custom-checkbox"
-                                style="position: relative; width: 30px; height: 30px; background-image: url('../images/atm.png'); background-size: cover; margin-right: 5px;"></span>
-                              ATM
-                            </label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col"
-                            style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
-                            <label class="form-check-label"
-                              style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                              <input class="form-check-input" type="checkbox" id="serviceCar wash" name="service"
-                                value="Car wash" style="margin: 5px">
-                              <span class="custom-checkbox"
-                                style="position: relative; width: 30px; height: 30px; background-image: url('../images/carWash.png'); background-size: cover; margin-right: 5px;"></span>
-                              Car wash
-                            </label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col"
-                            style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
-                            <label class="form-check-label"
-                              style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                              <input class="form-check-input" type="checkbox" id="serviceCar mechanic" name="service"
-                                value="Car mechanic" style="margin: 5px">
-                              <span class="custom-checkbox"
-                                style="position: relative; width: 30px; height: 30px; background-image: url('../images/carMechanic.png'); background-size: cover; margin-right: 5px;"></span>
-                              Car mechanic
-                            </label>
-                          </div>
+                    <div id="fixedServices" style="display: none;">
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceConvenience store" name="service"
+                              value="Convenience store" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/convenienceStore.png'); background-size: cover; margin-right: 5px;"></span>
+                            Convenience store
+                          </label>
                         </div>
                       </div>
-
-                      <button id="stationServiesButton" type="button" class="add-button"
-                        style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right; margin-top: 1.5%;">
-                        <img src="../images/add.png" height="20px" width="20px" style="float: right;">
-                      </button>
-                      <label class="label" id="serviceText"
-                        style="color: rgb(147, 146, 146); font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Ready to add your own service at your station? Click the button above</label>
-                        <br>
-                        <br>
-                      
-                        <div class="col">
-                        <div style="display: flex; align-items: center;">
-                          <br>
-                          <br>
-                          <br>
-                          <br>
-                          <ul id="servicesContainer" style="list-style-type: none;">
-
-                          </ul>
+                      <div class="row">
+                        <div class="col" style="margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceATM" name="service" value="ATM"
+                              style="margin: 5px;">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/atm.png'); background-size: cover; margin-right: 5px;"></span>
+                            ATM
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceCar wash" name="service"
+                              value="Car wash" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/carWash.png'); background-size: cover; margin-right: 5px;"></span>
+                            Car wash
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceCar mechanic" name="service"
+                              value="Car mechanic" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/carMechanic.png'); background-size: cover; margin-right: 5px;"></span>
+                            Car mechanic
+                          </label>
                         </div>
                       </div>
                     </div>
-                    <div class="text-center" style="display: flex; justify-content: center;">
-                      <button class="btn btn-primary d-block btn-user w-100" type="submit"
-                        style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 15px; width: 100%; color: white; text-decoration: none;">
-                        SAVE
-                      </button>
+
+                    <button id="stationServiesButton" type="button" class="add-button"
+                      style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right; margin-top: 1.5%;">
+                      <img src="../images/add.png" height="20px" width="20px" style="float: right;">
+                    </button>
+                    <label class="label" id="serviceText"
+                      style="color: rgb(147, 146, 146); font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Ready
+                      to add your own service at your station? Click the button above</label>
+                    <br>
+                    <br>
+
+                    <div class="col">
+                      <div style="display: flex; align-items: center;">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <ul id="servicesContainer" style="list-style-type: none;">
+
+                        </ul>
+                      </div>
                     </div>
-                  </form>
                 </div>
+                <div class="text-center" style="display: flex; justify-content: center;">
+                  <button class="btn btn-primary d-block btn-user w-100" type="submit"
+                    style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 15px; width: 100%; color: white; text-decoration: none;">
+                    SAVE
+                  </button>
+                </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
       <!-- end form -->
     </section>
