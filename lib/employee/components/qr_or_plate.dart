@@ -30,6 +30,15 @@ class _QRorPlateState extends State<QRorPlate> {
         setState(() {
           _qrCodeResult = qrCode;
         });
+        if (_qrCodeResult != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ReportBill(documentId: _qrCodeResult!, email: widget.email),
+            ),
+          );
+        }
       }
 
       print("QRCode_Result:--");
@@ -95,7 +104,6 @@ class _QRorPlateState extends State<QRorPlate> {
                         width: 100,
                         height: 100,
                         fit: BoxFit.contain,
-                        //  color: Color.fromARGB(255, 174, 174, 172),
                       ),
                       SizedBox(height: 8),
                       Text(
@@ -118,7 +126,6 @@ class _QRorPlateState extends State<QRorPlate> {
                         "assets/images/2.png",
                         width: 100,
                         height: 100,
-                        //color: Color.fromARGB(255, 208, 206, 200),
                       ),
                       SizedBox(height: 8),
                       Text(
@@ -130,25 +137,6 @@ class _QRorPlateState extends State<QRorPlate> {
                 ),
               ],
             ),
-            //  SizedBox(height: size.height * 0.04),
-            if (_qrCodeResult != null) ...[
-              Text(
-                'Scanned QR Code: $_qrCodeResult',
-                style: TextStyle(fontSize: 18),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ReportBill(
-                          documentId: _qrCodeResult!, email: widget.email),
-                    ),
-                  );
-                },
-                child: Text('View Report'),
-              ),
-            ],
           ],
         ),
       ),
