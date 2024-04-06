@@ -107,7 +107,7 @@
                     <div class="card-body p-0" style="border-radius: 0px;">
                         <div class="row">
                             <div class="col-lg-5 d-none d-lg-flex">
-                                <img src="..\images\employeeUpdate.png" width="480" height="665">
+                                <img src="..\images\employeeUpdate.png" width="480" height="430">
                             </div>
                             <div class="col-lg-7" style="border-radius: 0px;">
                                 <div class="p-5" style="border-style: none;border-radius: 0px;">
@@ -140,11 +140,12 @@
                                             
                                             </div>
                                      
-                                        <div class="col-sm-6">
-                                            <input class="form-control form-control-user" type="text" id="years_experience" 
-                                                placeholder="Years of experience" name="years_experience" 
-                                                required style="font-size: 16px;" autocorrect="off" autocapitalize="none">
-                                        </div>
+                                            <div class="col-sm-6">
+                                              <input class="form-control form-control-user" type="number" id="years_experience" 
+                                                  placeholder="Years of experience" name="years_experience" 
+                                                  required style="font-size: 16px;" autocorrect="off" autocapitalize="none" min="0">
+                                          </div>
+                                          
                                     </div>
                                         <div class="mb-3">
                                           <input class="form-control form-control-user" type="email" id="Email"
@@ -193,7 +194,7 @@
                                             Cancel
                                         </button>
                                         <button id="updateButton" class="btn btn-primary d-inline-block btn-user" type="submit"
-                                            style="border-radius: 160px; background: rgba(48,180,118,0.52); border-color: rgba(48,180,118,0.52); font-weight: bold; margin-left: 10px; width: 65%; color: white; text-decoration: none;">
+                                            style="border-radius: 160px; background: rgb(220, 159, 53);; border-color: rgba(240, 246, 243, 0.52); font-weight: bold; margin-left: 10px; width: 65%; color: white; text-decoration: none;">
                                             Update
                                         </button>
                                     </div>

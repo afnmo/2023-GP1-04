@@ -36,11 +36,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const employeeRegistrationForm = document.getElementById('registrationForm2');
     const errorMessageElement = document.getElementById('errorMessage');
     const successMessageElement = document.getElementById('successMessage');
-    //const passwordInput = document.getElementById('password');
-   // const showPasswordCheckbox = document.getElementById('showPassword');
+    const cancelButton = document.getElementById('cancel');
+    const pleaseWaitMessage = document.getElementById('pleaseWaitMessage');
 
-    // Set the initial state of the password input
-   // passwordInput.type = 'password';
+    cancelButton.addEventListener('click', function() {
+        // Redirect to home page
+        window.location.href = "homepagePM.html";
+    });
 
     employeeRegistrationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
@@ -48,20 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     async function Add() {
+        pleaseWaitMessage.style.display = "block"; // Display "please wait" message
+
         try {
             // Extract form data
             const firstName = document.getElementById("FirstName").value;
             const lastName = document.getElementById("LastName").value;
             const email = document.getElementById("email").value;
-            //const password = document.getElementById("password").value;
             const phone = document.getElementById("phone").value;
             const yearsExperience = document.getElementById("years_experience").value;
-
-            // Validate password
-            // if (!isValidPassword(password)) {
-            //     displayErrorMessage("Password must have at least 8 characters, one digit, one special character, one uppercase, and one lowercase letter.");
-            //     return;
-            // }
 
             // Validate email format
             if (!isValidEmail(email)) {
@@ -75,20 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Hash the password
-            //const hashedPassword = await hashPassword(password);
-
-            //Add The Employee In Firebase Authntication:----
-            //----------
-
-
-            // Check if the email is already in use
-            if (await isEmailInUse(email)) {
-                displayErrorMessage("Email address is already in use. Please use a different email.");
-                return;
-            }
+            // Add The Employee In Firebase Authentication
             const userCredential = await createUserWithEmailAndPassword(auth, email, '000000');
-            // Get the UID of the newly created user
             const uid = userCredential.user.uid;
 
             // Add employee to the Firestore collection
@@ -97,10 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 lastName: lastName,
                 email: email,
                 branch_manager_id: BMID,
-                //password: hashedPassword,
                 phone: phone,
                 years_experience: yearsExperience,
-                //terminated: false,
                 uid: uid,
             });
 
@@ -112,27 +95,24 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(() => {
                 window.location.href = "myEmployee.html";
             }, 2000);
+
+            // Hide "please wait" message after successful submission
+            pleaseWaitMessage.style.display = "none";
+
         } catch (error) {
             console.error("An error occurred during form submission:", error);
-            displayErrorMessage("An error occurred. Please try again later.");
+            // Check if the error is due to email-already-in-use
+            if (error.code === "auth/email-already-in-use") {
+                displayErrorMessage("Email address is already in use. Please use a different email.");
+            } else {
+                displayErrorMessage("An error occurred. Please try again later.");
+            }
+            // Hide "please wait" message after error
+            pleaseWaitMessage.style.display = "none";
         }
-        // Check if the error is due to email-already-in-use
-        if (error.code === "auth/email-already-in-use") {
-             displayErrorMessage("Email address is already in use. Please use a different email.");
-                } else {
-                    displayErrorMessage("An error occurred. Please try again later.");
-                }
     }
 
-    // Function to toggle password visibility
-    const togglePasswordVisibility = () => {
-        passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
-    };
-
-    // Add an event listener to the showPasswordCheckbox
-    //showPasswordCheckbox.addEventListener('change', togglePasswordVisibility);
-
-    // Other utility functions
+    // Other utility functions...
 
     function displayErrorMessage(message) {
         errorMessageElement.textContent = message;
@@ -142,16 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function displaySuccessMessage() {
         errorMessageElement.textContent = "";
         successMessageElement.style.display = "block";
-    }
-
-    async function isEmailInUse(email) {
-        const querySnapshot = await getDocs(query(
-            collection(db, "Station_Employee"),
-            where("email", "==", email)
-            
-        ));
-    
-        return querySnapshot.docs.length > 0;
     }
 
     function isValidEmail(email) {
@@ -164,22 +134,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return /^\d{10}$/.test(phoneNumber);
     }
 
-    const isValidPassword = (password) => /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password);
-
-    const hashPassword = async (password) => {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    };
-
     function resetForm() {
         // Reset all form fields
         document.getElementById('FirstName').value = '';
         document.getElementById('LastName').value = '';
         document.getElementById('email').value = '';
-       // document.getElementById('password').value = '';
         document.getElementById('phone').value = '';
         document.getElementById('years_experience').value = '';
     }

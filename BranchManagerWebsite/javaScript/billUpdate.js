@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const lastName = employeeName.substring(spaceIndex + 1) ;
     
     // Set values to form fields
-    document.getElementById("employeeName").value = employeeName;
-    document.getElementById("carId").value = carId;
+   // document.getElementById("employeeName").value = employeeName;
+   // document.getElementById("carId").value = carId;
     document.getElementById("fuelType").value = fuelType;
     document.getElementById("amount").value = amount;
     document.getElementById("date").value = `${year}-${month}-${day}`;
@@ -74,82 +74,82 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     resetErrorMessages();
     
     // Retrieve employee name from the form
-    const employeeNameInput = document.getElementById("employeeName");
-    const employeeName = employeeNameInput.value.trim(); // Trim whitespace
+   // const employeeNameInput = document.getElementById("employeeName");
+   // const employeeName = employeeNameInput.value.trim(); // Trim whitespace
     
-    // Check if employee name is empty
-    if (employeeName === '') {
-        // Display error message for empty employee name
-        const nameError6 = document.getElementById("nameError6");
-        if (nameError6) {
-            nameError6.innerText = "Employee name cannot be empty";
-            nameError6.style.color = "red";
-            nameError6.style.fontSize = "12px";
-        }
+    // // Check if employee name is empty
+    // if (employeeName === '') {
+    //     // Display error message for empty employee name
+    //     const nameError6 = document.getElementById("nameError6");
+    //     if (nameError6) {
+    //         nameError6.innerText = "Employee name cannot be empty";
+    //         nameError6.style.color = "red";
+    //         nameError6.style.fontSize = "12px";
+    //     }
         
-        // Hide wait message when displaying an error
-        hidePleaseWaitMessage();
-        return;
-    }
+    //     // Hide wait message when displaying an error
+    //     hidePleaseWaitMessage();
+    //     return;
+    // }
 
     // Extract the first name and last name from the employee name
-    const spaceIndex = employeeName.indexOf(' ');
-    const firstName = employeeName.substring(0, spaceIndex);
-    const lastName = employeeName.substring(spaceIndex + 1);
+    // const spaceIndex = employeeName.indexOf(' ');
+    // const firstName = employeeName.substring(0, spaceIndex);
+    // const lastName = employeeName.substring(spaceIndex + 1);
     
-    // Check if employeeName exists in Station_Employee collection with branch_manager_id matching the branch ID
-    const employeeRef = collection(db, "Station_Employee");
-    const querySnapshot = await getDocs(query(employeeRef, where("branch_manager_id", "==", BMID), where("firstName", "==", firstName), where("lastName", "==", lastName)));
+    // // Check if employeeName exists in Station_Employee collection with branch_manager_id matching the branch ID
+    // const employeeRef = collection(db, "Station_Employee");
+    // const querySnapshot = await getDocs(query(employeeRef, where("branch_manager_id", "==", BMID), where("firstName", "==", firstName), where("lastName", "==", lastName)));
 
-    if (querySnapshot.empty) {
-        // Employee name doesn't exist in Station_Employee collection with the specified branch_manager_id
-        const nameError6 = document.getElementById("nameError6");
-        if (nameError6) {
-            nameError6.innerText = "Employee Name not include in your station employee";
-            nameError6.style.color = "red";
-            nameError6.style.fontSize = "12px";
-        }
+    // if (querySnapshot.empty) {
+    //     // Employee name doesn't exist in Station_Employee collection with the specified branch_manager_id
+    //     const nameError6 = document.getElementById("nameError6");
+    //     if (nameError6) {
+    //         nameError6.innerText = "Employee Name not include in your station employee";
+    //         nameError6.style.color = "red";
+    //         nameError6.style.fontSize = "12px";
+    //     }
         
-        // Hide wait message when displaying an error
-        hidePleaseWaitMessage();
-        return;
-    }
+    //     // Hide wait message when displaying an error
+    //     hidePleaseWaitMessage();
+    //     return;
+    // }
      // Retrieve car ID from the form
-     const carIdInput = document.getElementById("carId");
-     const carId = carIdInput.value.trim(); // Trim whitespace
+    //  const carIdInput = document.getElementById("carId");
+    //  const carId = carIdInput.value.trim(); // Trim whitespace
      
-     // Check if car ID is empty
-     if (carId === '') {
-         // Display error message for empty car ID
-         const carError = document.getElementById("carError");
-         if (carError) {
-             carError.innerText = "Car ID cannot be empty";
-             carError.style.color = "red";
-             carError.style.fontSize = "12px";
-         }
+    //  // Check if car ID is empty
+    //  if (carId === '') {
+    //      // Display error message for empty car ID
+    //      const carError = document.getElementById("carError");
+    //      if (carError) {
+    //          carError.innerText = "Car ID cannot be empty";
+    //          carError.style.color = "red";
+    //          carError.style.fontSize = "12px";
+    //      }
          
-         // Hide wait message when displaying an error
-         hidePleaseWaitMessage();
-         return;
-     }
+    //      // Hide wait message when displaying an error
+    //      hidePleaseWaitMessage();
+    //      return;
+    //  }
 
-     // Check if carId exists in Cars collection
-     const carRef = collection(db, "Cars");
-     const carDoc = await getDoc(doc(carRef, carId));
+    //  // Check if carId exists in Cars collection
+    //  const carRef = collection(db, "Cars");
+    //  const carDoc = await getDoc(doc(carRef, carId));
      
-     if (!carDoc.exists()) {
-         // Car not found in Cars collection
-         const carError = document.getElementById("carError");
-         if (carError) {
-             carError.innerText = "Car not found";
-             carError.style.color = "red";
-             carError.style.fontSize = "12px";
-         }
+    //  if (!carDoc.exists()) {
+    //      // Car not found in Cars collection
+    //      const carError = document.getElementById("carError");
+    //      if (carError) {
+    //          carError.innerText = "Car not found";
+    //          carError.style.color = "red";
+    //          carError.style.fontSize = "12px";
+    //      }
          
-         // Hide wait message when displaying an error
-         hidePleaseWaitMessage();
-         return;
-     }
+    //      // Hide wait message when displaying an error
+    //      hidePleaseWaitMessage();
+    //      return;
+    //  }
    // Retrieve the updated date value
    const updatedDateInput = document.getElementById("date");
    const updatedDateValue = updatedDateInput.value;
@@ -187,7 +187,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const billDocRef = doc(db, billCollectionName, billId);
     const updatedData = {
         employeeName: employeeName,
-        carId: document.getElementById("carId").value,
+        carId: carId,
         fuelType: document.getElementById("fuelType").value,
         amount: document.getElementById("amount").value,
         date:  updatedDateValue,
