@@ -46,6 +46,8 @@ const collectionRef = collection(db, collectionName);
 // Retrieve a specific document by ID ("s1") must tack id from BM fk ************************
 const documentPath = doc(collectionRef, stationID);
 
+// let serivceArray;
+
 // Retrieve station data and populate form fields
 async function retrieveAndPopulateForm() {
     try {
@@ -56,13 +58,43 @@ async function retrieveAndPopulateForm() {
 
             if (stationData.services != null) {
                 // Retrieve the last stored height value from localStorage
-                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 500;
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 700;
+
+                const requiredServices = ["Convenience store", "ATM", "Car wash", "Car mechanic"];
+
+                let oneFixedService = false;
+                let oneService = false;
+                // serivceArray = stationData.services;
 
                 // Iterate over each service in the array
                 for (let i = 0; i < stationData.services.length; i++) {
                     const serviceName = stationData.services[i];
-                    createInputFields(serviceName, i); // Call your function to create input fields
-                    heightRetrive = parseInt(heightRetrive) + 60;
+                    if (requiredServices.includes(serviceName)) {
+                        const checkbox = document.getElementById(`service${serviceName}`);
+                        if (checkbox) {
+                            document.getElementById("fixedServices").style.display = 'block';
+                            checkbox.checked = true;
+                            oneFixedService = true;
+                        }
+                    } else {
+                        createInputFields(serviceName, i); // Call your function to create input fields
+                        oneService = true;
+                    }
+                    heightRetrive = parseInt(heightRetrive) + 80;
+                }
+
+                if (oneFixedService) {
+                    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
+                    if (fixedStationServicesSpan) {
+                        fixedStationServicesSpan.remove();
+                    }
+                }
+
+                if (oneService) {
+                    const servicesSpan = document.getElementById('serviceText');
+                    if (servicesSpan) {
+                        servicesSpan.remove();
+                    }
                 }
 
                 // Set the final height after processing all services
@@ -84,15 +116,32 @@ const form = document.getElementById("editServices");
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
-    await updateStation();
-    window.location.href = "homepagePM.html";
+
+    // Check if at least one checkbox is checked or if at least one service is added in the input field
+    const checkboxesChecked = document.querySelectorAll('input[name="service"]:checked');
+    const inputFields = document.querySelectorAll('input[name="stationServies"]');
+
+    if (checkboxesChecked.length > 0 || inputFields.length > 0) {
+        // If at least one service is present, proceed to update the station
+        await updateStation();
+        window.location.href = "homepagePM.html";
+    } else {
+        // If no services are present, display an error message or handle the case accordingly
+        showAlert("At least one service must be present");
+    }
 });
 
 retrieveAndPopulateForm();
 
 // update to station doc
 async function updateStation() {
+    const serviceChecked = document.getElementsByName("service");
 
+    for (let i = 0; i < serviceChecked.length; i++) {
+        if (serviceChecked[i].checked) {
+            formServiceArray.push(serviceChecked[i].value);
+        }
+    }
     // Update the station with more information
     try {
         await updateDoc(documentPath, {
@@ -118,7 +167,7 @@ function createInputFields(serviceName, index) {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.style = 'color: #4F4F4F; font-weight: 500; margin: 5px; font-size: 18px; width: 460px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Edit your station services';
     newInput.value = serviceName; // Set the value from the Firebase data
@@ -170,11 +219,12 @@ function createInputFields(serviceName, index) {
     // Add an event listener to the delete button
     newButton.addEventListener('click', async function () {
         // Check if there's only one service left
-        if (formServiceArray.length === 1) {
-            // Display a message indicating that at least one service must be present
-            showAlert("At least one service must be present");
-            return; // Exit the function, preventing deletion
-        }
+        // if (formServiceArray.length === 1) {
+        //     // Display a message indicating that at least one service must be present
+        //     showAlert("At least one service must be present");
+        //     return; // Exit the function, preventing deletion
+        // }
+        
         showConfirm(
             'Are you sure you want to delete this service?',
             async function () {
@@ -186,7 +236,7 @@ function createInputFields(serviceName, index) {
                 // Remove the container div from the main container
                 servicesContainer.removeChild(containerDiv);
 
-                await updateStation();
+                // await updateStation();
                 console.log('User confirmed.');
             },
             function () {
@@ -200,10 +250,31 @@ function createInputFields(serviceName, index) {
     servicesContainer.appendChild(containerDiv);
 }
 
-let height = localStorage.getItem("imageHeightRetrive") || 500;
+let height = localStorage.getItem("imageHeightRetrive") || 700;
+
+const fixedServiceButton = document.getElementById("fixedStationServiesButton");
+fixedServiceButton.addEventListener("click", async function (event) {
+    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
+    if (fixedStationServicesSpan) {
+        fixedStationServicesSpan.remove();
+    }
+
+    document.getElementById("fixedServices").style.display = 'block';
+
+    document.getElementById("BKimage").height = height;
+    height = parseInt(height) + 100;
+
+    // Store the updated height value in localStorage
+    localStorage.setItem("imageHeight", height);
+});
+
 
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
+    const servicesSpan = document.getElementById('serviceText');
+    if (servicesSpan) {
+        servicesSpan.remove();
+    }
     addServiceField();
 
     document.getElementById("BKimage").height = height;
@@ -231,7 +302,7 @@ async function addServiceField() {
     const newInput = document.createElement('input');
     newInput.className = 'form-control form-control-user';
     newInput.type = 'text';
-    newInput.style = 'margin: 5px; font-size: 18px; width: 460px;';
+    newInput.style = 'color: #4F4F4F; font-weight: 500; margin: 5px; font-size: 18px; width: 460px;';
     newInput.name = 'stationServies';
     newInput.placeholder = 'Add your station services';
     newInput.required = true;
