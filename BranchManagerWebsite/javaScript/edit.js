@@ -82,11 +82,10 @@ async function retrieveAndPopulateForm() {
 
             if (stationData.services != null) {
                 // Retrieve the last stored height value from localStorage
-                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 1300;
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 1000;
 
-                const requiredServices = ["Convenience store", "ATM", "Car wash", "Car mechanic"];
+                const requiredServices = ["Convenience Store", "ATM", "Car Wash", "Car Mechanic", "Mosque", "Restrooms"];
 
-                let oneFixedService = false;
                 let oneService = false;
 
                 // Iterate over each service in the array
@@ -96,22 +95,18 @@ async function retrieveAndPopulateForm() {
                     if (requiredServices.includes(serviceName)) {
                         const checkbox = document.getElementById(`service${serviceName}`);
                         if (checkbox) {
-                            document.getElementById("fixedServices").style.display = 'block';
                             checkbox.checked = true;
-                            oneFixedService = true;
                         }
                     } else {
                         retriveServices(serviceName, i); // Call your function to create input fields
+                        const checkbox = document.getElementById(`other`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            document.getElementById("ownServices").style.display = 'block';
+                        }
                         oneService = true;
                     }
                     heightRetrive = parseInt(heightRetrive) + 200;
-                }
-
-                if (oneFixedService) {
-                    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
-                    if (fixedStationServicesSpan) {
-                        fixedStationServicesSpan.remove();
-                    }
                 }
 
                 if (oneService) {
@@ -324,22 +319,11 @@ async function AddStation() {
     }
 }
 
-let height = 1500 || localStorage.getItem("imageHeightRetrive");
+let height = 1600 || localStorage.getItem("imageHeightRetrive");
 
-const fixedServiceButton = document.getElementById("fixedStationServiesButton");
-fixedServiceButton.addEventListener("click", async function (event) {
-    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
-    if (fixedStationServicesSpan) {
-        fixedStationServicesSpan.remove();
-    }
-
-    document.getElementById("fixedServices").style.display = 'block';
-
-    document.getElementById("BKimage").height = height;
-    height = parseInt(height) + 500;
-
-    // Store the updated height value in localStorage
-    localStorage.setItem("imageHeight", height);
+const otherServices = document.getElementById("other");
+otherServices.addEventListener("click", async function (event) {
+    document.getElementById("ownServices").style.display = 'block';
 });
 
 const serviceButton = document.getElementById("stationServiesButton");

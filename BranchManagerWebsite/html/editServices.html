@@ -114,14 +114,14 @@
         <div class="card border-0 shadow-lg o-hidden my-5" style="border-radius:30px;" id="heightBox">
           <div class="card-body p-0" style="border-radius:0px;">
             <div class="row">
-              <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editServices.png" width="470" height="700"
+              <div class="col-lg-5 d-none d-lg-flex"><img src="..\images\editServices.png" width="470" height="1000"
                   id="BKimage"></div>
               <div class="col-lg-7" style="border-radius:0px;">
                 <div class="p-5" style="border-style:none;border-radius:0px;">
                   <div class="text-center">
                     <h3 class="text-uppercase fw-semibold text-dark mb-4"
                       style="font-family:Roboto, sans-serif;font-weight:bold;"><span
-                        style="color:rgb(248, 165, 26);"><span style="color: rgb(48, 180, 118);">Edit your gas station
+                        style="color:rgb(248, 165, 26);"><span style="color: rgb(48, 181, 119);">Edit your gas station
                           Services</span></span></h3>
                   </div>
                   <form class="user" id="editServices">
@@ -129,28 +129,16 @@
                       style="color: gray; font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Services</label>
                     <br>
 
-                    <div id="fixedServiceText">
-                      <button id="fixedStationServiesButton" type="button" class="add-button"
-                        style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right; margin-top: 1.5%;">
-                        <img src="../images/add.png" height="20px" width="20px" style="float: right;">
-                      </button>
-                      <label class="label"
-                        style="color: rgb(147, 146, 146); font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">
-                        Explore the common services offered at the gas station by clicking the button above
-                      </label>
-                    </div>
-
-
-                    <div id="fixedServices" style="display: none;">
+                    <div id="fixedServices">
                       <div class="row">
                         <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
                           <label class="form-check-label"
                             style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                            <input class="form-check-input" type="checkbox" id="serviceConvenience store" name="service"
-                              value="Convenience store" style="margin: 5px">
+                            <input class="form-check-input" type="checkbox" id="serviceConvenience Store" name="service"
+                              value="Convenience Store" style="margin: 5px">
                             <span class="custom-checkbox"
                               style="position: relative; width: 30px; height: 30px; background-image: url('../images/convenienceStore.png'); background-size: cover; margin-right: 5px;"></span>
-                            Convenience store
+                            Convenience Store
                           </label>
                         </div>
                       </div>
@@ -170,11 +158,11 @@
                         <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
                           <label class="form-check-label"
                             style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                            <input class="form-check-input" type="checkbox" id="serviceCar wash" name="service"
-                              value="Car wash" style="margin: 5px">
+                            <input class="form-check-input" type="checkbox" id="serviceCar Wash" name="service"
+                              value="Car Wash" style="margin: 5px">
                             <span class="custom-checkbox"
                               style="position: relative; width: 30px; height: 30px; background-image: url('../images/carWash.png'); background-size: cover; margin-right: 5px;"></span>
-                            Car wash
+                            Car Wash
                           </label>
                         </div>
                       </div>
@@ -182,16 +170,53 @@
                         <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
                           <label class="form-check-label"
                             style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
-                            <input class="form-check-input" type="checkbox" id="serviceCar mechanic" name="service"
-                              value="Car mechanic" style="margin: 5px">
+                            <input class="form-check-input" type="checkbox" id="serviceCar Mechanic" name="service"
+                              value="Car Mechanic" style="margin: 5px">
                             <span class="custom-checkbox"
                               style="position: relative; width: 30px; height: 30px; background-image: url('../images/carMechanic.png'); background-size: cover; margin-right: 5px;"></span>
-                            Car mechanic
+                            Car Mechanic
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceMosque" name="service"
+                              value="Mosque" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/carMosque.png'); background-size: cover; margin-right: 5px;"></span>
+                            Mosque
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="serviceRestrooms" name="service"
+                              value="Restrooms" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/carRestrooms.png'); background-size: cover; margin-right: 5px;"></span>
+                            Restrooms
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col" style=" margin-right: 10px; margin-left: 5%; margin-top: 3%; font-size: 18px;">
+                          <label class="form-check-label"
+                            style="color: #4F4F4F; font-weight: 500; display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="other" name="other"
+                              value="Other" style="margin: 5px">
+                            <span class="custom-checkbox"
+                              style="position: relative; width: 30px; height: 30px; background-image: url('../images/other.png'); background-size: cover; margin-right: 5px;"></span>
+                            Others
                           </label>
                         </div>
                       </div>
                     </div>
 
+                    <div id="ownServices" style="display: none;">
                     <button id="stationServiesButton" type="button" class="add-button"
                       style="border: 2px solid #30b476; border-radius: 45%; background-color: white; height: 35px; width: 35px; float: right; margin-top: 1.5%;">
                       <img src="../images/add.png" height="20px" width="20px" style="float: right;">
@@ -199,6 +224,7 @@
                     <label class="label" id="serviceText"
                       style="color: rgb(147, 146, 146); font-weight: 660; margin-right: 10px; margin-left: 5%; margin-top: 3%;">Ready
                       to add your own service at your station? Click the button above</label>
+                    </div>
                     <br>
                     <br>
 

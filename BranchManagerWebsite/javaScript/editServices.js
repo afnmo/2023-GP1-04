@@ -58,11 +58,10 @@ async function retrieveAndPopulateForm() {
 
             if (stationData.services != null) {
                 // Retrieve the last stored height value from localStorage
-                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 700;
+                let heightRetrive = localStorage.getItem("imageHeightRetrive") || 1000;
 
-                const requiredServices = ["Convenience store", "ATM", "Car wash", "Car mechanic"];
+                const requiredServices = ["Convenience Store", "ATM", "Car Wash", "Car Mechanic", "Mosque", "Restrooms"];
 
-                let oneFixedService = false;
                 let oneService = false;
                 // serivceArray = stationData.services;
 
@@ -72,22 +71,18 @@ async function retrieveAndPopulateForm() {
                     if (requiredServices.includes(serviceName)) {
                         const checkbox = document.getElementById(`service${serviceName}`);
                         if (checkbox) {
-                            document.getElementById("fixedServices").style.display = 'block';
                             checkbox.checked = true;
-                            oneFixedService = true;
                         }
                     } else {
                         createInputFields(serviceName, i); // Call your function to create input fields
+                        const checkbox = document.getElementById(`other`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            document.getElementById("ownServices").style.display = 'block';
+                        }
                         oneService = true;
                     }
                     heightRetrive = parseInt(heightRetrive) + 80;
-                }
-
-                if (oneFixedService) {
-                    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
-                    if (fixedStationServicesSpan) {
-                        fixedStationServicesSpan.remove();
-                    }
                 }
 
                 if (oneService) {
@@ -224,7 +219,7 @@ function createInputFields(serviceName, index) {
         //     showAlert("At least one service must be present");
         //     return; // Exit the function, preventing deletion
         // }
-        
+
         showConfirm(
             'Are you sure you want to delete this service?',
             async function () {
@@ -250,24 +245,12 @@ function createInputFields(serviceName, index) {
     servicesContainer.appendChild(containerDiv);
 }
 
-let height = localStorage.getItem("imageHeightRetrive") || 700;
+let height = localStorage.getItem("imageHeightRetrive") || 1100;
 
-const fixedServiceButton = document.getElementById("fixedStationServiesButton");
-fixedServiceButton.addEventListener("click", async function (event) {
-    const fixedStationServicesSpan = document.getElementById('fixedServiceText');
-    if (fixedStationServicesSpan) {
-        fixedStationServicesSpan.remove();
-    }
-
-    document.getElementById("fixedServices").style.display = 'block';
-
-    document.getElementById("BKimage").height = height;
-    height = parseInt(height) + 100;
-
-    // Store the updated height value in localStorage
-    localStorage.setItem("imageHeight", height);
+const otherServices = document.getElementById("other");
+otherServices.addEventListener("click", async function (event) {
+    document.getElementById("ownServices").style.display = 'block';
 });
-
 
 const serviceButton = document.getElementById("stationServiesButton");
 serviceButton.addEventListener("click", async function (event) {
