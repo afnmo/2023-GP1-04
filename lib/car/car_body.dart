@@ -77,7 +77,7 @@ class _CarBodyState extends State<CarBody> {
       ),
       floatingActionButton: widget.isConsumption ? null : addCarButton(context),
       bottomNavigationBar: BottomNav(
-        currentIndex: 0,
+        currentIndex: 1,
         onIndexChanged: (index) {},
       ),
     );

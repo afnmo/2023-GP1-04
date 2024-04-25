@@ -99,7 +99,7 @@ class _FormScreenState extends State<Body> {
               ),
 
               // Space between "Forgot Password?" link and login button
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: size.height * 0.06),
               // Rounded login button
               RoundedButton(
                 text: "Send Code",

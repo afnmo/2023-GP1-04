@@ -30,7 +30,7 @@ class _BottomNavState extends State<BottomNav> {
         currentIndex: widget.currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
+        unselectedItemColor: Color.fromRGBO(251, 247, 247, 0.65),
         onTap: (int index) {
           widget.onIndexChanged(index);
           navigateToPage(context, index); // Call the navigateToPage function
@@ -40,7 +40,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/gasStation2.png',
+                'assets/images/gasStation3.png',
                 width: 25,
                 height: 25,
               ),
@@ -51,7 +51,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/myCars2.png',
+                'assets/images/myCars3.png',
                 width: 25,
                 height: 25,
               ),
@@ -62,7 +62,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/home222.png',
+                'assets/images/home.png',
                 width: 25,
                 height: 25,
               ),
@@ -73,7 +73,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/settings2.png',
+                'assets/images/settings3.png',
                 width: 25,
                 height: 25,
               ),
@@ -84,7 +84,7 @@ class _BottomNavState extends State<BottomNav> {
             icon: Container(
               color: const Color(0xFF6EA67C),
               child: Image.asset(
-                'assets/images/bill2.png',
+                'assets/images/bill3.png',
                 width: 25,
                 height: 25,
               ),

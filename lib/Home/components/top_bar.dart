@@ -9,7 +9,8 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white, // Set the background color to white
+      backgroundColor: Color.fromARGB(
+          255, 249, 249, 249), // Set the background color to white
       elevation: 0, // Remove the shadow
       title: Row(
         children: [

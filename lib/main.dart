@@ -6,7 +6,6 @@ import 'package:gp91/firebase_auth/user_repository/auth_repository.dart';
 import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 import 'package:gp91/on_boarding/on_boarding_screen.dart';
 
-
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color.fromARGB(255, 249, 249, 249),
       ),
       home: OnBoardingScreen(),
       // home: ListStyleTest(),
