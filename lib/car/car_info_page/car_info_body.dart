@@ -20,7 +20,7 @@ class CarInfoBody extends StatelessWidget {
               builder: (context) => EditCarInfo(carId: carId)));
         },
         child: Icon(Icons.edit),
-        backgroundColor: Color.fromARGB(255, 2, 84, 2));
+        backgroundColor: Color.fromARGB(255, 114, 186, 126));
   }
 
   // QR button
@@ -122,7 +122,8 @@ class CarInfoBody extends StatelessWidget {
       stream: CarInfoHandler.getCarDataStream(carId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(color: Color(0xFF6EA67C)));
         } else {
           var carData = snapshot.data!.data() as Map<String, dynamic>?;
           Color carColor = parseColor(carData?['color']);
@@ -133,7 +134,7 @@ class CarInfoBody extends StatelessWidget {
           }
 
           return Scaffold(
-            backgroundColor: Color.fromARGB(121, 218, 214, 214),
+            backgroundColor: Color.fromARGB(255, 249, 249, 249),
 // app bar style
             appBar: AppBar(
               backgroundColor: Color(0xFF6EA67C),
@@ -145,7 +146,7 @@ class CarInfoBody extends StatelessWidget {
               ),
               centerTitle: true,
               title: const Text(
-                'Car details',
+                'Car Details',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -197,7 +198,7 @@ class CarInfoBody extends StatelessWidget {
                         topLeft: Radius.circular(36),
                         topRight: Radius.circular(36),
                       ),
-                      color: Color.fromARGB(119, 129, 218, 151),
+                      color: Color.fromARGB(255, 228, 242, 231),
                     ),
                     child: SingleChildScrollView(
                       child: Column(

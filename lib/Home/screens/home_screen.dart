@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGraphWidget() {
     if (!userNameFetched && showGraph == null && showGraph == false) {
       // Show CircularProgressIndicator if user name is not fetched or showGraph is false
-      return CircularProgressIndicator();
+      return CircularProgressIndicator(color: Color(0xFF6EA67C));
     } else if (amountFetched && showGraph == true) {
       if (showMonthly) {
         return SizedBox(

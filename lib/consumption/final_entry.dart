@@ -92,7 +92,7 @@ class _FinalEntryState extends State<FinalEntry> {
         ),
         centerTitle: true,
         title: const Text(
-          'Final mileage entry',
+          'Final Mileage Entry',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -100,7 +100,7 @@ class _FinalEntryState extends State<FinalEntry> {
           ),
         ),
       ),
-      backgroundColor: Colors.lightBlue[50],
+      backgroundColor: Color.fromARGB(255, 249, 249, 249),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -108,7 +108,8 @@ class _FinalEntryState extends State<FinalEntry> {
             future: FuelFirebase().fetchConsumptionDoc(widget.consumptionId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const CircularProgressIndicator(
+                    color: Color(0xFF6EA67C));
               }
 
               if (snapshot.hasError) {
@@ -137,7 +138,6 @@ class _FinalEntryState extends State<FinalEntry> {
                     //     ),
                     //   ),
                     // ),
-                    const SizedBox(height: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -147,6 +147,7 @@ class _FinalEntryState extends State<FinalEntry> {
                           instruction: "Record the final odometer reading.",
                           color: Colors.redAccent,
                         ),
+                        const SizedBox(height: 20),
                         const Row(
                           children: [
                             Text(
@@ -178,7 +179,7 @@ class _FinalEntryState extends State<FinalEntry> {
                             hintText: 'Enter expense amount (optional)',
                             prefixIcon: const Icon(
                                 Icons.monetization_on_outlined,
-                                color: Colors.blue),
+                                color: Colors.redAccent),
                           ),
                         ),
                         // TextFormField(
@@ -238,7 +239,8 @@ class _FinalEntryState extends State<FinalEntry> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             hintText: 'Enter Final reading',
-                            prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                            prefixIcon:
+                                Icon(Icons.speed, color: Colors.redAccent),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {

@@ -27,7 +27,7 @@ class FuelResult extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Fuel consumption results',
+          'Fuel Consumption Results',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -40,12 +40,13 @@ class FuelResult extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-                child: CircularProgressIndicator(color: theme.primaryColor));
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
+                child: CircularProgressIndicator(color: Color(0xFF6EA67C)));
           }
+          // else if (snapshot.hasError) {
+          //   return Center(child: Text('Error: ${snapshot.error}'));
+          // } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          //   return Center(child: Text('No data available'));
+          // }
 
           var carsWithRecords = snapshot.data!;
           return ListView.builder(
@@ -67,9 +68,10 @@ class FuelResult extends StatelessWidget {
                             ? '${car.name}: No records yet'
                             : '${car.name}:',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black, // Simple text color
+                          color: Color.fromARGB(
+                              255, 142, 142, 142), // Simple text color
                           shadows: [
                             Shadow(
                               offset: Offset(1.0, 1.0),
@@ -109,7 +111,7 @@ class FuelResult extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
-                                color: theme.primaryColorLight,
+                                color: Color.fromARGB(255, 161, 176, 164),
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
@@ -140,8 +142,8 @@ class FuelResult extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
                                       colors: [
-                                        theme.primaryColor,
-                                        Colors.deepPurple
+                                        Color.fromARGB(255, 87, 185, 144),
+                                        Color.fromARGB(255, 11, 71, 46),
                                       ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
@@ -192,7 +194,8 @@ class FuelResult extends StatelessWidget {
                                       title: Text(
                                         '${record.percentageDifference}',
                                         style: const TextStyle(
-                                            color: Colors.deepPurple),
+                                            color: Color.fromARGB(
+                                                255, 11, 71, 46)),
                                       ),
                                     ),
                                   ),

@@ -56,7 +56,7 @@ class _HomeScreenState extends State<ScreenBill> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEBE3D5),
+      backgroundColor: Color.fromARGB(255, 249, 249, 249),
       appBar: AppBar(
         // App bar styling
         backgroundColor: Color(0xFF6EA67C),
@@ -82,11 +82,20 @@ class _HomeScreenState extends State<ScreenBill> {
           stream: fetchBillsAsStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return CircularProgressIndicator(color: Color(0xFF6EA67C));
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No bills found for the user.');
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    'No bills found for you',
+                    style: TextStyle(
+                        fontSize: 16), // Adjust the font size as needed
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
             } else {
               List<DocumentSnapshot> billDocs = snapshot.data!;
               bool allStationsNull = true;
@@ -100,7 +109,14 @@ class _HomeScreenState extends State<ScreenBill> {
               }
 
               if (allStationsNull) {
-                return Text('No bills found for the userdd.');
+                return Center(
+                  child: Text(
+                    'No bills found for you',
+                    style: TextStyle(
+                        fontSize: 16), // Adjust the font size as needed
+                    textAlign: TextAlign.center,
+                  ),
+                );
               } else {
                 return ListView.builder(
                   itemCount: billDocs.length,
@@ -113,7 +129,8 @@ class _HomeScreenState extends State<ScreenBill> {
                         builder: (context, carSnapshot) {
                           if (carSnapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return CircularProgressIndicator(
+                                color: Color(0xFF6EA67C));
                           } else if (carSnapshot.hasError) {
                             return Text(
                                 'Error fetching car details: ${carSnapshot.error}');

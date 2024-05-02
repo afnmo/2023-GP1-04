@@ -61,6 +61,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             trailing: Icon(
               isExpanded ? Icons.expand_less : Icons.expand_more,
             ),
+            iconColor: Color(0xFF0C9869),
             onTap: () {
               setState(() {
                 _sectionsExpandedState[sectionTitle] = !isExpanded;

@@ -81,7 +81,7 @@ class _QRorPlateState extends State<QRorPlate> {
               width: 200,
               height: 200,
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 20),
             const Text(
               "Choose The Report Bill Method",
               style: TextStyle(

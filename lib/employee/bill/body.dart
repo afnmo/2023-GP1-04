@@ -56,7 +56,7 @@ class _ScreenBillState extends State<ScreenBill> {
           stream: fetchBillsAsStream(widget.email),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator(color: Color(0xFF6EA67C));
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -156,14 +156,15 @@ class _ScreenBillState extends State<ScreenBill> {
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Icon(Icons.attach_money),
+                child: Image.asset('assets/images/dollarSign.png',
+                    width: 25, height: 25),
               ),
               label: 'Report',
             ),
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Image.asset('assets/images/bill2.png',
+                child: Image.asset('assets/images/bill3.png',
                     width: 25, height: 25),
               ),
               label: 'History Bill',
@@ -171,7 +172,11 @@ class _ScreenBillState extends State<ScreenBill> {
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Icon(Icons.settings),
+                child: Image.asset(
+                  'assets/images/settings3.png',
+                  width: 25,
+                  height: 25,
+                ),
               ),
               label: 'Settings',
             ),

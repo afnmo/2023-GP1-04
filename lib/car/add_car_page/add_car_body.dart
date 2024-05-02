@@ -244,7 +244,7 @@ class _addCarBodyState extends State<AddCarBody> {
         ),
         centerTitle: true,
         title: const Text(
-          'Add new car',
+          'Add New Car',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -252,7 +252,7 @@ class _addCarBodyState extends State<AddCarBody> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 249, 249, 249),
       body: ListView(
         children: [
           Container(
@@ -278,7 +278,7 @@ class _addCarBodyState extends State<AddCarBody> {
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
+                            color: Color.fromARGB(255, 205, 204, 204),
                             spreadRadius: 3,
                             blurRadius: 10,
                             offset: Offset(0, 3),
@@ -717,7 +717,7 @@ class _addCarBodyState extends State<AddCarBody> {
                                 submitFormData();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFFFCEAF),
+                                primary: Color(0xFF6EA67C),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

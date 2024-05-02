@@ -121,12 +121,13 @@ class _ReportBillState extends State<ReportBill> {
             children: [
               SizedBox(height: 50),
               Image.asset('assets/images/bill.png', width: 200, height: 200),
+              SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Enter the amount of money\nthat the driver buys during fueling his car",
                   style: TextStyle(
-                    color: Color.fromRGBO(54, 80, 61, 1),
+                    color: Color.fromRGBO(118, 119, 119, 1),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),

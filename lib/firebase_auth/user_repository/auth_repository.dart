@@ -37,7 +37,8 @@ class AuthRepository extends GetxController {
   Future<void> createUserWithEmailAndPassword(UserModel userModel) async {
     try {
       Get.dialog(
-        const Center(child: CircularProgressIndicator()),
+        const Center(
+            child: CircularProgressIndicator(color: Color(0xFF6EA67C))),
       );
       print(
           "Future<void> createUserWithEmailAndPassword(UserModel userModel) async entered");

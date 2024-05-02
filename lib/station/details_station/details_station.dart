@@ -19,7 +19,7 @@ class DetailsStation extends StatelessWidget {
           FirebaseFirestore.instance.collection('Station').doc(id).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return CircularProgressIndicator(color: Color(0xFF6EA67C));
         }
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -67,7 +67,7 @@ class DetailsStation extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Station details',
+          'Station Details',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -118,10 +118,11 @@ class DetailsStation extends StatelessWidget {
                           fontSize: 35.0,
                           fontFamily: 'NanumGothic',
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF0C9869),
                         ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Row(
                     children: [

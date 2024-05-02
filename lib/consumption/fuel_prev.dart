@@ -49,16 +49,16 @@ class _FuelPrevState extends State<FuelPrev> {
       ),
       body: Stack(
         children: [
-          Positioned(
-            // top: 0,
-            // left: 0,
-            // right: 0,
-            child: Image.asset(
-              "assets/images/bkg_fuel_new2.png",
-              width: size.width,
-              // height: topImageHeight,
-            ),
-          ),
+          // Positioned(
+          //   // top: 0,
+          //   // left: 0,
+          //   // right: 0,
+          //   child: Image.asset(
+          //     "assets/images/bkg_fuel_new2.png",
+          //     width: size.width,
+          //     // height: topImageHeight,
+          //   ),
+          // ),
           // Positioned(
           //   left: 0,
           //   right: 0,
@@ -86,15 +86,16 @@ class _FuelPrevState extends State<FuelPrev> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           child: ExpansionTile(
-                            leading:
-                                Icon(Icons.directions_car, color: Colors.blue),
+                            leading: Icon(Icons.directions_car,
+                                color: Color(0xFF0C9869)),
                             title: Text(
                               car.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF6EA67C),
+                                color: Colors.black,
                               ),
                             ),
+                            iconColor: Color(0xFF0C9869),
                             children: records.map((record) {
                               return ListTile(
                                 title: Text(
@@ -112,7 +113,7 @@ class _FuelPrevState extends State<FuelPrev> {
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.arrow_forward_ios,
-                                      color: Colors.blue),
+                                      color: Color(0xFF0C9869)),
                                   onPressed: () {
                                     var carId = car.carId;
                                     var consumptionId = record.consumptionId;
@@ -136,7 +137,9 @@ class _FuelPrevState extends State<FuelPrev> {
                     return const Center(child: Text('No data available'));
                   }
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child:
+                          CircularProgressIndicator(color: Color(0xFF6EA67C)));
                 }
               },
             ),

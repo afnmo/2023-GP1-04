@@ -30,7 +30,7 @@ class _CarBodyState extends State<CarBody> {
 // add car button
   Widget addCarButton(BuildContext context) => FloatingActionButton(
         onPressed: () => Get.to(() => AddCar()),
-        backgroundColor: const Color(0xFFFFCEAF),
+        backgroundColor: Color(0xFFFFCEAF),
         child: const Icon(Icons.add),
       );
 
@@ -67,7 +67,8 @@ class _CarBodyState extends State<CarBody> {
         stream: _carsStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(color: Color(0xFF6EA67C)));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No cars available yet'));
           } else {
@@ -108,7 +109,10 @@ class _CarBodyState extends State<CarBody> {
             padding: EdgeInsets.all(20.0),
             child: Text(
               "Select the car you want to calculate its fuel consumption:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 128, 127, 127)),
             ),
           ),
         Expanded(
@@ -170,11 +174,11 @@ class _CarBodyState extends State<CarBody> {
         margin: const EdgeInsets.symmetric(horizontal: 13),
         height: 130,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(119, 129, 218, 151),
+          color: Color.fromARGB(255, 228, 242, 231),
           borderRadius: BorderRadius.circular(22),
           boxShadow: const [
             BoxShadow(
-                color: Colors.grey,
+                color: Color.fromARGB(255, 205, 204, 204),
                 spreadRadius: 3,
                 blurRadius: 10,
                 offset: Offset(0, 3))

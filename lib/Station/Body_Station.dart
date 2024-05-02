@@ -21,7 +21,7 @@ class BodyStation extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Find stations',
+          'Find Stations',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

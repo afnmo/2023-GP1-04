@@ -139,13 +139,14 @@ class _OtpScreenState extends State<OtpScreen> {
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(149, 18, 121, 0)),
+                      color: Color(0xFF6EA67C)),
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(height: 10),
                 Text(
                   "We will send in your email\n a PIN code, check your email.",
                   style: TextStyle(
-                    color: Color.fromARGB(149, 18, 121, 0),
+                    color: Color.fromARGB(146, 77, 76, 76),
                     fontSize: 16, // Adjust the font size as needed
                     //fontWeight: FontWeight.bold,
                   ),
@@ -169,7 +170,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   ],
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 50,
                 ),
                 Container(
                   width: 150,
@@ -247,8 +248,9 @@ class _OtpScreenState extends State<OtpScreen> {
                   child: Text(
                     "Resend the code${isResendClickable ? '' : ' ($timerSeconds s)'}",
                     style: TextStyle(
-                      color:
-                          isResendClickable ? Color(0xFF81A5A7) : Colors.grey,
+                      color: isResendClickable
+                          ? Color.fromARGB(255, 114, 186, 126)
+                          : Colors.grey,
                       fontSize: 16,
                     ),
                   ),

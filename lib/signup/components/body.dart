@@ -235,6 +235,7 @@ class _FormScreenState extends State<Body> {
                   ),
                 ),
 
+                SizedBox(height: size.height * 0.06),
                 // SIGN UP BUTTON
                 RoundedButton(
                   text: "SIGN UP",
@@ -258,6 +259,9 @@ class _FormScreenState extends State<Body> {
                       print("validation did not work");
                     }
                   },
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
                 ),
                 AlreadyHaveAnAcoountCheck(
                   login: false,

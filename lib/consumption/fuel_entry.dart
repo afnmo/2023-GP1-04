@@ -55,7 +55,7 @@ class _FuelEntryState extends State<FuelEntry> {
         ),
         centerTitle: true,
         title: const Text(
-          'Initial mileage entry',
+          'Initial Mileage Entry',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -63,7 +63,7 @@ class _FuelEntryState extends State<FuelEntry> {
           ),
         ),
       ),
-      backgroundColor: Colors.lightBlue[50],
+      backgroundColor: Color.fromARGB(255, 249, 249, 249),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -110,7 +110,7 @@ class _FuelEntryState extends State<FuelEntry> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     hintText: 'Enter initial reading',
-                    prefixIcon: Icon(Icons.speed, color: Colors.blue),
+                    prefixIcon: Icon(Icons.speed, color: Colors.orangeAccent),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

@@ -203,7 +203,8 @@ class _FormScreenState extends State<Body> {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF6EA67C)));
       },
     );
 

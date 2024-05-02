@@ -120,14 +120,15 @@ class _MyCustomWidgetState extends State<Home> {
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Icon(Icons.attach_money),
+                child: Image.asset('assets/images/dollarSign.png',
+                    width: 25, height: 25),
               ),
               label: 'Report',
             ),
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Image.asset('assets/images/bill2.png',
+                child: Image.asset('assets/images/bill3.png',
                     width: 25, height: 25),
               ),
               label: 'History Bill',
@@ -135,7 +136,11 @@ class _MyCustomWidgetState extends State<Home> {
             BottomNavigationBarItem(
               icon: Container(
                 color: const Color(0xFF6EA67C),
-                child: Icon(Icons.settings),
+                child: Image.asset(
+                  'assets/images/settings3.png',
+                  width: 25,
+                  height: 25,
+                ),
               ),
               label: 'Settings',
             ),
@@ -173,6 +178,7 @@ class _HomeBody extends StatelessWidget {
                   width: 250,
                   height: 250,
                 ),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(

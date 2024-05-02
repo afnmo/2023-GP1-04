@@ -80,7 +80,8 @@ class _PlantPageState extends State<PlantPage> {
         stream: FirebaseFirestore.instance.collection('Cars').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(color: Color(0xFF6EA67C)));
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));

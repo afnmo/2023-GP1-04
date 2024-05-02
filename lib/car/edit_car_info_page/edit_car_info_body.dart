@@ -246,7 +246,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
         ),
         centerTitle: true,
         title: const Text(
-          'Update your car',
+          'Update Your Car',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -280,7 +280,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
+                            color: Color.fromARGB(255, 205, 204, 204),
                             spreadRadius: 3,
                             blurRadius: 10,
                             offset: Offset(0, 3),
@@ -573,7 +573,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                 updataFormData();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFFFCEAF),
+                                primary: Color(0xFF6EA67C),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
