@@ -184,7 +184,7 @@ class _HomeBody extends StatelessWidget {
                   child: Text(
                     "Report the bill of the \n driver car in your station!",
                     style: TextStyle(
-                      color: Color.fromRGBO(54, 80, 61, 1),
+                      color: Color(0xFF6EA67C),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

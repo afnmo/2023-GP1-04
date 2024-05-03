@@ -85,7 +85,7 @@ class _QRorPlateState extends State<QRorPlate> {
             const Text(
               "Choose The Report Bill Method",
               style: TextStyle(
-                color: Color.fromRGBO(54, 80, 61, 1),
+                color: Color(0xFF6EA67C),
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
