@@ -99,8 +99,10 @@ class _OtpScreenState extends State<OtpScreen> {
         "New OTP Send",
         "Check your email ",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFF2BB671),
-        colorText: Color.fromARGB(255, 248, 249, 249),
+        backgroundColor: Colors.green.withOpacity(0.1),
+        colorText: Colors.green,
+        // backgroundColor: Color(0xFF2BB671),
+        // colorText: Color.fromARGB(255, 248, 249, 249),
       );
       setState(() {
         isResendClickable = false;
@@ -108,9 +110,13 @@ class _OtpScreenState extends State<OtpScreen> {
       });
       startTimer();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Oops, OTP resend failed"),
-      ));
+      Get.snackbar(
+        "Oops!",
+        "OTP resend failed",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
     }
   }
 
@@ -187,7 +193,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           otp4Controller.text.isEmpty) {
                         Get.snackbar(
                           "Error",
-                          "Please enter the complete code.",
+                          "Please enter the complete code",
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.redAccent.withOpacity(0.1),
                           colorText: Colors.red,

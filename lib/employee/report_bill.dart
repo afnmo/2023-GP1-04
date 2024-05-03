@@ -57,10 +57,10 @@ class _ReportBillState extends State<ReportBill> {
 
           Get.snackbar(
             "Successfully sent!",
-            "The bill was saved successfully.",
+            "The bill was saved successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color.fromARGB(255, 21, 153, 4).withOpacity(0.1),
-            colorText: Color.fromARGB(255, 6, 227, 43),
+            colorText: Color.fromARGB(255, 10, 132, 30),
           );
           // Navigate back to the home page after displaying the success message
           Navigator.push(
@@ -72,10 +72,12 @@ class _ReportBillState extends State<ReportBill> {
             ),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Car details not found.'),
-            ),
+          Get.snackbar(
+            "Error",
+            "Car details not found",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+            colorText: Color.fromARGB(255, 201, 36, 30),
           );
         }
       } catch (e) {
@@ -83,11 +85,11 @@ class _ReportBillState extends State<ReportBill> {
       }
     } else {
       Get.snackbar(
+        "Error",
         "Please enter the amount and select fuel type",
-        "   ",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
-        colorText: Color.fromARGB(255, 233, 109, 105),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
     }
   }

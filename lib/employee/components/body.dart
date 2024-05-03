@@ -116,9 +116,13 @@ class _FormScreenState extends State<Body> {
                         otpLength: 4,
                         otpType: OTPType.digitsOnly);
                     if (await myauth.sendOTP() == true) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("OTP has been sent"),
-                      ));
+                      Get.snackbar(
+                        "Success",
+                        "OTP has been sent",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.green.withOpacity(0.1),
+                        colorText: Colors.green,
+                      );
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -127,9 +131,13 @@ class _FormScreenState extends State<Body> {
                                     userEmail: _emailController.text,
                                   )));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Oops, OTP send failed"),
-                      ));
+                      Get.snackbar(
+                        "Oops!",
+                        "OTP send failed",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.redAccent.withOpacity(0.1),
+                        colorText: Colors.red,
+                      );
                     }
                   } else {
                     //Get.back(); // Close the loading dialog

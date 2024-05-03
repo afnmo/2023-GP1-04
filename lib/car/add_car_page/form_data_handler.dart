@@ -138,8 +138,8 @@ class FormDataHandler {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       print(error.toString());
     }

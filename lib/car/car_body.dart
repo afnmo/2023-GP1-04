@@ -238,7 +238,7 @@ class _CarBodyState extends State<CarBody> {
 // delete car button
   Widget buildDeleteButton(String carDocumentId, BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.delete, color: Colors.red),
+      icon: const Icon(Icons.delete, color: Color.fromARGB(235, 210, 67, 54)),
       iconSize: 30,
       onPressed: () => showDeleteDialog(carDocumentId, context),
     );
@@ -261,12 +261,15 @@ class _CarBodyState extends State<CarBody> {
           ),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                primary: Color.fromARGB(235, 59, 59, 59),
+              ),
               child: const Text('Cancel'),
               onPressed: () => Get.back(),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
+                  primary: Color.fromARGB(235, 210, 67, 54),
                   onPrimary: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20))),
@@ -286,14 +289,15 @@ class _CarBodyState extends State<CarBody> {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircleAvatar(
-            backgroundColor: Colors.red,
-            radius: 15,
-            child: Icon(Icons.delete, color: Colors.white, size: 20)),
-        SizedBox(width: 10),
+        // CircleAvatar(
+        //     // backgroundColor: Color.fromARGB(235, 210, 67, 54),
+        //     radius: 15,
+        //     child: Icon(Icons.delete, color: Colors.white, size: 20)),
+        Icon(Icons.delete, color: Color.fromARGB(235, 210, 67, 54), size: 30),
+        SizedBox(width: 5),
         Text('Confirm Deletion',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
+                // fontWeight: FontWeight.bold,
                 color: Colors.black,
                 fontSize: 20)),
       ],

@@ -48,8 +48,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       return null;
     }
@@ -90,8 +90,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       print(error.toString());
     }
@@ -107,8 +107,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Failed to delete the document, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
     }
   }
@@ -131,8 +131,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Failed to retrieve the document, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       rethrow; // Re-throw the caught exception
     }
@@ -152,8 +152,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       print(error.toString());
     }
@@ -230,8 +230,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Failed to retrieve the document, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       rethrow; // Re-throw the caught exception
     }
@@ -267,8 +267,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       return [];
     }
@@ -382,8 +382,8 @@ class FuelFirebase extends GetxController {
         "Error",
         "Something went wrong, try again",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
     }
   }

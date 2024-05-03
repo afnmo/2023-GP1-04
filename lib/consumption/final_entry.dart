@@ -333,11 +333,11 @@ class _FinalEntryState extends State<FinalEntry> {
                             print("Error submitting data: ${error.toString()}");
                             Get.snackbar(
                               "Error",
-                              "No bills found for this car.",
+                              "No bills found for this car",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor:
-                                  Colors.redAccent.withOpacity(0.1),
-                              colorText: Colors.red,
+                              backgroundColor: Color.fromARGB(255, 230, 41, 3)
+                                  .withOpacity(0.2),
+                              colorText: Color.fromARGB(255, 201, 36, 30),
                             );
                           }
                         }

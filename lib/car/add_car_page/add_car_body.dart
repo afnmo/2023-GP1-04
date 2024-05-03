@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'car_data.dart';
 import 'package:gp91/car/car.dart';
 import 'form_data_handler.dart';
+import 'package:get/get.dart';
 
 class AddCarBody extends StatefulWidget {
   const AddCarBody({Key? key}) : super(key: key);
@@ -102,33 +103,47 @@ class _addCarBodyState extends State<AddCarBody> {
         numbersController.text.isEmpty ||
         carNameController.text.isEmpty ||
         selectedCarColor == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please fill in all required fields'),
-          backgroundColor: Color.fromARGB(255, 255, 99, 88),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Please fill in all required fields'),
+      //     backgroundColor: Color.fromARGB(255, 255, 99, 88),
+      //     behavior: SnackBarBehavior.floating,
+      //     duration: Duration(seconds: 3),
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(10.0),
+      //     ),
+      //   ),
+      // );
+      Get.snackbar(
+        "Error",
+        "Please fill in all required fields",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       return;
     }
 
 // Check if English field should have not exactly 3 characters
     if (englishLettersController.text.length != 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('Please ensure the English field has exactly 3 characters'),
-          backgroundColor: Color.fromARGB(255, 255, 99, 88),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content:
+      //         Text('Please ensure the English field has exactly 3 characters'),
+      //     backgroundColor: Color.fromARGB(255, 255, 99, 88),
+      //     behavior: SnackBarBehavior.floating,
+      //     duration: Duration(seconds: 3),
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(10.0),
+      //     ),
+      //   ),
+      // );
+      Get.snackbar(
+        "Error",
+        "Please ensure the English field has exactly 3 characters",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       return;
     } else {
@@ -163,17 +178,24 @@ class _addCarBodyState extends State<AddCarBody> {
       }
 
       if (nonMatchingLetters.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                'Characters not allowed in Saudi plate: ${nonMatchingLetters.join(', ')}'),
-            backgroundColor: Color.fromARGB(255, 255, 99, 88),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 3),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(
+        //         'Characters not allowed in Saudi plate: ${nonMatchingLetters.join(', ')}'),
+        //     backgroundColor: Color.fromARGB(255, 255, 99, 88),
+        //     behavior: SnackBarBehavior.floating,
+        //     duration: Duration(seconds: 3),
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(10.0),
+        //     ),
+        //   ),
+        // );
+        Get.snackbar(
+          "Error",
+          "Characters not allowed in Saudi plate: ${nonMatchingLetters.join(', ')}",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+          colorText: Color.fromARGB(255, 201, 36, 30),
         );
         return;
       }
@@ -181,16 +203,23 @@ class _addCarBodyState extends State<AddCarBody> {
 
     // Check if numbersController has more than 4 characters
     if (numbersController.text.length > 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please enter up to 4 digits in the Numbers field'),
-          backgroundColor: Color.fromARGB(255, 255, 99, 88),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Please enter up to 4 digits in the Numbers field'),
+      //     backgroundColor: Color.fromARGB(255, 255, 99, 88),
+      //     behavior: SnackBarBehavior.floating,
+      //     duration: Duration(seconds: 3),
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(10.0),
+      //     ),
+      //   ),
+      // );
+      Get.snackbar(
+        "Error",
+        "Please enter up to 4 digits in the Numbers field",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
       return;
     }
@@ -219,11 +248,18 @@ class _addCarBodyState extends State<AddCarBody> {
       );
     } else {
       // Handle the case where the user is not authenticated
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please sign in before adding a car'),
-          backgroundColor: Color.fromARGB(255, 255, 99, 88),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Please sign in before adding a car'),
+      //     backgroundColor: Color.fromARGB(255, 255, 99, 88),
+      //   ),
+      // );
+      Get.snackbar(
+        "Error",
+        "Please sign in before adding a car",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 230, 41, 3).withOpacity(0.2),
+        colorText: Color.fromARGB(255, 201, 36, 30),
       );
     }
   }
