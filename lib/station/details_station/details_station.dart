@@ -154,7 +154,7 @@ class DetailsStation extends StatelessWidget {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 114, 186, 126),
+                            backgroundColor: Color.fromARGB(255, 114, 186, 126),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

@@ -610,7 +610,7 @@ class _editCarInfoBodyState extends State<EditCarInfoBody> {
                                 updataFormData();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xFF6EA67C),
+                                backgroundColor: Color(0xFF6EA67C),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

@@ -214,6 +214,7 @@ class _FormScreenState extends State<Body> {
       Get.back();
 
       if (user != null) {
+        await AuthRepository().updateLastLoggedIn(user.uid);
         print("User is successfully logged in");
         Navigator.pushReplacement(
           context,

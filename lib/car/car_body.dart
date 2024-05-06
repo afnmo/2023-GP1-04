@@ -262,15 +262,14 @@ class _CarBodyState extends State<CarBody> {
           actions: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Color.fromARGB(235, 59, 59, 59),
+                foregroundColor: Color.fromARGB(235, 59, 59, 59),
               ),
               child: const Text('Cancel'),
               onPressed: () => Get.back(),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(235, 210, 67, 54),
-                  onPrimary: Colors.white,
+                  foregroundColor: Colors.white, backgroundColor: Color.fromARGB(235, 210, 67, 54),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20))),
               child: const Text('Delete'),

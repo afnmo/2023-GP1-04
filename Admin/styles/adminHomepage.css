@@ -1,0 +1,88 @@
+/* style.css */
+main {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.request-list {
+    list-style: none;
+    padding: 0;
+}
+
+.request-item {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+
+.request-item h4 {
+    font-size: 20px; /* Increase font size */
+    color: #333; /* Dark grey color for better readability */
+    font-weight: bold; /* Make it bold */
+    margin: 0 0 15px 0; /* Adjust margin to add space below the header */
+    padding: 10px; /* Add padding inside the h4 element */
+    background-color: #e7e7e7; /* Light background color for the h4 element */
+    border-radius: 3px; /* Optional: round corners for the h4 background */
+}
+
+
+.request-item p {
+    margin: 5px 0;
+    color: #d9534f;
+}
+/* 
+.request-item button {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 3px;
+    background-color: #5cb85c;
+    color: white;
+} */
+
+.request-item button.decline {
+    background-color: #d9534f;
+}
+/* Tabs */
+.tabs {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabs li {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: 3px solid transparent;
+}
+
+.tabs li.active {
+    border-bottom: 3px solid #007bff; /* Highlight the active tab */
+    font-weight: bold;
+}
+
+/* Content Sections */
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+
+.empty-message {
+    text-align: center;
+    color: #6c757d; /* Choose a neutral color like gray */
+    font-style: italic;
+    padding: 10px;
+}

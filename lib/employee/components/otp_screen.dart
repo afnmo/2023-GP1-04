@@ -232,7 +232,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 146, 158, 145),
+                      backgroundColor: Color.fromARGB(255, 146, 158, 145),
                     ),
                     child: SizedBox(
                       width: 150,

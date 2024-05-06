@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:gp91/firebase_auth/user_model.dart';
 import 'package:gp91/firebase_auth/user_repository/user_repository.dart';
 
 import 'package:gp91/welcome/welcome_screen.dart';
+import 'package:intl/intl.dart';
 
 class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
@@ -129,4 +131,31 @@ class AuthRepository extends GetxController {
     // Navigate to the welcome page using GetX's navigation.
     Get.to(() => WelcomeScreen());
   }
+
+
+  
+  /// Function to update the lastLoggedIn field in the Users collection
+  Future<void> updateLastLoggedIn(String userId) async {
+      // Get a reference to the Firestore instance
+      final firestore = FirebaseFirestore.instance;
+
+      // Get the current server timestamp
+      final timestamp = FieldValue.serverTimestamp();
+
+      // Create a date formatter
+      final dateFormatter = DateFormat.yMd(); // Format: 7/10/1996
+
+      try {
+          // Update the lastLoggedIn field with the formatted current server timestamp
+          await firestore.collection('Users').doc(userId).update({
+              'lastLoggedIn': dateFormatter.format(DateTime.now()) // Current date formatted
+          });
+
+          print('Successfully updated lastLoggedIn for user $userId.');
+      } catch (e) {
+          // Print error if the update fails
+          print('Error updating lastLoggedIn for user $userId: $e');
+      }
+  }
 }
+

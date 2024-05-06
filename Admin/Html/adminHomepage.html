@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/Logo.png">
+    <link rel="stylesheet" href="../styles/basic.css">
+
+    <title>Admin Homepage</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="..\styles\adminHomepage.css"> -->
+
+    <!-- Include Bootstrap JS bundle (popper.js included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body id="page-top" style="color: var(--bs-body-bg);background: none;">
+    <div class="background-image"></div>
+
+    <!-- start header -->
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark"
+            style="padding-top: 19px; border-color: #83c4a197; background-color: #83c4a197; padding-bottom: 19px; margin-bottom: 18px;">
+            <img src="..\images\Logo.png"
+                style="margin-left: 20px; margin-right: 20px; border-radius: 20px; border-color: #dcfee3; width: 80px; height: 80px; color: var(--bs-success-border-subtle); padding-top: 0px; margin-bottom: 2px; padding-bottom: 0px; margin-top: 0px; padding-right: 8px;"
+                width="92" height="100" />
+            <span
+                style="color: rgb(0, 0, 0); margin-left: 20px; padding-left: 0px; margin-top: -99px; padding-right: 0px; margin-right: 337px; margin-bottom: -64px; padding-top: 27px; padding-bottom: 0px; font-size: 32px;"></span>
+        </nav>
+    </header>
+    <!-- end header -->
+    <main class="page landing-page" style="padding-top: 150px;">
+
+        <div class="container mt-5">
+            <!-- Header -->
+            <div class="row">
+                <div class="col text-center">
+                    <h1  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Dashboard</h1>
+                </div>
+            </div>
+            <!-- Dashboard statistics -->
+            <div class="row justify-content-center">
+                <!-- Number of accepted stations -->
+                <div class="col-md-4 text-center align-items-center justify-content-center mr-4"  style="width: 290px;  margin: 0 auto;" >
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 250px; height: 250px; background-color:#83B9AB;  border: 4px solid #30b476;  margin: 0 auto;">
+                        <span class="text-white fs-1" id="acceptedStations" style=" font-weight:bold;"></span> <!-- Number of accepted stations -->
+                    </div>
+                    <p class="text-center align-items-center justify-content-center"  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Accepted Stations</p>
+                </div>
+                <!-- Number of users -->
+                <div class="col-md-4 text-center  align-items-center justify-content-center ml-4"  style="width: 290px;  margin: 0 auto;" >
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 250px; height: 250px; background-color:#F8E098;  border: 4px solid #30b476; margin: 0 auto;">
+                        <span class="text-white fs-1" id="numUsers" style=" font-weight:bold;"></span> <!-- Number of users -->
+                    </div>
+                    <p class="text-center align-items-center justify-content-center"  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Number of Users</p>
+                </div>
+            </div>
+            
+    
+            <!-- Bar charts -->
+            <div class="row mt-5">
+                <!-- Daily stations requested bar chart -->
+                <div class="col-md-6">
+                    <h4  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Daily Stations Requested</h4>
+                    <canvas id="stationsRequestedChart"></canvas>
+                </div>
+                <!-- Daily logged-in users bar chart -->
+                <div class="col-md-6">
+                    <h4  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Daily Logged In Users Over the Past Week</h4>
+                    <canvas id="loggedInUsersChart"></canvas>
+                </div>
+            </div>
+        </div>
+    
+
+
+        <!-- Requests to Add Station -->
+        <div class="container mt-3 mb-1">
+            <div class="row">
+                <div class="col">
+                    <h2 class="fw-bold text-dark mb-1"  style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Requests to Add Station</h2>
+                    <hr class="mt-2 mb-1">
+                </div>
+            </div>
+    
+            <!-- Tabbed Interface -->
+            <ul class="nav nav-tabs mb-2" id="stationTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="accepted-tab" data-bs-toggle="tab" href="#accepted" role="tab" aria-controls="accepted" aria-selected="false">Accepted</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="declined-tab" data-bs-toggle="tab" href="#declined" role="tab" aria-controls="declined" aria-selected="false">Declined</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content mb-5" id="stationTabsContent">
+                <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                    <div id="pending-requests" class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- <h3>hi</h3> -->
+                        <!-- Dynamically generated pending request cards will go here -->
+                        <p id="no-pending-message" class="empty-message text-center alert alert-secondary" style="display: none; padding: 1px;">
+                            No pending requests.
+                        </p>                                       
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
+                    <div id="accepted-requests" class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- Dynamically generated accepted request cards will go here -->
+                        <p id="no-accepted-message" class="empty-message" style="display: none;">No accepted requests.</p>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
+                    <div id="declined-requests" class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- Dynamically generated declined request cards will go here -->
+                        <p id="no-declined-message" class="empty-message" style="display: none;">No declined requests.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <p class="no-data-message text-muted" style="display: none;">No requests to add station.</p>
+        </div>
+    
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content text-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Confirm Action</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to perform this action?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmBtn">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </main>
+    
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+
+    
+    <!-- star footer -->
+    <footer class="footer">
+        <ul class="social-icon">
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a></li>
+        </ul>
+
+        <p>&copy;2023 All Rights Reserved For 91.com</p>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script type="module" src="..\javaScript\adminHomepage.js"></script>
+    <!-- end footer -->
+
+    
+</body>
+
+</html>
