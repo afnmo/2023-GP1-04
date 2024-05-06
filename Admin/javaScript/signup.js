@@ -112,7 +112,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
 
                 // Redirect after a certain delay
                 setTimeout(function () {
-                    window.location.href = "index.html";
+                    window.location.href = "adminHomepage.html";
                 }, 3000); // Redirect after 3 seconds
                 // await checkRequests(email);
             }
