@@ -80,9 +80,9 @@ async function checkRequests(email, password) {
 
                     // Check if the request is accepted
                     const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
-                    // console.log("data.accepted: " + data.accepted);
+                    console.log("data.accepted: " + data.accepted);
 
-                    if (data.accepted === true) {
+                    if (data.accepted == "accepted") {
 
                         const stationName = data.name;
                         // console.log("Station name: " + stationName);
@@ -123,7 +123,14 @@ async function checkRequests(email, password) {
                         window.location.href = "homepagePM.html";
                         }
 
-                    } else {
+                    } 
+                    else if(data.accepted == "declined"){
+                        sessionStorage.setItem('sessionID', docID);
+                        console.log("Declined");
+                        window.location.href = "registerFormPM.html";
+
+                    }
+                    else {
                         // Redirect to the waiting for approval page
                         window.location.href = "waitApproval.html";
                     }
