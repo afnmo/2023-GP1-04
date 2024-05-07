@@ -94,7 +94,7 @@ try {
 
     // Query for documents where branch_manager_id matches SID
     const querySnapshot = await getDocs(query(stationRequestsRef, where('branch_manager_id', '==', sessionID)));
-    console.log(querySnapshot);
+    // console.log(querySnapshot);
 
     querySnapshot.forEach(async (doc) => {
         // Extract the value of the 'accepted' field from each document

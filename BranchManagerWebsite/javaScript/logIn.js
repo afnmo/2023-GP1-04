@@ -80,7 +80,7 @@ async function checkRequests(email, password) {
 
                     // Check if the request is accepted
                     const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
-                    console.log("data.accepted: " + data.accepted);
+                    // console.log("data.accepted: " + data.accepted);
 
                     if (data.accepted == "accepted") {
 
@@ -125,9 +125,8 @@ async function checkRequests(email, password) {
 
                     } 
                     else if(data.accepted == "declined"){
-                        sessionStorage.setItem('sessionID', docID);
-                        console.log("Declined");
-                        window.location.href = "registerFormPM.html";
+                        sessionStorage.setItem("branchManagerID", docID);
+                        window.location.href = "registerFormBM.html";
 
                     }
                     else {
@@ -139,7 +138,7 @@ async function checkRequests(email, password) {
                     // console.log("ELSE if (!branchManagerQuerySnapshot.empty)");
                     // Email doesn't exist in "Station_Requests" collection
                     // alert("you have not applied yet");
-                    window.location.href = "registerFormPM.html";
+                    window.location.href = "registerFormBM.html";
                 }
             })
             .catch((error) => {
