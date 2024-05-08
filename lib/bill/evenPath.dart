@@ -11,7 +11,9 @@ class EventPath extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isPast ? Color.fromARGB(255, 92, 129, 131) : Color(0xFF81A5A7),
+        color: isPast
+            ? Color.fromARGB(255, 95, 131, 113)
+            : Color.fromARGB(255, 193, 195, 194),
         borderRadius: BorderRadius.circular(10.0),
       ),
       padding: EdgeInsets.all(25.0),

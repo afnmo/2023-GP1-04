@@ -27,19 +27,19 @@ class TimeLineTileUI extends StatelessWidget {
         isLast: isLast,
         beforeLineStyle: LineStyle(
           color: isPast
-              ? Color.fromARGB(255, 181, 189, 190)
-              : Color.fromARGB(255, 210, 143, 28),
+              ? Color.fromARGB(255, 32, 148, 109)
+              : Color.fromARGB(255, 193, 195, 194),
         ),
         indicatorStyle: IndicatorStyle(
             width: 40.0,
             color: isPast
-                ? Color.fromARGB(255, 26, 28, 28)
-                : Color.fromARGB(255, 56, 41, 15),
+                ? Color.fromARGB(255, 7, 86, 59)
+                : Color.fromARGB(255, 193, 195, 194),
             iconStyle: IconStyle(
                 iconData: Icons.circle,
                 color: isPast
-                    ? Color.fromARGB(255, 232, 246, 241)
-                    : Color(0xFFB0A695))),
+                    ? Color.fromARGB(255, 95, 131, 113)
+                    : Color.fromARGB(255, 193, 195, 194))),
         endChild: EventPath(
           isPast: isPast,
           childWidget: eventChild,
