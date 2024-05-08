@@ -29,17 +29,19 @@ Stream<List<DocumentSnapshot>> fetchBillsAsStream() async* {
         String userDocId = querySnapshot.docs.first.id;
 
         final billCollection = FirebaseFirestore.instance.collection('Bills');
-        Stream<QuerySnapshot> billQueryStream =
-            billCollection.where('userId', isEqualTo: userDocId).snapshots();
+        Query billsQuery = billCollection.where('userId', isEqualTo: userDocId);
 
-        await for (QuerySnapshot billSnapshot in billQueryStream) {
-          yield billSnapshot.docs;
+        // Listen for changes on each document in the query
+        Stream<QuerySnapshot> snapshots = billsQuery.snapshots();
+        await for (QuerySnapshot snapshot in snapshots) {
+          print('Bills snapshot: ${snapshot.docs}');
+          yield snapshot.docs; // Yield list of DocumentSnapshot
         }
       }
     }
   } catch (e) {
     print('Error fetching bills: $e');
-    yield [];
+    yield []; // Yield an empty list to keep the stream open
   }
 }
 
@@ -56,7 +58,7 @@ class _HomeScreenState extends State<ScreenBill> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 249, 249, 249),
+      backgroundColor: Color.fromARGB(255, 250, 248, 248),
       appBar: AppBar(
         // App bar styling
         backgroundColor: Color(0xFF6EA67C),
@@ -123,65 +125,63 @@ class _HomeScreenState extends State<ScreenBill> {
                   itemBuilder: (context, index) {
                     var billData =
                         billDocs[index].data() as Map<String, dynamic>;
-                    if (billData['stationName'] != null)
-                      return FutureBuilder<DocumentSnapshot?>(
-                        future: fetchCarDetails(billData['carId']),
-                        builder: (context, carSnapshot) {
-                          if (carSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator(
-                                color: Color(0xFF6EA67C));
-                          } else if (carSnapshot.hasError) {
-                            return Text(
-                                'Error fetching car details: ${carSnapshot.error}');
-                          } else if (!carSnapshot.hasData ||
-                              carSnapshot.data == null) {
-                            return Text('Car details not found');
-                          } else {
-                            var carData = carSnapshot.data!.data()
-                                as Map<String, dynamic>;
-                            return TimeLineTileUI(
-                              isFirst: index == 0,
-                              isLast: index == billDocs.length - 1,
-                              isPast: true,
-                              eventChild: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.date_range_outlined,
-                                          color: Colors.white),
-                                      SizedBox(width: 15.0),
-                                      Text(
-                                        ' ${billData['date']}',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
+                    return FutureBuilder<DocumentSnapshot?>(
+                      future: fetchCarDetails(billData['carId']),
+                      builder: (context, carSnapshot) {
+                        if (carSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator(
+                              color: Color(0xFF6EA67C));
+                        } else if (carSnapshot.hasError) {
+                          return Text(
+                              'Error fetching car details: ${carSnapshot.error}');
+                        } else if (!carSnapshot.hasData ||
+                            carSnapshot.data == null) {
+                          return Text('Car details not found');
+                        } else {
+                          var carData =
+                              carSnapshot.data!.data() as Map<String, dynamic>;
+                          return TimeLineTileUI(
+                            isFirst: index == 0,
+                            isLast: index == billDocs.length - 1,
+                            isPast: true,
+                            eventChild: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.date_range_outlined,
+                                        color: Colors.white),
+                                    SizedBox(width: 15.0),
+                                    Text(
+                                      ' ${billData['date']}',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
-                                    ],
-                                  ),
-                                  Text(
-                                    'Amount: ${billData['amount']} SAR',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    'Station: ${billData['stationName']}',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    'Car Name: ${carData['name']}',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  // Display other fields as needed
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                      );
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'Amount: ${billData['amount']} SAR',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(
+                                  'Station: ${billData['stationName'] ?? 'Unknown'}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Text(
+                                  'Car Name: ${carData['name']}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                // Display other fields as needed
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    );
                   },
                 );
               }

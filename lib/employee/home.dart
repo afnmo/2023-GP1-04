@@ -192,7 +192,7 @@ class _HomeBody extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
