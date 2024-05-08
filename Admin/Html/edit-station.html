@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/Logo.png">
+    <link rel="stylesheet" href="../styles/basic.css">
+
+    <title>Edit Station</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Include Bootstrap JS bundle (popper.js included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+</head>
+
+<body id="page-top" style="color: var(--bs-body-bg);background: none;">
+    <div class="background-image"></div>
+
+    <!-- start header -->
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark"
+            style="padding-top: 19px; border-color: #83c4a197; background-color: #83c4a197; padding-bottom: 19px; margin-bottom: 18px;">
+            <img src="..\images\Logo.png"
+                style="margin-left: 20px; margin-right: 20px; border-radius: 20px; border-color: #dcfee3; width: 80px; height: 80px; color: var(--bs-success-border-subtle); padding-top: 0px; margin-bottom: 2px; padding-bottom: 0px; margin-top: 0px; padding-right: 8px;"
+                width="92" height="100" />
+            <span
+                style="color: rgb(0, 0, 0); margin-left: 20px; padding-left: 0px; margin-top: -99px; padding-right: 0px; margin-right: 337px; margin-bottom: -64px; padding-top: 27px; padding-bottom: 0px; font-size: 32px;"></span>
+        </nav>
+    </header>
+    <!-- end header -->
+    <main class="page landing-page" style="padding-top: 150px;">
+        <div class="container mt-5">
+            <!-- Header -->
+            <div class="row">
+                <div class="col text-center">
+                    <h1 style="color:rgb(48,180,118);--bs-primary:#30b476;--bs-primary-rgb:48,180,118; font-weight:bold;">Edit Station</h1>
+                </div>
+            </div>
+
+            <form id="editStationForm">
+                <div class="mb-3">
+                    <label style="color:rgb(48,180,118); font-weight:bold;" for="gasStationName" class="form-label">Gas station's name:</label>
+                    <input type="text" class="form-control" id="gasStationName" name="gasStationName" readonly>
+                </div>
+                <div class="mb-3">
+                    <label style="color:rgb(48,180,118); font-weight:bold;" for="currentBranchManagerEmail" class="form-label">Current Branch Manager Email:</label>
+                    <input type="text" class="form-control" id="currentBranchManagerEmail" name="currentBranchManagerEmail" readonly>
+                </div>
+                <div class="mb-3">
+                    <label style="color:rgb(48,180,118); font-weight:bold;" for="newBranchManagerEmail" class="form-label">New Branch Manager Email:</label>
+                    <input type="text" class="form-control" id="newBranchManagerEmail" name="newBranchManagerEmail">
+                </div>
+                <button style="border-radius: 160px;background: rgba(48,180,118,0.52);border-color: rgba(48,180,118,0.52); font-weight: bold; margin: 50px; width: 100%; height: 46px; color: white; text-decoration: none; font-size: 16px;" type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <script>
+                // Add your Firebase SDK configuration here
+                var firebaseConfig = {
+                    apiKey: "AIzaSyAWSHSS6v0pG5VxrmfXElArcMpjBT5o6hg",
+                    authDomain: "app-be149.firebaseapp.com",
+                    projectId: "app-be149",
+                    storageBucket: "app-be149.appspot.com",
+                    messagingSenderId: "18569998394",
+                    appId: "1:18569998394:web:c8efa4c8b656702c1cc503"
+                };
+
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+
+                // Get a reference to the Firestore database
+                var db = firebase.firestore();
+
+                // Reference the 'stations' and 'Branch_Manager' collections
+                var stationCollection = db.collection("Station");
+                var branchManagerCollection = db.collection("Branch_Manager");
+
+                // Get the station ID from the query parameter
+                const params = new URLSearchParams(window.location.search);
+                const stationId = params.get('id');
+
+               // Get current branch manager ID
+               stationCollection.doc(stationId).get()
+               .then((doc) => {
+               if (doc.exists) {
+                 // Access the branch_manager_id field
+                 const currentBranchManagerId = doc.data().branch_manager_id;
+                 // Access the gas station's name field
+                 const gasStationName = doc.data().name;
+                 // Set the value of the gasStationName input field
+                 document.getElementById("gasStationName").value = gasStationName;
+                 // Retrieve the current branch manager's email using the current branch manager ID
+                 branchManagerCollection.doc(currentBranchManagerId).get()
+                 .then((doc) => {
+                 if (doc.exists) {
+                     // Access the email field of the Branch Manager document
+                     const currentEmail = doc.data().email;
+                     // Set the value of the currentBranchManagerEmail input field
+                     document.getElementById("currentBranchManagerEmail").value = currentEmail;
+                    //   console.log('Branch Manager Email:', currentEmail);
+                 } else {
+                     console.log('Branch Manager document not found');
+                 }
+                 })
+                 .catch((error) => {
+                 console.error('Error retrieving the Branch Manager document:', error);
+                 });
+                } else {
+                  console.log('Document not found');
+                 }
+                })
+               .catch((error) => {
+                  console.error('Error retrieving the document:', error);
+                });
+
+
+                // Get the editStationForm element
+                var editStationForm = document.getElementById("editStationForm");
+
+               // Add a submit event listener to the form
+               editStationForm.addEventListener("submit", function (e) {
+                 e.preventDefault(); // Prevent the default form submission behavior
+
+                 // Prompt a confirmation message to the user
+                 var confirmation = confirm("Are you sure you want to make the changes?");
+
+                 if (confirmation) {
+                   // Get the values from the input fields
+                   var newBranchManagerEmail = document.getElementById("newBranchManagerEmail").value;
+                   var currentBranchManagerEmail = document.getElementById("currentBranchManagerEmail").value;
+                  // Delete the current branch manager document
+                  branchManagerCollection
+                  .where("email", "==", currentBranchManagerEmail)
+                  .get()
+                  .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                    doc.ref.delete();
+                   });
+                  })
+                 .then(() => {
+                   // Update the station's branch_manager_id field
+                   branchManagerCollection
+                   .where("email", "==", newBranchManagerEmail)
+                    .get()
+                     .then((querySnapshot) => {
+                        if (querySnapshot.size > 0) {
+                            // Get the ID of the branch manager document
+                            var branchManagerId = querySnapshot.docs[0].id;
+
+                            // Update the station's branch_manager_id field
+                            stationCollection
+                                .doc(stationId)
+                                .update({
+                                    branch_manager_id: branchManagerId
+                                })
+                            // Add station_id field to the new branch manager's document
+                                branchManagerCollection
+                                    .doc(branchManagerId)
+                                    .set({
+                                         station_id: stationId
+                                        }, { merge: true })
+                                .then(() => {
+                                    alert("Changes saved successfully.");
+                                    window.location.href = "stations.html";
+                                })
+                                .catch((error) => {
+                                    console.error("Error updating station document:", error);
+                                    alert("Failed to update the station document. Please try again.");
+                                });
+                        } else {
+                            alert("No branch manager found with the provided email.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error retrieving branch manager document:", error);
+                        alert("Failed to retrieve the branch manager document. Please try again.");
+                    });
+            })
+            .catch((error) => {
+                console.error("Error deleting current branch manager document:", error);
+                alert("Failed to delete the current branch manager document. Please try again.");
+            });
+    } else {
+        // If the user cancels the confirmation, display a message
+        alert("Changes canceled.");
+    }
+});
+            </script>
+        </div>
+    </main>
+
+    <!-- star footer -->
+    <footer class="footer">
+        <ul class="social-icon">
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a></li>
+        </ul>
+
+        <p>&copy;2023 All Rights Reserved For 91.com</p>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script type="module" src="..\javaScript\adminHomepage.js"></script>
+    <!-- end footer -->
+</body>
+
+</html>
