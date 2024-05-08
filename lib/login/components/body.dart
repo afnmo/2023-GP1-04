@@ -238,13 +238,13 @@ class _FormScreenState extends State<Body> {
       Get.back();
 
       // Handle specific error cases here and display appropriate error messages
-      Get.snackbar(
-        "Oops!",
-        "An error occurred during sign-in. Please try again later",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-      );
+      // Get.snackbar(
+      //   "Oops!",
+      //   "An error occurred during sign-in. Please try again later",
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.redAccent.withOpacity(0.1),
+      //   colorText: Colors.red,
+      // );
     }
   }
 }
