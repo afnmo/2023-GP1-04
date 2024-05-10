@@ -78,8 +78,8 @@ class _QRorPlateState extends State<QRorPlate> {
             SizedBox(height: 60),
             Image.asset(
               'assets/images/start.gif',
-              width: 200,
-              height: 200,
+              width: 250,
+              height: 250,
             ),
             SizedBox(height: 20),
             const Text(
