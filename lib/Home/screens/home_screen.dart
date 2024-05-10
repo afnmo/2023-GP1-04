@@ -3,7 +3,7 @@ import 'package:gp91/Home/components/bar_graph/annual_bar_graph.dart';
 import 'package:gp91/Home/components/bar_graph/get_expenses.dart';
 import 'package:gp91/Home/components/categories_list.dart';
 import 'package:gp91/Home/components/check_car.dart';
-import 'package:gp91/home/components/top_bar.dart';
+import 'package:gp91/employee/components/top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gp91/components/bottom_nav.dart';
 import 'package:gp91/home/components/blurred_image_with_text.dart';

@@ -137,13 +137,23 @@ class FuelResult extends StatelessWidget {
                               children: <Widget>[
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 40.0, vertical: 40.0),
+                                    horizontal: 40.0,
+                                    vertical: 40.0,
+                                  ),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
                                       colors: [
-                                        Color.fromARGB(255, 87, 185, 144),
-                                        Color.fromARGB(255, 11, 71, 46),
+                                        record.percentageDifference!
+                                                .contains('lower')
+                                            ? Colors.green
+                                            : Colors
+                                                .red, // Set gradient color based on percentageDifference
+                                        record.percentageDifference!
+                                                .contains('lower')
+                                            ? Colors.lightGreen
+                                            : Colors
+                                                .pink, // Set gradient color based on percentageDifference
                                       ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
@@ -169,9 +179,7 @@ class FuelResult extends StatelessWidget {
                                         ),
                                       ),
                                       const SizedBox(width: 4),
-                                      arrowIcon,
-                                      // const Icon(Icons.arrow_upward,
-                                      //     color: Colors.white, size: 20),
+                                      // Set arrow color to white
                                     ],
                                   ),
                                 ),
@@ -194,8 +202,9 @@ class FuelResult extends StatelessWidget {
                                       title: Text(
                                         '${record.percentageDifference}',
                                         style: const TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 11, 71, 46)),
+                                          color:
+                                              Color.fromARGB(255, 11, 71, 46),
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -36,6 +36,8 @@ class _FormScreenState extends State<Body> {
   bool _obscureText1 = true;
   bool _obscureText2 = true;
 
+  bool showPasswordRequirements = false;
+
   final digitPattern = RegExp(r'(?=.*\d)');
   final lowercasePattern = RegExp(r'(?=.*[a-z])');
   final uppercasePattern = RegExp(r'(?=.*[A-Z])');
@@ -50,7 +52,7 @@ class _FormScreenState extends State<Body> {
         !lowercasePattern.hasMatch(password) ||
         !uppercasePattern.hasMatch(password) ||
         !specialCharPattern.hasMatch(password)) {
-      return 'Password should include at least one digit, one lowercase and one uppercase letter, and one special character, with a minimum of 8 characters.';
+      return 'Password should include at least one digit, one lowercase and one uppercase letter, and one special character include @#%^&+=, with a minimum of 8 characters.';
     }
 
     return null; // Password is valid
@@ -156,39 +158,58 @@ class _FormScreenState extends State<Body> {
 
                 // password              passwordInput,
                 TextFieldContainer(
-                  child: TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscureText1,
-                    onChanged: (value) {},
-                    validator: (value) {
-                      return validatePassword(value!);
-                    },
-                    decoration: InputDecoration(
-                      errorMaxLines: 4,
-                      hintStyle: const TextStyle(
-                        fontFamily: 'NanumGothic',
-                      ),
-                      icon: const Icon(
-                        Icons.lock,
-                        color: primaryColor,
-                      ),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscureText1,
+                        onChanged: (value) {
+                          // Set the flag to true when the user enters something into the password field
                           setState(() {
-                            _obscureText1 = !_obscureText1;
+                            showPasswordRequirements = value.isNotEmpty;
                           });
                         },
-                        child: Icon(
-                          _obscureText1
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: primaryColor,
+                        validator: (value) {
+                          return validatePassword(value!);
+                        },
+                        decoration: InputDecoration(
+                          errorMaxLines: 4,
+                          hintStyle: const TextStyle(
+                            fontFamily: 'NanumGothic',
+                          ),
+                          icon: const Icon(
+                            Icons.lock,
+                            color: primaryColor,
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obscureText1 = !_obscureText1;
+                              });
+                            },
+                            child: Icon(
+                              _obscureText1
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: primaryColor,
+                            ),
+                          ),
+                          hintText: "Password",
+                          border: InputBorder.none,
                         ),
+                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
-                      hintText: "Password",
-                      border: InputBorder.none,
-                    ),
-                    // autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // Conditionally display the message based on the flag
+                      if (showPasswordRequirements)
+                        Text(
+                          'Password must include at least one digit, one lowercase and one uppercase letter, and one special character include @#%^&+=, with a minimum of 8 characters.',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 // confirm              confirmPasswordInput,
