@@ -7,3 +7,4 @@ class CarInfoHandler {
     return FirebaseFirestore.instance.collection('Cars').doc(carId).snapshots();
   }
 }
+

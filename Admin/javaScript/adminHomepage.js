@@ -319,6 +319,67 @@ countUsers();
 
 // Wait for the DOM to fully load before calling fetchStationRequests()
 window.addEventListener('DOMContentLoaded', async function(event) {
+
+
+            // Create an object to store the count of requested stations for each date
+            const requestedStationsCount = {};
+
+            // Query the Station_Requests collection in Firestore
+            const stationRequestsCollection = collection(db, 'Station_Requests');
+            const stationRequestsSnapshot = await getDocs(stationRequestsCollection);
+    
+            // Iterate through each station request and count requests for each date
+            stationRequestsSnapshot.forEach(doc => {
+                const requestData = doc.data();
+                const requestDate = requestData.requestDate;
+    
+                // Increment the count for the requestDate
+                if (requestDate) {
+                    if (requestedStationsCount[requestDate]) {
+                        requestedStationsCount[requestDate] += 1;
+                    } else {
+                        requestedStationsCount[requestDate] = 1;
+                    }
+                }
+            });
+    
+            // Function to convert date to day short name
+            function getDayShortName(dateString) {
+                const date = new Date(dateString);
+                const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                return daysOfWeek[date.getDay()];
+            }
+    
+            // Prepare the data for the daily requested stations bar chart
+            const requestedStationsData = {
+                // Convert dates to short day names in the same order
+                labels: Object.keys(requestedStationsCount).map(getDayShortName),
+                datasets: [{
+                    label: 'Requested Stations',
+                    data: Object.values(requestedStationsCount),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)', // Bootstrap primary color
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+    
+            // Initialize daily requested stations bar chart
+            const ctx = document.getElementById('stationsRequestedChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: requestedStationsData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1, // Set step size to 1 to ensure only integers are displayed
+                            precision: 0 
+                        }
+                    }
+                }
+            });
+    
+            console.log('Requested stations data loaded successfully.');
     
 // Create an array to store the last 7 days' dates in the format d/m/yyyy
 const last7Days = [];
@@ -383,7 +444,9 @@ new Chart(ctx2, {
     options: {
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                stepSize: 1, // Set step size to 1 to ensure only integers are displayed
+                precision: 0 
             }
         }
     }

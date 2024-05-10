@@ -6,6 +6,7 @@ class EditCarInfo extends StatelessWidget {
 
   EditCarInfo({super.key, required this.carId});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

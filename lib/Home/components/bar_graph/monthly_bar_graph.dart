@@ -8,6 +8,7 @@ class MonthlyBarGraph extends StatelessWidget {
   const MonthlyBarGraph({Key? key, required this.monthlySummary})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     //get the data

@@ -8,6 +8,7 @@ import 'car_data.dart';
 class FormDataHandler {
   CarData carDataObj = CarData();
 
+
 // from email find user id
   Future<String?> findDocumentIdByEmail() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -73,7 +74,7 @@ class FormDataHandler {
       'image': "",
     });
 
-    await setInitialExpense(carDate.id, documentId);
+    // await setInitialExpense(carDate.id, documentId);
   }
 
 // convert english letters To arabic letters
@@ -110,6 +111,7 @@ class FormDataHandler {
     return result.trim();
   }
 
+// no longer needed
 // set initial expense
   Future<void> setInitialExpense(String carId, String? userId) async {
     try {

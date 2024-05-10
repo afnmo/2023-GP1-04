@@ -19,6 +19,7 @@ class EditCarInfoBody extends StatefulWidget {
 class _editCarInfoBodyState extends State<EditCarInfoBody> {
   double fixedWidth = 350.0;
   double fixedHeight = 200.0;
+  
 
   late Map<String, dynamic> carDataInfo = {};
   List<String> fuelTypes = ['91', '95', 'Diesel'];

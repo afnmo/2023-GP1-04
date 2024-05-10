@@ -8,6 +8,7 @@ class FuelCalculation {
     String? userId = await FuelFirebase().getUserDocumentIdByEmail();
     return userId;
   }
+  
 
   Future<double> getLitersConsumed(
       String documentCarId, String startDate, String endDate) async {

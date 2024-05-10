@@ -23,11 +23,11 @@ async function checkRequests(email, password) {
     // Check if the email exists in the "branchManager" collection
     // const branchManagerRef = collection(db, "branchManager");
     const branchManagerRef = collection(db, "Branch_Manager");
-    // console.log("branchManagerRef: " + branchManagerRef);
+    console.log("branchManagerRef: " + branchManagerRef);
     const branchManagerQuery = query(branchManagerRef, where("email", "==", email));
-    // console.log("branchManagerQuery: " + branchManagerQuery.email);
+    console.log("branchManagerQuery: " + branchManagerQuery.email);
     const branchManagerQuerySnapshot = await getDocs(branchManagerQuery);
-    // console.log("branchManagerQuerySnapshot" + branchManagerQuerySnapshot);
+    console.log("branchManagerQuerySnapshot" + branchManagerQuerySnapshot);
 
     let docID = null; // Initialize the docID variable
 
@@ -37,6 +37,7 @@ async function checkRequests(email, password) {
         if (doc.data().email === email) {
             // If it does, store the document ID and break out of the loop
             docID = doc.id;
+            console.log(docID)
             return;
         }
     });
@@ -80,7 +81,7 @@ async function checkRequests(email, password) {
 
                     // Check if the request is accepted
                     const data = stationRequestsQuerySnapshot.docs[0].data(); // Assuming there's only one matching document
-                    // console.log("data.accepted: " + data.accepted);
+                    console.log("data.accepted: " + data.accepted);
 
                     if (data.accepted == "accepted") {
 
@@ -91,8 +92,10 @@ async function checkRequests(email, password) {
 
                         // Get the ID of the logined "Branch_Manager" document
                         // const branchManagerId = branchManagerRef.id;
-
-                        sessionStorage.setItem('sessionID', docID);
+                        // station ID
+                        // sessionStorage.setItem('sessionID', docID);
+                        sessionStorage.setItem('branchManagerID', docID);
+                        
 
                         const stationRef1 = collection(db, "Station");
                         const stationQuery = query(stationRef1, where("branch_manager_id", "==", docID));
@@ -125,6 +128,7 @@ async function checkRequests(email, password) {
 
                     } 
                     else if(data.accepted == "declined"){
+                        console.log("data.accepted == declined")
                         sessionStorage.setItem("branchManagerID", docID);
                         window.location.href = "registerFormBM.html";
 
@@ -160,7 +164,10 @@ async function checkRequests(email, password) {
 document.getElementById("login-form").addEventListener("submit", async function (event) {
     event.preventDefault();
     const email = document.getElementById("email").value;
+    // console.log(email);
+    
     const password = document.getElementById("password").value;
+    // console.log(password);
     await checkRequests(email, password);
 });
 

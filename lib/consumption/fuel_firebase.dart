@@ -356,6 +356,7 @@ class FuelFirebase extends GetxController {
     }
   }
 
+
   Future<void> updateAmountField(String carId, double amount) async {
     try {
       String? userId = await getUserDocumentIdByEmail();

@@ -7,6 +7,7 @@ class CarData {
   static Future<List<String>> extractManufacturers() async {
     List<String> manufacturers = [];
 
+
     try {
       final rawData =
           await rootBundle.load("assets/carDS/FE Vehicle Details.csv");

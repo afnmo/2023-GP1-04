@@ -7,6 +7,7 @@ class EditCarInfoHandler {
 
   EditCarInfoHandler({required this.carId});
 
+
 // update car info
   Future<void> formUpdate(
       selectedFuelType,

@@ -85,6 +85,7 @@ class GetExpenses {
         return [0.0, 0.0, 0.0, 0.0];
       }
     }
+    
     return [
       currentMonthAmount,
       firstMonthAmount,

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getFirestore, getDoc, doc, updateDoc, addDoc,getDocs, collection } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+import { getFirestore, getDoc, query, where, doc, updateDoc, addDoc,getDocs, collection, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,8 +24,94 @@ const collectionName = "Station_Requests";
 const SID = sessionStorage.getItem('branchManagerID');
 
 const sessionID = sessionStorage.getItem('sessionID');
+function showToast(message) {
+    // Create a toast element
+    const toastElement = document.createElement('div');
+    toastElement.className = 'toast d-flex align-items-center text-white bg-primary border-0 justify-content-between';
+    toastElement.role = 'alert';
+    toastElement.setAttribute('aria-live', 'assertive');
+    toastElement.setAttribute('aria-atomic', 'true');
+
+    // Create the toast body
+    const toastBody = document.createElement('div');
+    toastBody.className = 'toast-body';
+    toastBody.textContent = message;
+
+    // Create a close button
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'btn-close';
+    closeButton.setAttribute('aria-label', 'Close');
+    closeButton.addEventListener('click', function() {
+        // Hide the toast when close button is clicked
+        toastElement.style.display = 'none';
+    });
+
+    // Append the close button and body to the toast
+    toastElement.appendChild(toastBody);
+    toastElement.appendChild(closeButton);
+
+    // Append the toast to the toast container
+    const toastContainer = document.getElementById('toast-container');
+    toastContainer.appendChild(toastElement);
+
+    // Show the toast
+    toastElement.style.display = 'block';
+
+    // Automatically hide the toast after a certain duration (e.g., 5 seconds)
+    // Automatically hide the toast after a certain duration (e.g., 5 seconds)
+setTimeout(function() {
+    toastElement.style.opacity = '0'; // Fade out the toast
+    setTimeout(function() {
+        toastContainer.removeChild(toastElement); // Remove the toast from the DOM
+    }, 500); // Adjust the duration as needed to match the CSS transition
+}, 5000); // Adjust the duration as needed
+
+}
+
+
+async function chechRejected(){
+    console.log("chechRejected() entered");
+try {
+    // Retrieve the branchManagerID from sessionStorage
+    // const SID = sessionStorage.getItem('branchManagerID');
+
+    // Create a reference to the Station_Requests collection
+    const stationRequestsRef = collection(db, 'Station_Requests');
+
+    console.log("SID" + SID);
+    // Query for documents where branch_manager_id matches SID
+    const querySnapshot = await getDocs(query(stationRequestsRef, where('branch_manager_id', '==', SID)));
+    // console.log(querySnapshot);
+
+    querySnapshot.forEach(async (doc) => {
+        // Extract the value of the 'accepted' field from each document
+        const acceptedValue = doc.data().accepted;
+
+        // Check the value of the 'accepted' field
+        if (acceptedValue === 'declined') {
+            // Get the requestId
+            const requestId = doc.id;
+
+            // Call the updateRequestStatus function with appropriate message
+            // Provide feedback to the user
+            const message = "Your station registration request has been declined by admin. You can register again or contact admin for further details: admin@91.com."
+
+            // Show a toast notification to the user
+            showToast(message);
+
+            // await updateRequestStatus(requestId, false, "");
+            await deleteDoc(doc.ref);
+        }
+    });
+} catch (error) {
+    // Handle errors
+    console.error("Error handling database operation:", error);
+}
+}
 
 if (SID) {
+    chechRejected();
     const Sdoc = doc(db, "Branch_Manager", SID); // Update the document reference
     // Use await with getDoc since it returns a Promise
     const docSnap = await getDoc(Sdoc);
@@ -51,83 +137,26 @@ if (SID) {
     window.location.href = "signup.html";
 }
 
-function showToast(message) {
-    // Create a toast element
-    const toastElement = document.createElement('div');
-    toastElement.className = 'toast d-flex align-items-center text-white bg-primary border-0 justify-content-between';
-    toastElement.role = 'alert';
-    toastElement.setAttribute('aria-live', 'assertive');
-    toastElement.setAttribute('aria-atomic', 'true');
 
-    // Create the toast body
-    const toastBody = document.createElement('div');
-    toastBody.className = 'toast-body';
-    toastBody.textContent = message;
-
-    // Create a close button
-    const closeButton = document.createElement('button');
-    closeButton.type = 'button';
-    closeButton.className = 'btn-close';
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    // Append the close button and body to the toast
-    toastElement.appendChild(toastBody);
-    toastElement.appendChild(closeButton);
-
-    // Append the toast to the toast container
-    const toastContainer = document.getElementById('toast-container');
-    toastContainer.appendChild(toastElement);
-
-    // Create a Bootstrap Toast instance and show it
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
-}
-
-async function chechRejected(){
-try {
-    // Retrieve the branchManagerID from sessionStorage
-    // const SID = sessionStorage.getItem('branchManagerID');
-
-    // Create a reference to the Station_Requests collection
-    const stationRequestsRef = collection(db, 'Station_Requests');
-
-    // Query for documents where branch_manager_id matches SID
-    const querySnapshot = await getDocs(query(stationRequestsRef, where('branch_manager_id', '==', sessionID)));
-    // console.log(querySnapshot);
-
-    querySnapshot.forEach(async (doc) => {
-        // Extract the value of the 'accepted' field from each document
-        const acceptedValue = doc.data().accepted;
-
-        // Check the value of the 'accepted' field
-        if (acceptedValue === 'declined') {
-            // Get the requestId
-            const requestId = doc.id;
-
-            // Call the updateRequestStatus function with appropriate message
-            // Provide feedback to the user
-            const message = "Your station registration request has been declined by admin. You can register again or contact admin for further details: admin@91.com."
-
-            // Show a toast notification to the user
-            showToast(message);
-            // await updateRequestStatus(requestId, false, "");
-        }
-    });
-} catch (error) {
-    // Handle errors
-    console.error("Error handling database operation:", error);
-}
-}
-if(sessionID){
-chechRejected();
-}
+// if(sessionID){
+//     console.log("sessionID true");
+// chechRejected();
+// }
+// else{
+//     console.log("sessionID false");
+// }
 const urlInput = document.getElementById("GoogleMapUrl");
 const urlError = document.getElementById("urlError");
 
 async function Addrequests() {
     const stationName = document.getElementById("StationName").value;
     const stationLocation = document.getElementById("GoogleMapUrl").value;
+    // Get today's date in the format "dd/mm/yyyy"
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const requestDate = dd + '/' + mm + '/' + yyyy;
   
     
         const isValidURL = validateURL(stationLocation);
@@ -148,6 +177,7 @@ async function Addrequests() {
             location: stationLocation,
             branch_manager_id: SID, 
             accepted: "pending", //'pending',
+            requestDate: requestDate
         });        
 
         // Get the ID of the newly created "Branch_Manager" document

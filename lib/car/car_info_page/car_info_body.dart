@@ -9,6 +9,7 @@ import 'car_info_handler.dart';
 class CarInfoBody extends StatelessWidget {
   final String carId;
 
+
   CarInfoBody({super.key, required this.carId});
 
 // edit car button

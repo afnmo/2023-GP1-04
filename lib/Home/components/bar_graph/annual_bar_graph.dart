@@ -16,6 +16,7 @@ class AnnualBarGraph extends StatelessWidget {
     double thirdYearAmount = 0;
     double currentYearAmount = 0;
 
+
     // Check if the annualSummary list has enough elements before accessing them
     if (annualSummary.length > 0) {
       currentYearAmount = annualSummary[0];
