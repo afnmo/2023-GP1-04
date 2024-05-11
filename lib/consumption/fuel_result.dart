@@ -90,7 +90,6 @@ class FuelResult extends StatelessWidget {
                     itemBuilder: (context, recordIndex) {
                       ConsumptionRecord record = records[recordIndex];
 
-
                       // Style the icon based on the percentageDifference
                       Icon arrowIcon;
                       if (record.percentageDifference!.contains('higher')) {
@@ -147,14 +146,14 @@ class FuelResult extends StatelessWidget {
                                       colors: [
                                         record.percentageDifference!
                                                 .contains('lower')
-                                            ? Colors.green
-                                            : Colors
-                                                .red, // Set gradient color based on percentageDifference
+                                            ? Color.fromARGB(255, 87, 185, 144)
+                                            : Color.fromARGB(255, 207, 107,
+                                                107), // Set gradient color based on percentageDifference
                                         record.percentageDifference!
                                                 .contains('lower')
-                                            ? Colors.lightGreen
-                                            : Colors
-                                                .pink, // Set gradient color based on percentageDifference
+                                            ? Color.fromARGB(255, 11, 71, 46)
+                                            : Color.fromARGB(255, 108, 27,
+                                                27), // Set gradient color based on percentageDifference
                                       ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
