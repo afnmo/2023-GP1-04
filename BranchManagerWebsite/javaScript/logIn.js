@@ -93,8 +93,8 @@ async function checkRequests(email, password) {
                         // Get the ID of the logined "Branch_Manager" document
                         // const branchManagerId = branchManagerRef.id;
                         // station ID
-                        // sessionStorage.setItem('sessionID', docID);
-                        sessionStorage.setItem('branchManagerID', docID);
+                        sessionStorage.setItem('sessionID', docID);
+                        // sessionStorage.setItem('branchManagerID', docID);
                         
 
                         const stationRef1 = collection(db, "Station");
@@ -129,7 +129,8 @@ async function checkRequests(email, password) {
                     } 
                     else if(data.accepted == "declined"){
                         console.log("data.accepted == declined")
-                        sessionStorage.setItem("branchManagerID", docID);
+                        // sessionStorage.setItem("branchManagerID", docID);
+                        sessionStorage.setItem('sessionID', docID);
                         window.location.href = "registerFormBM.html";
 
                     }

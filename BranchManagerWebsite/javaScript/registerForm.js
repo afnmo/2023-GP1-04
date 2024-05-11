@@ -24,6 +24,7 @@ const collectionName = "Station_Requests";
 const SID = sessionStorage.getItem('branchManagerID');
 
 const sessionID = sessionStorage.getItem('sessionID');
+
 function showToast(message) {
     // Create a toast element
     const toastElement = document.createElement('div');
@@ -31,6 +32,8 @@ function showToast(message) {
     toastElement.role = 'alert';
     toastElement.setAttribute('aria-live', 'assertive');
     toastElement.setAttribute('aria-atomic', 'true');
+
+    toastElement.style.backgroundColor = '#30b476'; 
 
     // Create the toast body
     const toastBody = document.createElement('div');
@@ -79,9 +82,9 @@ try {
     // Create a reference to the Station_Requests collection
     const stationRequestsRef = collection(db, 'Station_Requests');
 
-    console.log("SID" + SID);
+    console.log("sessionID" + sessionID);
     // Query for documents where branch_manager_id matches SID
-    const querySnapshot = await getDocs(query(stationRequestsRef, where('branch_manager_id', '==', SID)));
+    const querySnapshot = await getDocs(query(stationRequestsRef, where('branch_manager_id', '==', sessionID)));
     // console.log(querySnapshot);
 
     querySnapshot.forEach(async (doc) => {
@@ -110,9 +113,9 @@ try {
 }
 }
 
-if (SID) {
+if (sessionID) {
     chechRejected();
-    const Sdoc = doc(db, "Branch_Manager", SID); // Update the document reference
+    const Sdoc = doc(db, "Branch_Manager", sessionID); // Update the document reference
     // Use await with getDoc since it returns a Promise
     const docSnap = await getDoc(Sdoc);
 
@@ -175,7 +178,7 @@ async function Addrequests() {
         const stationRequestRef = await addDoc(collection(db, "Station_Requests"), {
             name: stationName,
             location: stationLocation,
-            branch_manager_id: SID, 
+            branch_manager_id: sessionID, 
             accepted: "pending", //'pending',
             requestDate: requestDate
         });        
@@ -184,7 +187,7 @@ async function Addrequests() {
         const stationRequestID = stationRequestRef.id;
 
         // Define a reference to a specific document within the "Branch_Manager" collection
-        const branchManagerDocRef = doc(db, "Branch_Manager", SID);
+        const branchManagerDocRef = doc(db, "Branch_Manager", sessionID);
 
         // Update the document with the new field
         // updateDoc(branchManagerDocRef, {
