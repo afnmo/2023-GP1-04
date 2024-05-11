@@ -149,40 +149,42 @@ class _FinalEntryState extends State<FinalEntry> {
                           color: Colors.redAccent,
                         ),
                         const SizedBox(height: 20),
-                        const Row(
-                          children: [
-                            Text(
-                              "Expenses (optional): ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Tooltip(
-                              message:
-                                  "You can skip this field if you don't want to enter expenses.",
-                              child: Icon(Icons.info_outline,
-                                  size: 16, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        TextField(
-                          controller: expenseController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            hintText: 'Enter expense amount (optional)',
-                            prefixIcon: const Icon(
-                                Icons.monetization_on_outlined,
-                                color: Colors.redAccent),
-                          ),
-                        ),
+                        // const Row(
+                        //   children: [
+                        //     Text(
+                        //       "Expenses (optional): ",
+                        //       style: TextStyle(
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 18,
+                        //       ),
+                        //     ),
+                        //     Tooltip(
+                        //       message:
+                        //           "You can skip this field if you don't want to enter expenses.",
+                        //       child: Icon(Icons.info_outline,
+                        //           size: 16, color: Colors.grey),
+                        //     ),
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 5),
+                        // TextField(
+                        //   controller: expenseController,
+                        //   keyboardType: TextInputType.number,
+                        //   decoration: InputDecoration(
+                        //     filled: true,
+                        //     fillColor: Colors.white,
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide.none,
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //     hintText: 'Enter expense amount (optional)',
+                        //     prefixIcon: const Icon(
+                        //         Icons.monetization_on_outlined,
+                        //         color: Colors.redAccent),
+                        //   ),
+                        // ),
+
+                        // ---------
                         // TextFormField(
                         //   controller: expenseController,
                         //   keyboardType: TextInputType.number,
